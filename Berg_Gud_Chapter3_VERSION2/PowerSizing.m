@@ -1,4 +1,4 @@
-function [PW_,PWmin_,PWmin,index] = PowerSizing(WS,CDmin,CDto,CLto,AR,V,ROC,h,dg)
+function [PW_,PWmin_,PWmin,index] = PowerSizing(WS,CDmin,CDto,CLto,AR,V,ROC,h,dg,eta,plots)
 % V = [Vturn, Vclimb, Vto, Vc] input as kts
 % h = [hturn, hclimb, hto, hc, hmax]
 % ROC inputs as ft/min
@@ -18,13 +18,13 @@ sigma = [rho(h(1))/rho_SL,rho(h(2))/rho_SL,rho(h(3))/rho_SL,rho(h(4))/rho_SL,rho
 [TW_dca] = Desired_Cruise_Airspeed(WS, q(V(4),rho(h(4))), CDmin, k);
 [TW_sc] = Service_Ceiling(WS, 1.667, rho(h(5)), k, CDmin);
 
-[PW_lcvt_SL] = (TW_lcvt*V(1))/(sigma(1)^0.8);
-[PW_dcr_SL] = (TW_dcr*V(2))/(sigma(2)^0.8);
-[PW_dtod_SL] = (TW_dtod*V(3))/(sigma(3)^0.8);
-[PW_dca_SL] = (TW_dca*V(4))/(sigma(4)^0.8);
-[PW_sc_SL] = (TW_sc*V(4))/(sigma(5)^0.8);
+[PW_lcvt_SL] = ((TW_lcvt*V(1))/(sigma(1)^0.8))/eta(1);
+[PW_dcr_SL] = ((TW_dcr*V(2))/(sigma(2)^0.8))/eta(2);
+[PW_dtod_SL] = ((TW_dtod*V(3))/(sigma(3)^0.8))/eta(3);
+[PW_dca_SL] = ((TW_dca*V(4))/(sigma(4)^0.8))/eta(4);
+[PW_sc_SL] = ((TW_sc*V(4))/(sigma(5)^0.8))/eta(5);
 
-PW_ = [PW_lcvt_SL; PW_dcr_SL; PW_dtod_SL; PW_dca_SL; PW_sc_SL];
+PW_ = [PW_lcvt_SL; PW_dcr_SL; PW_dtod_SL; PW_dca_SL; PW_sc_SL]/550;
 
 for ii = 1:length(WS)
     PWmin_(ii) = max(PW_(:,ii));
@@ -36,6 +36,16 @@ for ii = 1:length(WS)
     if PWmin_(ii) == PWmin
         index = ii;
     end
+end
+
+if plots == 1
+    figure
+    hold on
+    plot(WS,PW_(1,:),'r')
+    plot(WS,PW_(2,:),'b')
+    plot(WS,PW_(3,:),'g')
+    plot(WS,PW_(4,:),'m')
+    plot(WS,PW_(5,:),'y')       
 end
 
 

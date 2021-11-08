@@ -1,4 +1,4 @@
-function text2line(h,ksi,z,T)
+function text2horzcat(h,ksi,z,T)
 % Inserts text T in/near line with handle h
 %  ksi - relative distance from the beginning of curve,
 %  z - shift along normal to curve
@@ -10,12 +10,11 @@ i = round(ksi*numel(x));
 % Get the local slope
 dy=y(i+1)-y(i-1);
 dx=x(i+1)-x(i-1);
-d = dy/dx;
+d = 0;
 X = diff(get(gca, 'xlim'));
 Y = diff(get(gca, 'ylim'));
 p = pbaspect;
-%a = atan(d*p(2)*X/p(1)/Y)*180/pi;
-a=0;
+a = atan(d*p(2)*X/p(1)/Y)*180/pi;
 % Display the text
 switch z==0
     case 1
