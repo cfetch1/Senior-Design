@@ -32,7 +32,7 @@ function [MTOW,We,Wf]=RangeSizing(Wpl,Wtoguess,Ecruise,SFCcruise,Range,Eloiter,S
 
     Wto=Wtoguess; %unnecessary step but might make code more versatile in future
     error = 1000;
-    while (abs(error) > 10) 
+    while (abs(error) > 1) 
         Wrs=zeros(1,8); %weight ratio vector; one for each phase
         W=zeros(1,8); %weight at each phase 1-8, does not include takeoff
         %DATA FROM ROSKAM 
@@ -79,11 +79,11 @@ function [MTOW,We,Wf]=RangeSizing(Wpl,Wtoguess,Ecruise,SFCcruise,Range,Eloiter,S
         A = -.144;
         B = 1.1162;
         
-        We_log=10^((log10(Wto)-A)/B);
+        We_log=(10^((log10(Wto)-A)/B));
         error = We-We_log;
         Wto = Wto - error;
         
     end
     
-    MTOW = (We+Wf+Wpl);
+    MTOW = (We+Wf+Wpl)*1.1;
 end
