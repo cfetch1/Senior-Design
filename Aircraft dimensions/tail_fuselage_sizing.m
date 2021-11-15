@@ -12,12 +12,24 @@ Comments:
 
 % Wing Area
 S = 38.6697;
-
 % Wing Chord
 c = 1.6056;
-
 % Wing Span
 b = 24.0841;
+% Wing AR
+AR = b/c;
+% Wing Taper Ratio
+lambda = .5;
+
+% Horizontal Tail AR
+AR_h = 4.1;
+% Horizontal Tail Taper Ratio
+lambda_h = .8;
+
+% Vertical Tail AR
+AR_v = 2.15;
+% Vertical Tail Taper Ratio
+lambda_v = .762;
 
 % V_h
 V_h = .4;
@@ -58,6 +70,22 @@ S_h = (V_h*c*S)/L_h;
 % Vertical Tail Area (using V_v)
 S_v = (V_v*b*S)/L_h;
 
+
+% Root and tip chords
+c_root = (2*c)/(1+lambda);
+c_tip = c_root*lambda;
+
+% Root and tip chords for horizontal tail
+b_h = sqrt(AR_h*S_h);
+c_h = b_h/AR_h;
+c_root_h = (2*c_h)/(1+lambda_h);
+c_tip_h = c_root_h*lambda_h;
+
+% Root and tip chords for vertical tail
+b_v = sqrt(AR_v*S_v);
+c_v = b_v/AR_v;
+c_root_v = (2*c_v)/(1+lambda_v);
+c_tip_v = c_root_v*lambda_v;
 
 
 
