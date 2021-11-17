@@ -1,7 +1,8 @@
 % close all
 clear all
 clc
-
+size1=21;
+size2 = 18;
 MTOW = 400;
 CLmax = 2;
 Eclimb = 15;
@@ -195,15 +196,16 @@ my2(:,1) = m2;
  figure
 % subplot(211)
  hold on
+ set(gca,'FontSize',size1)
  plot(x,y1,'r','linewidth',2)
  plot(x,y1c,'b','linewidth',2)
  t1 = plot(x,py1,'k--','linewidth',1);
  t2 = plot(x,py2,'k--','linewidth',1);
  plot(15,35.05,'k*','linewidth',2)
- text(15,35.05*1.05,'Current Design Point','HorizontalAlignment','Left')
- text2line(t1,.9,0,'Minimum Power')
- text2line(t2,.9,0,'110% of Minimum Power')
- legend('Fixed Landing Gear: C_D_0 = .035','Retractable Landig Gear: C_D_0 = .028','location','best')
+ text(15,35.05*1.05,'Current Design Point','HorizontalAlignment','Left','FontSize',size2)
+ text2line(t1,.9,0,'Minimum Power',size2)
+ text2line(t2,.9,0,'110% of Minimum Power',size2)
+ legend('Fixed Landing Gear: C_D_0 = .035','Retractable Landig Gear: C_D_0 = .028','location','best','FontSize',size2)
  xlabel('Aspect Ratio')
  ylabel('Power Required [brake horsepower]')
  grid on
@@ -211,15 +213,17 @@ my2(:,1) = m2;
 % subplot(312)
 figure
 hold on
+
 plot(x,y2,'r','linewidth',2)
 plot(x,y2c,'b','linewidth',2)
 t1 = plot(x,my1,'k--','linewidth',1);
 t2 = plot(x,my2,'k--','linewidth',1);
-text2line(t1,.9,0,'Minimum Weight')
-text2line(t2,.9,0,'110% of Minimum Weight')
+text2line(t1,.9,0,'Minimum Weight',size2)
+text2line(t2,.9,0,'110% of Minimum Weight',size2)
 plot(15,439.1,'k*','linewidth',2)
-text(15,439.1*1.03,'Current Design Point','HorizontalAlignment','Left')
- legend('Fixed Landing Gear: C_D_0 = .035','Retractable Landig Gear: C_D_0 = .028','location','best')
+text(15,439.1*1.03,'Current Design Point','HorizontalAlignment','Left','FontSize',size2)
+ legend('Fixed Landing Gear: C_D_0 = .035','Retractable Landig Gear: C_D_0 = .028','location','best','FontSize',size2)
+set(gca,'FontSize',size1)
 
 xlabel('Aspect Ratio')
 ylabel('MTOW [lbs]')
