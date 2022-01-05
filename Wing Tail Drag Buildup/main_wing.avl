@@ -1,7 +1,7 @@
-Flying_Wing
-0.127                 !   Mach
+A433 UAV Main Wing
+0.1859                !   Mach
 0     0     0.0       !   iYsym  iZsym  Zsym
-1138.0 16.37 69.5     !   Sref   Cref   Bref   reference area, chord, span
+38.67 1.6099 24.08    !   Sref   Cref   Bref   reference area, chord, span
 0.0   0.0   0.0       !   Xref   Yref   Zref   moment reference location (arb.)
 #
 #==============================================================
@@ -46,54 +46,55 @@ TRANSLATE
 #--------------------------root------------------------------------
 #    Xle         Yle         Zle         chord       angle
 SECTION
-0.0          0.0         0.0         21.15      0.000
+0.0          0.0         0.0         2.141      0.000
 
 NACA
-1412
+2412
 
 #---------------elevon--------------
 #    Xle         Yle         Zle         chord       angle
-SECTION
-7.67         17.38        0.0         15.76      0.000
+#SECTION
+#7.67         17.38        0.0         15.76      0.000
 
-NACA
-1412
+#NACA
+#1412
 
 #Cname   Cgain  Xhinge  HingeVec    		   SgnDup
-CONTROL
-aileron  1.0    0.70    -0.3420 0.9397 0.0000    -1.0
-CONTROL
-elevator 1.0    0.70    -0.3420 0.9397 0.0000     1.0
+#CONTROL
+#aileron  1.0    0.70    -0.3420 0.9397 0.0000    -1.0
+#CONTROL
+#elevator 1.0    0.70    -0.3420 0.9397 0.0000     1.0
+
 #--------------tip---------------
 #    Xle         Yle         Zle         chord       angle
 SECTION
-15.34         34.75        0.0         10.36      0.000
+0.268         12        0.0         1.07      0.000
 
 NACA
-0012
+2412
 
 #Cname   Cgain  Xhinge  HingeVec    		   SgnDup
-CONTROL
-aileron  1.0    0.70    -0.3420 0.9397 0.0000    -1.0
-CONTROL
-elevator 1.0    0.70    -0.3420 0.9397 0.0000     1.0
+#CONTROL
+#aileron  1.0    0.70    -0.3420 0.9397 0.0000    -1.0
+#CONTROL
+#elevator 1.0    0.70    -0.3420 0.9397 0.0000     1.0
 #
 # ==============================================================
 #
-SURFACE
-VStab
-8  1.0  14  0.75  ! Nchord   Cspace
+#SURFACE
+#VStab
+#8  1.0  14  0.75  ! Nchord   Cspace
 #
 # reflect image wing about y=0 plane
-YDUPLICATE
-0.00000 
+#YDUPLICATE
+#0.00000 
 # x,y,z bias for whole surface
-TRANSLATE
-15.34     34.75     0.00000
+#TRANSLATE
+#15.34     34.75     0.00000
 #----------------------------root----------------------------------
 #    Xle         Yle         Zle         chord       angle
-SECTION
-0.000         0.000         -7.45         10.36       0.000
+#SECTION
+#0.000         0.000         -7.45         10.36       0.000
 
 # NACA
 # 0012
@@ -103,8 +104,8 @@ SECTION
 # rudder    1.0   0.67    0.0 0.0 1.0   
 #----------------------------tip----------------------------------
 #    Xle         Yle         Zle         chord       angle
-SECTION
-0.000         0.000         7.45         10.36       0.000
+#SECTION
+#0.000         0.000         7.45         10.36       0.000
 
 # NACA
 # 0012
