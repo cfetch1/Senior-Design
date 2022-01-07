@@ -2,7 +2,10 @@ naca 2412
 
 
 oper
-re 1.08951e+06
+re 1.08824e+06
+re 943067
+re 797897
+re 652726
 mach 0.093
 visc
 pacc
