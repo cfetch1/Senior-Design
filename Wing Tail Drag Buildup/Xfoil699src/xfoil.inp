@@ -1,0 +1,18 @@
+naca 2412
+
+
+oper
+re 1.08951e+06
+mach 0.093
+visc
+pacc
+
+
+alfa 9.8327
+dump xfoil_a09.833_dump.dat
+cpwr xfoil_a09.833_cpwr.dat
+pwrt
+xfoil_pwrt.dat
+plis
+
+quit
