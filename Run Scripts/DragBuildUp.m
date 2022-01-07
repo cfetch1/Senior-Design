@@ -23,4 +23,4 @@ cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
 [CD] = TailFuselageInterference(n,tc,cj,S);
 
 % Air Intake Drag
-[CD] = DuctDrag(h,Pprop,eta,V,S)
+[CD] = DuctDrag(h,Pprop,eta,V,S);
