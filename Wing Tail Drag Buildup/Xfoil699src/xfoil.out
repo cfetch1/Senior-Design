@@ -62,19 +62,32 @@
    Bottom side refined area x/c limits  1.000 1.000
 
  XFOIL   c>  
+ Blunt trailing edge.  Gap =  0.00252
+
+ Paneling parameters used...
+   Number of panel nodes       160
+   Panel bunching parameter    1.000
+   TE/LE panel density ratio   0.150
+   Refined-area/LE panel density ratio    0.200
+   Top    side refined area x/c limits  1.000 1.000
+   Bottom side refined area x/c limits  1.000 1.000
+
+ XFOIL   c>   N    command not recognized.  Type a "?" for list
+
+ XFOIL   c>   400  command not recognized.  Type a "?" for list
+
+ XFOIL   c>  
+ XFOIL   c>  
  XFOIL   c>  
  XFOIL   c>  
 .OPERi   c>  
 .OPERi   c>  
-.OPERi   c>  
-.OPERi   c>  
-.OPERi   c>  
- Sonic Cp =    -77.39      Sonic Q/Qinf =     9.824
+ Sonic Cp =    -11.94      Sonic Q/Qinf =     3.948
 
 
 .OPERi   c>  
- M  =    0.0930
- Re =    652726
+ M  =    0.2325
+ Re =   1631820
 
 .OPERv   c>  
  Polar  1 newly created for accumulation
@@ -96,84 +109,53 @@ Enter  polar dump filename  OR  <return> for no file   s>
 
  Initializing BL ...
     side            1  ...
- MRCHUE: Inverse mode at  25     Hk =   4.635
- MRCHUE: Inverse mode at  26     Hk =   5.670
- MRCHUE: Inverse mode at  27     Hk =   6.729
- MRCHUE: Inverse mode at  28     Hk =   7.835
- MRCHUE: Inverse mode at  29     Hk =   9.010
- MRCHUE: Inverse mode at  30     Hk =   7.167
- MRCHUE: Inverse mode at  31     Hk =   2.500
- MRCHUE: Inverse mode at  90     Hk =   2.500
- MRCHUE: Inverse mode at  91     Hk =   2.500
- MRCHUE: Inverse mode at  92     Hk =   2.500
- MRCHUE: Inverse mode at  93     Hk =   2.500
- MRCHUE: Inverse mode at  94     Hk =   2.500
- MRCHUE: Inverse mode at  95     Hk =   2.500
- MRCHUE: Convergence failed at  96  side 1    Res =  0.6878E+01
+ MRCHUE: Inverse mode at  53     Hk =   3.518
+ MRCHUE: Inverse mode at  82     Hk =   2.500
     side            2  ...
- MRCHUE: Inverse mode at  64     Hk =   3.848
- MRCHUE: Inverse mode at  65     Hk =   4.253
- MRCHUE: Inverse mode at  66     Hk =   4.482
+ MRCHUE: Inverse mode at  80     Hk =   2.500
 
- MRCHDU: Convergence failed at  96  side 1    Res =  0.6072E+01
- Side 1  free  transition at x/c =  0.0277   30
- Side 2 forced transition at x/c =  1.0000   66
+ Side 1  free  transition at x/c =  0.5463   53
+ Side 2  free  transition at x/c =  0.5001   50
 
-   1   rms: 0.4017E+00   max: -.3386E+01   C at   66  2   RLX: 0.148
-       a =  9.833      CL =  1.4200
-      Cm = -0.0666     CD =  0.00871   =>   CDf =  0.00671    CDp =  0.00200
+   1   rms: 0.1076E+00   max: -.8641E+00   D at   80  2   RLX: 0.579
+       a = -0.083      CL =  0.2063
+      Cm = -0.0466     CD =  0.00549   =>   CDf =  0.00487    CDp =  0.00061
 
- Side 1  free  transition at x/c =  0.0288   30
- Side 2 forced transition at x/c =  1.0000   66
+ Side 1  free  transition at x/c =  0.5664   55
+ Side 2  free  transition at x/c =  0.4830   49
 
-   2   rms: 0.3030E+00   max: -.2724E+01   C at   66  2   RLX: 0.184
-       a =  9.833      CL =  1.3887
-      Cm = -0.0612     CD =  0.01005   =>   CDf =  0.00677    CDp =  0.00328
+   2   rms: 0.6175E-01   max: -.6239E+00   D at   80  2   RLX: 0.801
+       a = -0.083      CL =  0.2135
+      Cm = -0.0482     CD =  0.00556   =>   CDf =  0.00486    CDp =  0.00070
 
- Side 1  free  transition at x/c =  0.0298   31
- Side 2 forced transition at x/c =  1.0000   66
- idif Ue xi dudx           1  9.41712931E-02  4.76360321E-03   19.768921    
- Uenew xinew           2  4.09348216E-03  2.07066536E-04
+ Side 1  free  transition at x/c =  0.5854   56
+ Side 2  free  transition at x/c =  0.4938   49
 
-   3   rms: 0.2073E+00   max: -.1098E+01   C at   66  2   RLX: 0.455
-       a =  9.833      CL =  1.3404
-      Cm = -0.0525     CD =  0.01204   =>   CDf =  0.00709    CDp =  0.00495
+   3   rms: 0.4228E-01   max: -.7222E+00   C at   49  2   RLX: 0.692
+       a = -0.083      CL =  0.2285
+      Cm = -0.0517     CD =  0.00564   =>   CDf =  0.00474    CDp =  0.00090
 
- Side 1  free  transition at x/c =  0.0347   31
- Side 2 forced transition at x/c =  1.0000   67
+ Side 1  free  transition at x/c =  0.5869   56
+ Side 2  free  transition at x/c =  0.5057   50
 
-   4   rms: 0.1292E+00   max: -.9151E+00   T at    2  2   RLX: 0.546
-       a =  9.833      CL =  1.2974
-      Cm = -0.0447     CD =  0.01466   =>   CDf =  0.00679    CDp =  0.00787
+   4   rms: 0.1688E-01   max: -.2528E+00   C at   50  2
+       a = -0.083      CL =  0.2375
+      Cm = -0.0538     CD =  0.00567   =>   CDf =  0.00469    CDp =  0.00098
 
- Side 1  free  transition at x/c =  0.0384   31
- Side 2 forced transition at x/c =  1.0000   67
+ Side 1  free  transition at x/c =  0.5873   56
+ Side 2  free  transition at x/c =  0.5118   50
 
-   5   rms: 0.6664E-01   max: 0.2944E+00   D at   31  1
-       a =  9.833      CL =  1.2407
-      Cm = -0.0353     CD =  0.01728   =>   CDf =  0.00673    CDp =  0.01055
+   5   rms: 0.1557E-02   max: -.3263E-01   C at   50  2
+       a = -0.083      CL =  0.2377
+      Cm = -0.0538     CD =  0.00568   =>   CDf =  0.00467    CDp =  0.00101
 
- Side 1  free  transition at x/c =  0.0393   31
- Side 2 forced transition at x/c =  1.0000   67
+ Side 1  free  transition at x/c =  0.5873   56
+ Side 2  free  transition at x/c =  0.5125   50
 
-   6   rms: 0.6286E-02   max: 0.4477E-01   D at   31  1
-       a =  9.833      CL =  1.2347
-      Cm = -0.0341     CD =  0.01751   =>   CDf =  0.00669    CDp =  0.01081
-
- Side 1  free  transition at x/c =  0.0394   31
- Side 2 forced transition at x/c =  1.0000   67
-
-   7   rms: 0.1562E-03   max: 0.8837E-03   D at   73  2
-       a =  9.833      CL =  1.2346
-      Cm = -0.0341     CD =  0.01750   =>   CDf =  0.00668    CDp =  0.01082
-
- Side 1  free  transition at x/c =  0.0394   31
- Side 2 forced transition at x/c =  1.0000   67
-
-   8   rms: 0.6189E-06   max: 0.7052E-05   C at   67  2
-       a =  9.833      CL =  1.2346
-      Cm = -0.0341     CD =  0.01750   =>   CDf =  0.00668    CDp =  0.01082
- plradd ia,ip,cpol            1          94  2.59297527E-03
+   6   rms: 0.1126E-04   max: -.2517E-03   C at   50  2
+       a = -0.083      CL =  0.2377
+      Cm = -0.0538     CD =  0.00568   =>   CDf =  0.00467    CDp =  0.00101
+ plradd ia,ip,cpol            1          81  0.21337655    
 
  Point added to stored polar  1
  Save file unspecified or not available
@@ -184,7 +166,7 @@ Enter  polar dump filename  OR  <return> for no file   s>
 .OPERva   c>  
         airfoil                    Re           Mach       Ncrit  XtripT  XtripB     file
        ------------------------  ------------  ----------  -----  ------  ------    -------------------
- >  1  NACA 2412                 6.527e5       0.093        9.00   1.000   1.000    
+ >  1  NACA 2412                 1.632e6       0.232        9.00   1.000   1.000    
 
 Enter polar output filename   s>  
 .OPERva   c>  
@@ -198,11 +180,11 @@ Enter polar output filename   s>
  1 1 Reynolds number fixed          Mach number fixed         
   
  xtrf =   1.000 (top)        1.000 (bottom)  
- Mach =   0.093     Re =     0.653 e 6     Ncrit =   9.000
+ Mach =   0.232     Re =     1.632 e 6     Ncrit =   9.000
   
    alpha    CL        CD       CDp       CM     Top_Xtr  Bot_Xtr
   ------ -------- --------- --------- -------- -------- --------
-   9.833   1.2346   0.01750   0.01082  -0.0341   0.0394   1.0000
+  -0.083   0.2377   0.00568   0.00101  -0.0538   0.5873   0.5125
 
 .OPERva   c>  
  XFOIL   c>  
