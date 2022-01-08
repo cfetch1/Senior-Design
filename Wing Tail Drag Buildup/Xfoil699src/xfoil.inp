@@ -1,20 +1,58 @@
 naca 2412
-panels
-n
-400
-
 
 
 oper
-re 1.63182e+06
-mach 0.232456
+re 2.3577e+06
+mach 0.2325
 visc
 pacc
 
 
-alfa -0.08325
-dump xfoil_a-0.083_dump.dat
-cpwr xfoil_a-0.083_cpwr.dat
+alfa -4
+dump xfoil_a-4.000_dump.dat
+cpwr xfoil_a-4.000_cpwr.dat
+alfa -3
+dump xfoil_a-3.000_dump.dat
+cpwr xfoil_a-3.000_cpwr.dat
+alfa -2
+dump xfoil_a-2.000_dump.dat
+cpwr xfoil_a-2.000_cpwr.dat
+alfa -1
+dump xfoil_a-1.000_dump.dat
+cpwr xfoil_a-1.000_cpwr.dat
+alfa 0
+dump xfoil_a00.000_dump.dat
+cpwr xfoil_a00.000_cpwr.dat
+alfa 1
+dump xfoil_a01.000_dump.dat
+cpwr xfoil_a01.000_cpwr.dat
+alfa 2
+dump xfoil_a02.000_dump.dat
+cpwr xfoil_a02.000_cpwr.dat
+alfa 3
+dump xfoil_a03.000_dump.dat
+cpwr xfoil_a03.000_cpwr.dat
+alfa 4
+dump xfoil_a04.000_dump.dat
+cpwr xfoil_a04.000_cpwr.dat
+alfa 5
+dump xfoil_a05.000_dump.dat
+cpwr xfoil_a05.000_cpwr.dat
+alfa 6
+dump xfoil_a06.000_dump.dat
+cpwr xfoil_a06.000_cpwr.dat
+alfa 7
+dump xfoil_a07.000_dump.dat
+cpwr xfoil_a07.000_cpwr.dat
+alfa 8
+dump xfoil_a08.000_dump.dat
+cpwr xfoil_a08.000_cpwr.dat
+alfa 9
+dump xfoil_a09.000_dump.dat
+cpwr xfoil_a09.000_cpwr.dat
+alfa 10
+dump xfoil_a10.000_dump.dat
+cpwr xfoil_a10.000_cpwr.dat
 pwrt
 xfoil_pwrt.dat
 plis
