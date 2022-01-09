@@ -1,0 +1,48 @@
+A433 UAV Horizontal Stab
+0.1859                !   Mach
+0     0     0.0       !   iYsym  iZsym  Zsym
+3.928 0.982 4.0    !   Sref   Cref   Bref   reference area, chord, span
+0.0   0.0   0.0       !   Xref   Yref   Zref   moment reference location (arb.)
+
+#
+#==============================================================
+#
+
+SURFACE
+Hstab
+8  1.0  5  -1.5   ! Nchord   Cspace   Nspan  Sspace
+#
+# reflect image wing about y=0 plane
+YDUPLICATE
+0.00000 
+#
+# twist angle bias for whole surface
+ANGLE
+0.00000    
+#
+TRANSLATE
+6.525     0.00000     0.00000
+#
+SCALE
+1.0   1.0   1.0
+#
+# x,y,z bias for whole surface
+
+
+#
+#--------------------------root------------------------------------
+#    Xle         Yle         Zle         chord       angle
+SECTION
+0.0          0.0         2.678         1.09      0.000
+
+NACA
+0012
+
+#--------------tip---------------
+#    Xle         Yle         Zle         chord       angle
+SECTION
+0.054         2        2.678	  	0.874       0.000
+
+NACA
+0012
+
