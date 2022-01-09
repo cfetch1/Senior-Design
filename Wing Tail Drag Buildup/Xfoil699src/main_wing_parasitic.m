@@ -31,11 +31,12 @@ for i = 1:length(V)
 end
 
 
+% Do calc, sweept by airspeed
 for i = 1:size(Re,2)
     disp(['Speed = ', num2str(V(i)),'[ft/s]'])
     top = 0;
     bottom = 0;
-    
+
     for j = 1:size(Re,1) 
         % Run Xfoil
         RSUT = xfoil('NACA2412', alpha(i), Re(j,i), M(i),'panels n 400');
