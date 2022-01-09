@@ -1,4 +1,4 @@
-function [CD] = RadarFuselageInterference(phi_tip,phi_MGC)
-CD=.00004*(phi_tip-phi_MGC);
+function [CD] = RadarFuselageInterference(dphi,alpha,SN,S,FOS)
+CD=.00004*(dphi+alpha)*SN*FOS/S;
 end
 
