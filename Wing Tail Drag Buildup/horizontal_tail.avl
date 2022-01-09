@@ -9,29 +9,31 @@ A433 UAV Horizontal Stab
 #
 
 SURFACE
-Wing
-10  1.0  22  1.0   ! Nchord   Cspace   Nspan  Sspace
-
+Hstab
+8  1.0  5  -1.5   ! Nchord   Cspace   Nspan  Sspace
+#
 # reflect image wing about y=0 plane
 YDUPLICATE
 0.00000 
-
+#
 # twist angle bias for whole surface
 ANGLE
 0.00000    
-
+#
+TRANSLATE
+6.525     0.00000     0.00000
+#
 SCALE
 1.0   1.0   1.0
-
+#
 # x,y,z bias for whole surface
-TRANSLATE
-0.00000     0.00000     0.00000
+
 
 #
 #--------------------------root------------------------------------
 #    Xle         Yle         Zle         chord       angle
 SECTION
-0.0          0.0         0.0         1.09      0.000
+0.0          0.0         2.678         1.09      0.000
 
 NACA
 0012
@@ -39,7 +41,7 @@ NACA
 #--------------tip---------------
 #    Xle         Yle         Zle         chord       angle
 SECTION
-0.874         2        0.0         0.054      0.000
+0.054         2        2.678	  	0.874       0.000
 
 NACA
 0012
