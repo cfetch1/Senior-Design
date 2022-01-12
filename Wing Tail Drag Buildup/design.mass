@@ -1,0 +1,41 @@
+#-------------------------------------------------
+#  Design 
+#
+#  Dimensional unit and parameter data.
+#  Mass & Inertia breakdown.
+#-------------------------------------------------
+
+#  Names and scalings for units to be used for trim and eigenmode calculations.
+#  The Lunit and Munit values scale the mass, xyz, and inertia table data below.
+#  Lunit value will also scale all lengths and areas in the AVL input file.
+Lunit = 0.3048 m
+Munit = 0.453592  kg
+Tunit = 1.0    s
+
+#------------------------- 
+#  Gravity and density to be used as default values in trim setup (saves runtime typing).
+#  Must be in the unit names given above (m,kg,s).
+g   = 9.81
+rho = 1.225
+
+#-------------------------
+#  Mass & Inertia breakdown.
+#  x y z  is location of item's own CG.
+#  Ixx... are item's inertias about item's own CG.
+#
+#  x,y,z system here must be exactly the same one used in the .avl input file
+#     (same orientation, same origin location, same length units)
+#
+#  mass   x     y     z       Ixx    Iyy     Izz     Ixy  Ixz  Iyz
+#
+    # 10.9  4.28   0.0   0.0      0.0   0.0     0.0     ! whole plane
+  0.37  4.1   15.0   0.3     29.32  1.94   30.98    ! right wing
+  0.37  4.1  -15.0   0.3     29.32  1.94   30.98    ! left wing
+  0.04  48.24  0.0  -3.82    1.54   0.03   1.57     ! hstab
+  0.02  48.44  0.0   0.22    0.09   0.11   0.02     ! vstab
+  0.72  14.03  0.0  -3.56    2.75 219.81 218.57     ! fuselage
+  6.4   11.86  0.0  -4.69    0.0  451.15 451.15     ! payload
+  1.45  -8.33  0.0  -4.61    0.65   4.83   4.82     ! bottombattery
+  1.45  -6.3   0.0  -2.71    0.65   4.83   4.82     ! topbattery
+  1.35 -13.72  0.0  -4.19    0.62   0.54   0.54     ! motor
+  0.25   6.82 -0.85 -2.62    0.62   0.54   0.54     ! spoolmech

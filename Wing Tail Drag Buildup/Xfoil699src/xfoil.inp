@@ -1,0 +1,22 @@
+naca 0012
+panels
+n
+400
+
+
+
+oper
+re 1.25787e+06
+mach 0.232456
+visc
+pacc
+
+
+alfa -0.08325
+dump xfoil_a-0.083_dump.dat
+cpwr xfoil_a-0.083_cpwr.dat
+pwrt
+xfoil_pwrt.dat
+plis
+
+quit
