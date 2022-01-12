@@ -2,17 +2,18 @@
 % clear all
 clc
 
-% MTOW = 400;
-% CLmax = 2;
+MTOW = 400;
+CLmax = 2;
 % Eclimb = 15;
-% Wf = 10;
-% S = 40;
-% P = 30;
-% AR_ = 15
-cd0 = [0.035,0.028];
+Wf = 10;
+S = 40;
+P = 30;
+AR_ = 15;
+%cd0 = [0.035,0.028];
+cd0 = .013;
 for z = 1
 for i = 1:length(AR_)
-AR = 15;
+AR = 18;
 err=1000;
 CD0 = cd0(z);
 while abs(err)>.5
@@ -25,14 +26,16 @@ e1 = MTOW;
 % CD0 = .035;
 e = 1.78*(1-0.045*AR^0.68)-0.64;
 k = 1/(pi*AR*e);
-E = 1/2*sqrt(1/(CD0*k));
-
+%E = 1/2*sqrt(1/(CD0*k));
+CL = MTOW/(.5*.002*202.5^2*S);
+CD = 0.0242*CL^2 - 0.0026*CL + 0.0128;
+E = CL/CD;
 Wpl = 50;
 Wtoguess = MTOW*.9;
-Ecruise = E;
 SFCcruise = .4;
 Range = 550;
-Eloiter = E;
+Eloiter = Emax;
+Eclimb = E;
 SFCloiter = .4;
 Endurance = 1;
 reserve = Wf/4;
@@ -157,29 +160,29 @@ CL = 0:.01:CLmax;
 Emax = 1/2*sqrt(1/(CD0*k));
 x2 = linspace(0,f_CD(CL(end)),length(CL));
 % 
-% for i = 1:length(CL)
-%     x1(i) = f_CD(CL(i));
-%     y1(i) = CL(i);
-%     y2(i) = x2(i)*Emax;
-% end
-% 
-% figure
-% hold on
-% set(gca,'FontSize',21)
-% plot(x1,y1,'r','linewidth',2)
-% t1 = plot(x2,y2,'k--','linewidth',1);
-% text2line(t1,.3,0,['E_m_a_x = ' num2str(round(Emax,1))],21)
-% grid on
-% ax=gca;
-% ax.YTick = 0:.1:max(y1);
-% ax.YAxis.MinorTick='on';
-% ax.YAxis.MinorTickValues = 0:.025:max(y1);
-% ax.XTick = 0:.01:2;
-% ax.XAxis.MinorTick='on';
-% ax.XAxis.MinorTickValues = 0:.001:1;
-% ylabel('C_L')
-% xlabel('C_D')
-% axis([0,max(x1),0,max(y1)])
+for i = 1:length(CL)
+    x1(i) = f_CD(CL(i));
+    y1(i) = CL(i);
+    y2(i) = x2(i)*Emax;
+end
+
+figure
+hold on
+set(gca,'FontSize',21)
+plot(x1,y1,'r','linewidth',2)
+t1 = plot(x2,y2,'k--','linewidth',1);
+text2line(t1,.3,0,['E_m_a_x = ' num2str(round(Emax,1))],21)
+grid on
+ax=gca;
+ax.YTick = 0:.1:max(y1);
+ax.YAxis.MinorTick='on';
+ax.YAxis.MinorTickValues = 0:.025:max(y1);
+ax.XTick = 0:.01:2;
+ax.XAxis.MinorTick='on';
+ax.XAxis.MinorTickValues = 0:.001:1;
+ylabel('C_L')
+xlabel('C_D')
+axis([0,max(x1),0,max(y1)])
 
 % 
 % if i==1
