@@ -1,10 +1,13 @@
 close all
-clear all
+% clear all
 clc
 
 % cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
 
 file = load('AVLdrag.csv');
+
+fc = polyfit([0,.2,.4,.6,.8,1],[1.2,1.21,1.29,1.5,1.76,1.78],3);
+
 
 j = 1;
 for ii = 1:10
@@ -39,69 +42,112 @@ Scab = 1.7671;
 Spx0 = 40.2806;
 alphaB0 = 0;
 diaB = 1.5;
-d_LG = [.4333,.4333,.4333];
-w_LG = [1.125,1.125,1.125];
+w_LG = [.4333,.4333,.4333];
+d_LG = [1.125,1.125,1.125];
 Scam = 1.136;
 Srad = 45.8/144;
 nT = 5;
 tc_T = 3.25/(.5*(29.9+11.97));
 cT = 29.92/12;
 A = .3061;
-V2 = .98;
-
+V2 = .98^ii;
+M = V*1.69*.3048/sqrt(1.4*296*278);
+MC = M*sind(alpha);
 
 %% Assumptions/Hand Calcs
-Cf = (8.5-5*(ii/10)^2)*10^-3;
-dCDS_cab = .004;
+Cf = (8.5-4.5*sqrt(ii/7))*10^-3;
+dCDS_cab = .009;
 k = .91;
 K = 10;
 F = 1.08;
 eta = .675;
-CDC = .64;
-CDS_LG = [.0029,.0029,.0029];
+CDC = polyval(fc,MC);
+CDS_LG = [.484,.484,.484]/2;
 CDScam = .47;
-FOScam = 1.2;
+FOScam = 1;
 CDSrad = .47;
 FOSrad = .5;
 
 % Fuselage Lift - Drag
-[CL_B,~,CD0_B,CDi_B] = FuselageLiftDrag(alpha,alphaB0,S,k,diaB,eta,CDC,Spx0,Cf,F,SA,SC,K,dCDS_cab,Scab);
+[CL_B(ii),~,CD0_B(ii),CDi_B(ii)] = FuselageLiftDrag(alpha,alphaB0,S,k,diaB,eta,CDC,Spx0,Cf,F,SA,SC,K,dCDS_cab,Scab);
 
 % Landing Gear Drag
-[CD_LG] = LandingGearDrag(CDS_LG,d_LG,w_LG,S);
+[CD_LG(ii)] = LandingGearDrag(CDS_LG,d_LG,w_LG,S);
 
 % (Gimbal) Camera Drag
-[CDcam] = ShapeDrag(CDScam,Scam,S,FOScam);
+[CDcam(ii)] = ShapeDrag(CDScam,Scam,S,FOScam);
 
 % (Gimbal) Radar Drag
-[CDrad] = ShapeDrag(CDSrad,Srad,S,FOSrad);
+[CDrad(ii)] = ShapeDrag(CDSrad,Srad,S,FOSrad);
 
 % Wing-Fuselage Interference Drag
-[CD_WB] = .05*(CD0_B+CDi_B);
+[CD_WB(ii)] = .05*(CD0_B(ii)+CDi_B(ii));
  
 % Tail-Fuselage Interference Drag
-[CD_WT] = TailFuselageInterference(nT,tc_T,cT,S);
+[CD_WT(ii)] = TailFuselageInterference(2,tc_T,cT,S);
 
 % Air Intake Drag
-CD_duct = DuctDrag(h,A,V,V*V2,S);
+CD_duct(ii) = DuctDrag(h,A,V,V*V2,S);
 
 % Radar Interference
-CD_BR = .05*CDrad;
+CD_BR(ii) = .05*CDrad(ii);
 
 % Camera Interference
-CD_BC = .05*CDcam;
+CD_BC(ii) = .05*CDcam(ii);
 
-CD0(j) = CD0_W(ii) + CD0_HT(ii) + CD0_VT(ii) + CD0_B + CD_LG + CD_duct;
-CDi(j) =  CDi_W(ii) + CDi_HT(ii) + CDi_B;
-CD_int(j) = CD_WB + CD_WT + CD_BR + CD_BC;
-CD(j) = CD0(j)+CDi(j)+CD_int(j);
-CL(j) = CL_W(ii) + CL_HT(ii) + CL_B;
+CD_cool = [0.001825 0.001564 0.001369 0.001217 0.001095 0.000996 0.000913 0.000842 0.000782 0.000730];
+
+
+
+CD0(j) = CD0_W(ii) + CD0_HT(ii) + CD0_VT(ii) + CD0_B(ii) + CD_LG(ii) + CD_duct(ii) + CD_cool(ii);
+CDi(j) =  CDi_W(ii) + CDi_HT(ii) + CDi_B(ii);
+CD_int(j) = CD_WB(ii) + CD_WT(ii) + CD_BR(ii) + CD_BC(ii);
+CD(j) = 1.3*CD0(j)+1.1*CDi(j)+1.1*CD_int(j);
+CL(j) = CL_W(ii) + CL_HT(ii) + CL_B(ii);
 L(j) = .5*S*rho*V_fps^2*CL(j);
 D(j) = .5*S*rho*V_fps^2*CD(j);
 E(j) = CL(j)/CD(j);
 j = j+1;
 
+
+
 end
+
+% 
+% 
+% f1 = polyfit(CD0_W+CDi_W,CL_W,2);
+% f2 = polyfit(CD0_HT+CDi_HT+CD0_VT,CL_HT,2);
+% f3 = polyfit(CD0_B+CDi_B,CL_B,2);
+% dx = linspace(.002,.042,100);
+% figure 
+% hold on
+% plot(CD0_W+CDi_W,CL_W,'b','linewidth',2)
+% plot(CD0_HT+CDi_HT+CD0_VT,CL_HT,'r','linewidth',2)
+% plot(CD0_B+CDi_B,CL_B,'g','linewidth',2)
+% % plot(dx,polyval(f1,dx),'b--','linewidth',2)
+% % plot(dx,polyval(f2,dx),'r--','linewidth',2)
+% % plot(dx,polyval(f3,dx),'g--','linewidth',2)
+% grid on
+% ylabel('CL')
+% xlabel('CD')
+% axis([0,.02,0,1])
+% legend('Wing','Tail','Fuselage')
+% alpha = file(1,:);
+% % f1 = polyfit(alpha,CL_W,2);
+% % f2 = polyfit(alpha,CL_HT,2);
+% % f3 = polyfit(alpha,CL_B,2);
+% dx = linspace(0,10,100);
+% figure 
+% hold on
+% plot(alpha,CL_W,'b','linewidth',2)
+% plot(alpha,CL_HT,'r','linewidth',2)
+% plot(alpha,CL_B,'g','linewidth',2)
+% grid on
+% ylabel('CL')
+% xlabel('AoA')
+% axis([0,10,0,1])
+% legend('Wing','Tail','Fuselage')
+
 
 
 f = polyfit(CL,CD,2);
@@ -118,22 +164,22 @@ y2 = linspace(0,2,100);
 x2 = 0.02429 + 0.07169*y2.^2;
 
 y3 = linspace(0,2,100);
-x3 = 0.026 + 0.012*y3.^2;
+x3 = 0.033 + 0.035*(y3-.14).^2;
 
 
 
 figure 
 hold on
-% plot(CD*1.25,CL)
-plot(dx,dy,'g')
-plot(x1,y1,'r')
-plot(x2,y2,'b')
-plot(x3,y3,'m')
+% plot(CD,CL)
+plot(dx,dy,'g','linewidth',2)
+plot(x1,y1,'r','linewidth',2)
+plot(x2,y2,'b','linewidth',2)
+plot(x3,y3,'m','linewidth',2)
 ylabel('CL')
 xlabel('CD')
 grid on
 axis([0,max(CD),0,max(CL)])
-legend('Current Drag Estimate','Initial Drag Estimate','RV7 Drag Polar','Rutan Voyager','location','best')
+legend('Current Drag Estimate','Initial Drag Estimate','RV7','Cessna 172','location','best')
 
 % figure 
 % hold on
