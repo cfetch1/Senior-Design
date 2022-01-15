@@ -49,7 +49,7 @@ function [W_feq] = weight_fixed_equip(Wto,Wpay, Scs, b , VeqMax, p_pay, Ltot)
     %Ffcs = multiplication factor .00007-.0002 We are probably around .000095
     Ffcs=.000095;
     %Scs=control surface planform area [ft]
-    Scs=3; %[ft]
+
     %VeqMax = maximum equivalent airspeed in KEAS  ***[KEAS]
 
     Wfcs=Ffcs*Scs*VeqMax^2;
@@ -76,6 +76,7 @@ function [W_feq] = weight_fixed_equip(Wto,Wpay, Scs, b , VeqMax, p_pay, Ltot)
     %This is for a hundred amp hour battery 
     W_bat=50; 
     W_feq=Welec+Wecs+Wfcs+W_avion+Wpay+W_bat;
+    %Technology increment
     
 end   
 
