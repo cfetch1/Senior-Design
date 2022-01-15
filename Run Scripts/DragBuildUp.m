@@ -1,5 +1,5 @@
 close all
-% clear all
+clear all
 clc
 
 % cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
@@ -40,7 +40,7 @@ SA = 4.743;
 SC = 12.2804;
 Scab = 1.7671;
 Spx0 = 40.2806;
-alphaB0 = 0;
+alphaB0 = -2.96;
 diaB = 1.5;
 w_LG = [.4333,.4333,.4333];
 d_LG = [1.125,1.125,1.125];
@@ -50,7 +50,7 @@ nT = 5;
 tc_T = 3.25/(.5*(29.9+11.97));
 cT = 29.92/12;
 A = .3061;
-V2 = .98^ii;
+V2 = .9;
 M = V*1.69*.3048/sqrt(1.4*296*278);
 MC = M*sind(alpha);
 
@@ -58,7 +58,7 @@ MC = M*sind(alpha);
 Cf = (8.5-4.5*sqrt(ii/7))*10^-3;
 dCDS_cab = .009;
 k = .91;
-K = 10;
+K = 9;
 F = 1.08;
 eta = .675;
 CDC = polyval(fc,MC);
@@ -75,10 +75,10 @@ FOSrad = .5;
 [CD_LG(ii)] = LandingGearDrag(CDS_LG,d_LG,w_LG,S);
 
 % (Gimbal) Camera Drag
-[CDcam(ii)] = ShapeDrag(CDScam,Scam,S,FOScam);
+[CDcam(ii)] = ShapeDrag(CDScam,Scam,S,.5);
 
 % (Gimbal) Radar Drag
-[CDrad(ii)] = ShapeDrag(CDSrad,Srad,S,FOSrad);
+[CDrad(ii)] = ShapeDrag(CDSrad,Srad/2,S,.5);
 
 % Wing-Fuselage Interference Drag
 [CD_WB(ii)] = .05*(CD0_B(ii)+CDi_B(ii));
@@ -90,19 +90,27 @@ FOSrad = .5;
 CD_duct(ii) = DuctDrag(h,A,V,V*V2,S);
 
 % Radar Interference
-CD_BR(ii) = .05*CDrad(ii);
+CD_BR1(ii) = .05*CDrad(ii);
+dphi = atand(6.93/25.05)-atand(6.93/(25.05+52.7/2));
+CD_BR(ii) = WashoutDrag(dphi,0,Srad/2,S,1.2);
+
 
 % Camera Interference
-CD_BC(ii) = .05*CDcam(ii);
+CD_BC1(ii) = .05*CDcam(ii);
+dphi = atand(6.44/(5.13-3.53))-atand(6.44/5.13);
+CD_BC(ii) = WashoutDrag(dphi,0,Scam,S,1.5);
+
 
 CD_cool = [0.001825 0.001564 0.001369 0.001217 0.001095 0.000996 0.000913 0.000842 0.000782 0.000730];
 
 
 
-CD0(j) = CD0_W(ii) + CD0_HT(ii) + CD0_VT(ii) + CD0_B(ii) + CD_LG(ii) + CD_duct(ii) + CD_cool(ii);
+CD0(j) = CD0_W(ii) + CD0_HT(ii) + CD0_VT(ii) + CD0_B(ii) + CD_LG(ii) + CD_duct(ii) + CD_cool(ii)+CDcam(ii)+CDrad(ii);
 CDi(j) =  CDi_W(ii) + CDi_HT(ii) + CDi_B(ii);
 CD_int(j) = CD_WB(ii) + CD_WT(ii) + CD_BR(ii) + CD_BC(ii);
-CD(j) = 1.3*CD0(j)+1.1*CDi(j)+1.1*CD_int(j);
+%CD(j) = 1.3*CD0(j)+1.1*CDi(j)+1.1*CD_int(j);
+CD(j) = CD0(j)+CDi(j)+CD_int(j);
+
 CL(j) = CL_W(ii) + CL_HT(ii) + CL_B(ii);
 L(j) = .5*S*rho*V_fps^2*CL(j);
 D(j) = .5*S*rho*V_fps^2*CD(j);
@@ -170,7 +178,7 @@ x3 = 0.033 + 0.035*(y3-.14).^2;
 
 figure 
 hold on
-% plot(CD,CL)
+%plot(CD,CL,'g','linewidth',2)
 plot(dx,dy,'g','linewidth',2)
 plot(x1,y1,'r','linewidth',2)
 plot(x2,y2,'b','linewidth',2)
@@ -190,4 +198,5 @@ legend('Current Drag Estimate','Initial Drag Estimate','RV7','Cessna 172','locat
 % axis([min(file(1,1:ii)),max(file(1,1:ii)),0,max(CL)])
 
 cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
+%close all
 clc
