@@ -1,4 +1,4 @@
-function [W_lg] = toren_lgweight()
+function [W_lg] = toren_lgweight(MTOW, k, A1, A2, B1, B2, C1, C2, D1, D2)
 % Torenbeek landing gear weight, aka "alighting gear", for fixed lg
 
 % W_lg = landing gear weight in lb

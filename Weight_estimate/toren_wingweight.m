@@ -3,7 +3,7 @@ function [W_w] = toren_wingweight(MTOW, bs, b_ref, n_ult, tr, S)
 
 % MTOW = in lb
 % W_w = wing weight in lbs
-% b = wing span
+% b = wing span in ft
 % lam = sweep angle at 50% chord
 % bs = structural span in ft = b/lam
 % b_ref =  reference span = 6.25 ft (given in book)
