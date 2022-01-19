@@ -10,7 +10,6 @@ function[TW] = Desired_Takeoff_Distance(WS, V_lof, g, Sg, q, CD_to, mu, CL_to)
 TW = zeros(size(WS));
 
 for j = 1:length(WS)
-TW(j) = (V_lof^2)/(2*g*Sg) + q*CD_to/WS(j) + mu*(1-q*CL_to/WS(j));
     TW(j) = (V_lof^2)/(2*g*Sg) + q*CD_to/WS(j) + mu*(1-q*CL_to/WS(j));
 end
 

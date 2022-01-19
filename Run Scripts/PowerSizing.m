@@ -4,7 +4,8 @@ clc
 
 % Greg Arnold 20220110
 
-cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
+%cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
+cd('C:\Users\EddieH\Documents\GitHub\Senior-Design\Functions')
 
 AR = 1:48;
 WS = 1:50;
@@ -34,7 +35,9 @@ for ii = 1:length(WS)
         PWminWS(ii) = min(PWmin(:,ii));
 end
 
-cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
+%cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
+cd('C:\Users\EddieH\Documents\GitHub\Senior-Design\Run Scripts')
+
 
 figure
 % subplot(211)
@@ -44,19 +47,20 @@ ylabel('Power Loading (hp/lb)')
 xlabel('Aspect Ratio')
 axis([min(AR),max(AR),0,.15])
 grid on
-% subplot(212)
-% hold on 
-% plot(WS,PWminWS)
-% ylabel('Power Loading (hp/lb)')
-% xlabel('Wing Loading')
-% axis([min(WS),max(WS),0,.15])
-% grid on
+
+subplot(212)
+hold on 
+plot(WS,PWminWS)
+ylabel('Power Loading (hp/lb)')
+xlabel('Wing Loading')
+axis([min(WS),max(WS),0,.15])
+grid on
 
 
 
 figure
 hold on 
-for ii = 10:30
+for ii = 15
     plot(WS,PW_cruise(ii,:),'b')
     plot(WS,PW_to(ii,:),'r')
 end
@@ -64,11 +68,11 @@ xlabel('Wing Loading lb/ft^2')
 ylabel('Power Loading (hp/lb)')
 grid on
 
-% figure
-% hold on 
-% for jj = 1:length(WS)
-%     plot(AR,PW_cruise(:,jj),'b')
-%     plot(AR,PW_to(:,jj),'r')
-% end
-% xlabel('Aspect Ratio')
-% ylabel('Power Loading (hp/lb)')
+figure
+hold on 
+for jj = 1:length(WS)
+    plot(AR,PW_cruise(:,jj),'b')
+    plot(AR,PW_to(:,jj),'r')
+end
+xlabel('Aspect Ratio')
+ylabel('Power Loading (hp/lb)')
