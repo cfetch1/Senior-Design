@@ -82,18 +82,14 @@ if plots == 1
     
     hatchedline(WS,PW_(4,:),'r',pi/180,.5,1,1);
     hatchedline(WS,PW_(5,:),'b',pi/180,.5,1,1);
-    %hatchedline(WS_land,dy,'m',45*pi/180,.5,1,1);
+    hatchedline(WS_land,dy,'m',45*pi/180,.5,1,1);
     
 
     for ii = 1:round(length(WS_land)/1.4)
         plot([WS_land(1);WS_land(1)+1],[ii*1.4*.25/length(WS_land);ii*1.4*.25/length(WS_land)],'m')
     end
     
-    
-    
-    
-    
-    
+   
     
     
 %     plot(WS_stall,dy,'k--','linewidth',2)
