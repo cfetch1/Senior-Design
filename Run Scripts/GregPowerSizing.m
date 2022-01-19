@@ -53,7 +53,7 @@ eta = [.85,.35];
 
 PW_cruise2 = PW_cruise(AR, WS, V, CDmin, h)/(.75*eta(1));
 PW_to = PW_takeoff(AR, WS, CL_to, CD_to, S, Sg, 0, 430)/eta(2);
-
+WS_ = WS_landing(0,Sg,2);
 for ii = 1:length(AR)
     for jj = 1:length(WS)
         PWmin(ii,jj) = max([PW_cruise2(ii,jj),PW_to(ii,jj)]);
@@ -114,6 +114,10 @@ for ii = 10:30
     plot(WS,1.1*PW_cruise2(ii,:),'b')
     plot(WS,1.1*PW_to(ii,:),'r')
 end
+dy = linspace(0,max(PW_cruise2(1,:)),100);
+dx = zeros(100,1);
+dx(:,1) = WS_;
+plot(dx,dy,'k--')
 xlabel('Wing Loading lb/ft^2')
 ylabel('Power Loading (hp/lb)')
 grid on
