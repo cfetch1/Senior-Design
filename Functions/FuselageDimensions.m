@@ -32,19 +32,19 @@ for ii = 1:length(dx)
     else 
         p(ii) = p3(x);
     end
-    
-    if 24.76/12<=x && x<=(80.05+2.7)/12
-        
-        if x<=27.35/12
-            p(ii) = (p(ii)-sin(pi*(x-24.76/12)/(2*(27.35-24.76)/12))*5.4/12)+dc*sin(pi*(x-24.76/12)/(2*(27.35-24.76)/12));
-        elseif 27.35/12<x && x<80.05/12
-            p(ii) = (p(ii)-5.4/12)+dc;
-        else
-            p(ii) = (p(ii)-cos(pi*(x-80.05/12)/(2*(82.75-80.05)/12))*5.4/12)+dc*cos(pi*(x-80.05/12)/(2*(82.75-80.05)/12));
-        end
-        
-    end
-    
+%     
+%     if 24.76/12<=x && x<=(80.05+2.7)/12
+%         
+%         if x<=27.35/12
+%             p(ii) = (p(ii)-sin(pi*(x-24.76/12)/(2*(27.35-24.76)/12))*5.4/12)+dc*sin(pi*(x-24.76/12)/(2*(27.35-24.76)/12));
+%         elseif 27.35/12<x && x<80.05/12
+%             p(ii) = (p(ii)-5.4/12)+dc;
+%         else
+%             p(ii) = (p(ii)-cos(pi*(x-80.05/12)/(2*(82.75-80.05)/12))*5.4/12)+dc*cos(pi*(x-80.05/12)/(2*(82.75-80.05)/12));
+%         end
+%         
+%     end
+%     
     if p(ii)<0
         p(ii) = 0;
     end
@@ -73,9 +73,9 @@ set(h(1),'FaceColor',[0 0 1],'FaceAlpha',0.2);
 plot(lim1,dy,'k--');
 plot(lim2,dy,'k--');
 plot(dx,p,'color','b','linewidth',2)
-text(x1,y,'S_A','FontSize',18,'BackgroundColor','w')
-text(x2,y,'S_B','FontSize',18,'BackgroundColor','w')
-text(x3,y,'S_C','FontSize',18,'BackgroundColor','w')
+text(x1,y,'S_A','FontSize',18); %,'BackgroundColor','w')
+text(x2,y,'S_B','FontSize',18);%,'BackgroundColor','w')
+text(x3,y,'S_C','FontSize',18);%,'BackgroundColor','w')
 ax=gca;
 ax.FontSize = 18;
 xlabel('Distance along Fuselage [ft]')
@@ -100,7 +100,7 @@ a1 = sum(p(1:24)*(dx(2)-dx(1)));
 a2 = sum(p(25:63)*(dx(2)-dx(1)));
 a3 = sum(p(64:100)*(dx(2)-dx(1)));
 Scab = pi*r^2;
-Cf = 4.5*10^-3;
+Cf = 4*10^-3;
 F = 1.08;
 S =  38.63;
 u = 8*pi/180;

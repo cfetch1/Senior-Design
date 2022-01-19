@@ -8,7 +8,7 @@ file = load('AVLdrag.csv');
 
 fc = polyfit([0,.2,.4,.6,.8,1],[1.2,1.21,1.29,1.5,1.76,1.78],3);
 
-
+err = std([.0202,.0192,.0295,.0346,.0329,.0291,.0319,.047,.026,.0312,.0218,.0223,.0247,.0297,.0270,.0355,.0255,.0254,.0287,.0488,.0680,.0174,.0189,.0320,.0373,.0258,.0389,.0237,.0445,.0559,.0247,.0233]);
 j = 1;
 for ii = 1:10
 
@@ -108,7 +108,8 @@ CD_cool = [0.001825 0.001564 0.001369 0.001217 0.001095 0.000996 0.000913 0.0008
 CD0(j) = CD0_W(ii) + CD0_HT(ii) + CD0_VT(ii) + CD0_B(ii) + CD_LG(ii) + CD_duct(ii) + CD_cool(ii)+CDcam(ii)+CDrad(ii);
 CDi(j) =  CDi_W(ii) + CDi_HT(ii) + CDi_B(ii);
 CD_int(j) = CD_WB(ii) + CD_WT(ii) + CD_BR(ii) + CD_BC(ii);
-%CD(j) = 1.3*CD0(j)+1.1*CDi(j)+1.1*CD_int(j);
+ %CD(j) = 1.05*CD0(j)+1.2*CDi(j)+1.1*CD_int(j);
+%CD(j) = CD0(j)+CDi(j)+CD_int(j)+err;
 CD(j) = CD0(j)+CDi(j)+CD_int(j);
 
 CL(j) = CL_W(ii) + CL_HT(ii) + CL_B(ii);
@@ -120,6 +121,8 @@ j = j+1;
 
 
 end
+
+
 
 % 
 % 
@@ -174,7 +177,7 @@ x2 = 0.02429 + 0.07169*y2.^2;
 y3 = linspace(0,2,100);
 x3 = 0.033 + 0.035*(y3-.14).^2;
 
-
+ff = [0.0092   -0.0054    0.0203];
 
 figure 
 hold on
@@ -183,14 +186,33 @@ plot(dx,dy,'g','linewidth',2)
 plot(x1,y1,'r','linewidth',2)
 plot(x2,y2,'b','linewidth',2)
 plot(x3,y3,'m','linewidth',2)
-ylabel('CL')
-xlabel('CD')
+ylabel('C_L')
+xlabel('C_D')
 grid on
 axis([0,max(CD),0,max(CL)])
+ax=gca;
+ax.XAxis.Exponent = 0;
+ax.XTick = 0:.025:1000;
+ax.XAxis.MinorTick='on';
+ax.XAxis.MinorTickValues = 0:.005:1000;
+ax.YAxis.Exponent = 0;
+ax.YTick = 0:.25:30000;
+ax.YAxis.MinorTick='on';
+ax.YAxis.MinorTickValues = 0:.05:30000;
 legend('Current Drag Estimate','Initial Drag Estimate','RV7','Cessna 172','location','best')
-
+% 
 % figure 
 % hold on
+% plot(x2,y2,'b','linewidth',2)
+% plot(polyval(ff,y2),y2,'r','linewidth',2)
+% grid on
+% axis([0,max(CD),0,max(CL)])
+
+
+
+
+
+
 % plot(file(1,1:ii),CL)
 % ylabel('CL')
 % xlabel('alpha')
