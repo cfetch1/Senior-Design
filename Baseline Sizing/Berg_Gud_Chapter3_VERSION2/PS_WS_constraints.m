@@ -1,6 +1,6 @@
-close all;
-clear;
-clc;
+%close all
+clear all
+clc
 
 q = @(rho, V) (1/2)*rho*V^2;
 
@@ -66,7 +66,7 @@ q_cruise = q(rho.cruise, V.cruise); % dynamic pressure at the selected airspeed 
 [TW_dca] = Desired_Cruise_Airspeed(WS, q_cruise, CDmin, k);
 sigma.cruise = rho.cruise/.0024;
 PW_dca_SL = (TW_dca*V.cruise)/sigma.cruise^0.8;
-% plot(WS,PW_dca_SL);
+plot(WS,PW_dca_SL);
 
 %% Service Ceiling
 Vv = 1.667; % ft/s,  this is if service ceiling is defined as point where climb rate is 100 ft/min, Vertical climb rate speed
@@ -77,13 +77,13 @@ rho_sc = rho.serv_ceil;
 [TW_sc] = Service_Ceiling(WS, Vv, rho_sc, k, CDmin);
 sigma.ceil = rho.serv_ceil/.0024;
 PW_sc_SL = (TW_sc*V.cruise*.9)/sigma.ceil^0.8;
-% plot(WS,PW_sc_SL);
+plot(WS,PW_sc_SL);
 xlabel('Wing Loading')
 ylabel('Power to Weight')
 grid on
 %% Plot and table
 legend("Level Constant-Velocity Turn", ...
-       "Desired Climb Rate",... 
+    "Desired Climb Rate",... 
     "Desired Takeoff Distance",...
     "Desired Cruise Airspeed",...
     "Service Ceiling");

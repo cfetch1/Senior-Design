@@ -47,7 +47,7 @@
    U       Unzoom  | 
 
  XFOIL   c>   Max thickness =     0.120035  at x =   0.300
- Max camber    =     0.000000  at x =   0.013
+ Max camber    =     0.020000  at x =   0.402
 
  Buffer airfoil set using 331 points
 
@@ -87,11 +87,11 @@
 
 .OPERi   c>  
  M  =    0.2325
- Re =   1257870
+ Re =   1631820
 
 .OPERv   c>  
  Polar  1 newly created for accumulation
- Airfoil archived with polar: NACA 0012                                       
+ Airfoil archived with polar: NACA 2412                                       
 
 Enter  polar save filename  OR  <return> for no file   s>  
  Polar save file will NOT be written
@@ -109,54 +109,53 @@ Enter  polar dump filename  OR  <return> for no file   s>
 
  Initializing BL ...
     side            1  ...
- MRCHUE: Inverse mode at  56     Hk =   2.933
- MRCHUE: Inverse mode at  81     Hk =   2.500
+ MRCHUE: Inverse mode at  53     Hk =   3.518
+ MRCHUE: Inverse mode at  82     Hk =   2.500
     side            2  ...
- MRCHUE: Inverse mode at  55     Hk =   3.073
- MRCHUE: Inverse mode at  81     Hk =   2.500
+ MRCHUE: Inverse mode at  80     Hk =   2.500
 
- Side 1  free  transition at x/c =  0.6056   56
- Side 2  free  transition at x/c =  0.5886   55
+ Side 1  free  transition at x/c =  0.5463   53
+ Side 2  free  transition at x/c =  0.5001   50
 
-   1   rms: 0.1107E+00   max: -.1604E+01   C at   56  1   RLX: 0.312
-       a = -0.083      CL = -0.0089
-      Cm = -0.0002     CD =  0.00497   =>   CDf =  0.00462    CDp =  0.00035
+   1   rms: 0.1076E+00   max: -.8641E+00   D at   80  2   RLX: 0.579
+       a = -0.083      CL =  0.2063
+      Cm = -0.0466     CD =  0.00549   =>   CDf =  0.00487    CDp =  0.00061
 
- Side 1  free  transition at x/c =  0.6104   57
- Side 2  free  transition at x/c =  0.5955   56
+ Side 1  free  transition at x/c =  0.5664   55
+ Side 2  free  transition at x/c =  0.4830   49
 
-   2   rms: 0.8985E-01   max: -.1036E+01   C at   56  2   RLX: 0.483
-       a = -0.083      CL = -0.0083
-      Cm = -0.0003     CD =  0.00512   =>   CDf =  0.00461    CDp =  0.00051
+   2   rms: 0.6175E-01   max: -.6239E+00   D at   80  2   RLX: 0.801
+       a = -0.083      CL =  0.2135
+      Cm = -0.0482     CD =  0.00556   =>   CDf =  0.00486    CDp =  0.00070
 
- Side 1  free  transition at x/c =  0.6233   58
- Side 2  free  transition at x/c =  0.6066   57
+ Side 1  free  transition at x/c =  0.5854   56
+ Side 2  free  transition at x/c =  0.4938   49
 
-   3   rms: 0.5706E-01   max: -.5218E+00   C at   58  1   RLX: 0.958
-       a = -0.083      CL = -0.0087
-      Cm = -0.0002     CD =  0.00531   =>   CDf =  0.00452    CDp =  0.00079
+   3   rms: 0.4228E-01   max: -.7222E+00   C at   49  2   RLX: 0.692
+       a = -0.083      CL =  0.2285
+      Cm = -0.0517     CD =  0.00564   =>   CDf =  0.00474    CDp =  0.00090
 
- Side 1  free  transition at x/c =  0.6386   58
- Side 2  free  transition at x/c =  0.6231   57
+ Side 1  free  transition at x/c =  0.5869   56
+ Side 2  free  transition at x/c =  0.5057   50
 
-   4   rms: 0.1755E-01   max: -.1920E+00   C at   58  1
-       a = -0.083      CL = -0.0093
-      Cm = -0.0001     CD =  0.00544   =>   CDf =  0.00443    CDp =  0.00101
+   4   rms: 0.1688E-01   max: -.2528E+00   C at   50  2
+       a = -0.083      CL =  0.2375
+      Cm = -0.0538     CD =  0.00567   =>   CDf =  0.00469    CDp =  0.00098
 
- Side 1  free  transition at x/c =  0.6435   59
- Side 2  free  transition at x/c =  0.6261   58
+ Side 1  free  transition at x/c =  0.5873   56
+ Side 2  free  transition at x/c =  0.5118   50
 
-   5   rms: 0.2868E-02   max: -.3828E-01   C at   58  2
-       a = -0.083      CL = -0.0094
-      Cm = -0.0001     CD =  0.00542   =>   CDf =  0.00438    CDp =  0.00104
+   5   rms: 0.1557E-02   max: -.3263E-01   C at   50  2
+       a = -0.083      CL =  0.2377
+      Cm = -0.0538     CD =  0.00568   =>   CDf =  0.00467    CDp =  0.00101
 
- Side 1  free  transition at x/c =  0.6437   59
- Side 2  free  transition at x/c =  0.6266   58
+ Side 1  free  transition at x/c =  0.5873   56
+ Side 2  free  transition at x/c =  0.5125   50
 
-   6   rms: 0.2780E-04   max: 0.4395E-03   C at   58  2
-       a = -0.083      CL = -0.0094
-      Cm = -0.0001     CD =  0.00542   =>   CDf =  0.00437    CDp =  0.00105
- plradd ia,ip,cpol            1          80  0.10929030    
+   6   rms: 0.1126E-04   max: -.2517E-03   C at   50  2
+       a = -0.083      CL =  0.2377
+      Cm = -0.0538     CD =  0.00568   =>   CDf =  0.00467    CDp =  0.00101
+ plradd ia,ip,cpol            1          81  0.21337655    
 
  Point added to stored polar  1
  Save file unspecified or not available
@@ -167,7 +166,7 @@ Enter  polar dump filename  OR  <return> for no file   s>
 .OPERva   c>  
         airfoil                    Re           Mach       Ncrit  XtripT  XtripB     file
        ------------------------  ------------  ----------  -----  ------  ------    -------------------
- >  1  NACA 0012                 1.258e6       0.232        9.00   1.000   1.000    
+ >  1  NACA 2412                 1.632e6       0.232        9.00   1.000   1.000    
 
 Enter polar output filename   s>  
 .OPERva   c>  
@@ -176,16 +175,16 @@ Enter polar output filename   s>
   
        XFOIL         Version 6.99
   
- Calculated polar for: NACA 0012                                       
+ Calculated polar for: NACA 2412                                       
   
  1 1 Reynolds number fixed          Mach number fixed         
   
  xtrf =   1.000 (top)        1.000 (bottom)  
- Mach =   0.232     Re =     1.258 e 6     Ncrit =   9.000
+ Mach =   0.232     Re =     1.632 e 6     Ncrit =   9.000
   
    alpha    CL        CD       CDp       CM     Top_Xtr  Bot_Xtr
   ------ -------- --------- --------- -------- -------- --------
-  -0.083  -0.0094   0.00542   0.00105  -0.0001   0.6437   0.6266
+  -0.083   0.2377   0.00568   0.00101  -0.0538   0.5873   0.5125
 
 .OPERva   c>  
  XFOIL   c>  

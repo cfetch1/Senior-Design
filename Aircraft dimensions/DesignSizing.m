@@ -1,6 +1,6 @@
 clc;clear;close all;
 WS = 16;
-AR = 23;
+AR = 15;
 MTOW = 414; %lbf
 
 lambda = linspace(0.6,1,10);
