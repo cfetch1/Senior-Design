@@ -125,7 +125,7 @@ P = 50;
 err=1000;
 while abs(err)> 0.5
     % Store MTOW from previous iteration as e1
-    e1 = MTOW;
+    e1 = MTOW
     
     % Take off Weight Guess
     Wtoguess = MTOW*.9;
