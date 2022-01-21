@@ -1,7 +1,5 @@
-close all;
-clear all;
-clc;
-% Add function floder to path
+close all;clear;clc;
+% Add local function floder to path
 addpath('../Functions')
 
 AR = 1:48;

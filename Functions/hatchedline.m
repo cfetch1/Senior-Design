@@ -114,5 +114,6 @@ T=[ct -st;st ct];
 dxy=(uv'*T)'*len;
 
 % Plot the curve and the ticks.
-h=plot(xc,yc,linespec,[xtick; xtick+dxy(1,:)],[ytick; ytick+dxy(2,:)*ar],linespec,varargin{:});
+h=plot(xc,yc,linespec,[xtick; xtick+dxy(1,:)],[ytick; ytick+dxy(2,:)*ar],...
+    linespec,'linewidth', 2,varargin{:});
 
