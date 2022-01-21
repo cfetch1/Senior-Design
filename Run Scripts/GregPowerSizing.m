@@ -1,11 +1,13 @@
-close all
+%close all
 clear all
 clc
 
 % Greg Arnold 20220110
-
+% units = ft, ft^2, kts, lbs, ROC = ft/min
 cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
 
+
+%% OLD
 AR = 1:48;
 WS = 1:50;
 CDmin = .035;
@@ -17,9 +19,11 @@ CL_to = 0.92;
 CD_to = .048;
 S = 38.63;
 eta = [.85,.35];
-
+CL_to_i = .7;
+CD_to_i = .035;
+MTOW = 435;
 PW_cruise1 = PW_cruise(AR, WS, V, CDmin, h)/(.75*eta(1));
-PW_to = PW_takeoff(AR, WS, .7, .035, S, Sg, 0, 430)/eta(2);
+PW_to = PW_takeoff(AR, WS, CL_to_i, CD_to_i, S, Sg, 0, MTOW)/eta(2);
 
 for ii = 1:length(AR)
     for jj = 1:length(WS)
@@ -34,7 +38,7 @@ for ii = 1:length(WS)
         PWminWS(ii) = min(PWmin(:,ii));
 end
 
-
+%% NEW
 
 AR = 1:48;
 WS = 1:50;
@@ -43,17 +47,18 @@ h = 14500;
 ROC = 200;
 V = 120;
 Sg = 2000;
-
-[CL_to,CD_to] = DragSLF(96.8/1.69,435,0,38.63,0,1);
-[~,CD_min] = DragSLF(90,0,0,38.63,0,1);
+V_liftoff = 57.28; %kts
+FOS = 1;
+[CL_to,CD_to] = DragSLF(V_liftoff,MTOW,0,S,0,FOS);
+[~,CD_min] = DragSLF(Vlof,0,0,S,0,FOS);
 % CL_to = 0.92;
 % CD_to = .048;
 S = 38.63;
 eta = [.85,.35];
-
+CLmax = 1.5;
 PW_cruise2 = PW_cruise(AR, WS, V, CDmin, h)/(.75*eta(1));
-PW_to = PW_takeoff(AR, WS, CL_to, CD_to, S, Sg, 0, 430)/eta(2);
-WS_ = WS_landing(0,Sg,2);
+PW_to = PW_takeoff(AR, WS, CL_to, CD_to, S, Sg, 0, MTOW)/eta(2);
+WS_ = WS_landing(0,Sg,CLmax);
 for ii = 1:length(AR)
     for jj = 1:length(WS)
         PWmin(ii,jj) = max([PW_cruise2(ii,jj),PW_to(ii,jj)]);
@@ -110,7 +115,7 @@ legend('Original Drag Estimate','Updated Drag Estimate','location','best')
 
 figure
 hold on 
-for ii = 10:30
+for ii = 15
     plot(WS,1.1*PW_cruise2(ii,:),'b')
     plot(WS,1.1*PW_to(ii,:),'r')
 end
