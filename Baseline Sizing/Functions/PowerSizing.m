@@ -32,8 +32,12 @@ PW_ = [PW_lcvt_SL; PW_dcr_SL; PW_dtod_SL; PW_dca_SL; PW_sc_SL]/550;
 for ii = 1:length(WS)
     PWmin_(ii) = max(PW_(:,ii));
     WS_land(ii) = round(dg/(1.938*.25*2/(rho_SL*CLmax)));
+
+    WS_land2(ii) = round(WS_landing(0, 1600, 2));
+
     WS_stall(ii) = round(V(5)^2*rho_SL*CLmax/2); 
 end
+
 
 PWmin = min(PWmin_);
 
@@ -59,31 +63,31 @@ dy = linspace(0,max(PW_(4,:)),length(PW_(1,:)));
 if plots == 1
     figure
     hold on
-    plot(WS,PW_(4,:),'r','linewidth',2)
-    plot(WS,PW_(5,:),'b','linewidth',2)
-    plot(WS_land,dy,'m','linewidth',2)
-    hatchedline(WS,PW_(4,:),'r',pi/180,.5, 0.75, 0.75);
-    hatchedline(WS,PW_(5,:),'b',pi/180,.5, 0.75, 0.75);    
+    plot(WS,PW_(3,:),'r','linewidth',2) % Takeoff Distance
+    plot(WS,PW_(4,:),'b','linewidth',2) % Cruise Airspeed
+    plot(WS_land,dy,'Color','#77AC30','linewidth',2)
+    hatchedline(WS,PW_(3,:),'r',pi/180,.5, 0.5, 0.5);
+    hatchedline(WS,PW_(4,:),'b',pi/180,.5, 0.5, 0.5);    
 
 %   Add hatchline for vertical line
     ii = 1;
     while ii < 50
-        plot([WS_land(1); WS_land(1)+0.5],...
+        plot([WS_land(1); WS_land(1)+0.25],...
             [ii*0.75*.25/length(WS_land); (ii-0.75)*0.75*.25/length(WS_land)],...
-            'm', 'LineWidth',2)
-        ii = ii + 1.5;
+            'Color','#77AC30', 'LineWidth',2)
+        ii = ii + 1;
     end 
     
-    scatter(WS(index),PWmin,'k*','linewidth',5);
+    scatter(WS(index),PWmin,'pentagram','m','linewidth',5);
     text(WS(index)+.25,PWmin,'Design Point','HorizontalAlignment','Left') 
     grid on
     ylabel('P/W [brake horsepower/lbm]')
     xlabel('W/S [lbm/ft^2]')
-    legend('Level Constant Velocity Turn','Desired Climb Rate','Desired Takeoff Distance','Desired Cruise Airspeed','Service Ceiling','Landing Distance','Stall Speed','location','best')
-    legend('Required Takeoff Distance','Required Cruise Airspeed','Required Landing Distance','location','best')
+%     legend('Required Takeoff Distance','Required Cruise Airspeed','Required Landing Distance','location','best')
     axis([WS(1),WS(end),0,.25])
-    xlim([5 20])
-    ylim([0.04 max(PW_(4,:))])
+    xlim([10 16])
+    ylim([0.02 0.1])
+    set(gca,'FontSize',15)
 end
 
 

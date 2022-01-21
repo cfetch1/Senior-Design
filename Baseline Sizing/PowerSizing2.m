@@ -109,6 +109,7 @@ if plots == 1
     %legend('Level Constant Velocity Turn','Desired Climb Rate','Desired Takeoff Distance','Desired Cruise Airspeed','Service Ceiling','Landing Distance','Stall Speed','location','best')
     legend('Required Takeoff Distance','Required Cruise Airspeed','Required Landing Distance','location','best')
     axis([WS(1),WS(end),0,.25])
+    set(gca,'FontSize',15)
 end
 
 
