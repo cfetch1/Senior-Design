@@ -38,10 +38,10 @@ for i = 1:size(Re,2)
     for j = 1:size(Re,1) 
         % Run Xfoil
         RSUT = xfoil('NACA0012', alpha(i), Re(j,i), M(i),'panels n 400');
-        disp(['Section = ', num2str(j),' Cd_p_i = ', num2str(RSUT.CDp)])        
+        disp(['Section = ', num2str(j),' Cd_p_i = ', num2str(RSUT.CD)])        
         
         % Sum Equations
-        top = top + RSUT.CDp.*S(j);
+        top = top + RSUT.CD.*S(j);
         bottom = bottom + S(j);
     end
 

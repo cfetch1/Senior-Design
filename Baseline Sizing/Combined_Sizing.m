@@ -8,7 +8,7 @@ addpath('..\Functions')
 %% Initial Sizing 
 AR = 1:30;
 WS = 1:50;
-CDmin = .035;
+CD_min_i = .035;
 h = 14500; %m
 ROC = 200;
 V = 120;
@@ -21,7 +21,8 @@ eta = [.85,.35];
 
 MTOW_i = 439;
 
-PW_cruise1 = PW_cruise(AR, WS, V, CDmin, h)/(.75*eta(1));
+
+PW_cruise1 = PW_cruise(AR, WS, V, CD_min_i, h)/(.75*eta(1));
 PW_to = PW_takeoff(AR, WS, .7, CD0, S, Sg, 0, MTOW_i)/eta(2);
 
 
@@ -38,30 +39,35 @@ end
 for ii = 1:length(WS)
         PWminWS(ii) = min(PWmin(:,ii));
 end
-
+% -------------------------------------------------------------------------
 
 %% Updated Sizing form new Drag Polar
 AR = 1:30;
 WS = 1:50;
-CDmin = .03135;
 h = 14500;
 ROC = 200;
 V = 120;
 Sg = 2000;
+V_liftoff = 57.28; %kts
+FOS = 1;
+CL_max = 1.5;
+
 
 % Subject to change
 MTOW_new = 430;
 
-[CL_to,CD_to] = DragSLF(96.8/1.69,435,0,38.63,0,1);
-[~,CD_min] = DragSLF(90,0,0,38.63,0,1);
+[CL_to,CD_to] = DragSLF(V_liftoff,MTOW_new,0,S,0,FOS);
+[~,CD_min] = DragSLF(V_liftoff,0,0,S,0,FOS);
+
+
 % CL_to = 0.92;
 % CD_to = .048;
 S = 38.63;
 eta = [.85,.35];
 
-PW_cruise2 = PW_cruise(AR, WS, V, CDmin, h)/(.75*eta(1));
+PW_cruise2 = PW_cruise(AR, WS, V, CD_min, h)/(.75*eta(1));
 PW_to = PW_takeoff(AR, WS, CL_to, CD_to, S, Sg, 0, MTOW_new)/eta(2);
-WS_land = ones(size(PW_to,1),1).*(WS_landing(0, Sg, CL_to));
+WS_land = ones(size(PW_to,1),1).*(WS_landing(0, Sg, CL_max));
 
 
 % Create AR sweep data sets
@@ -81,6 +87,8 @@ end
 
 PW_land = linspace(0, max(PW_cruise2(AR(15),:)), size(PW_to,1))';
 
+
+%-------------------------------------------------------------------------
 %% Plot Initial Sizing Results 
 figure(1)
 hold on
@@ -98,17 +106,6 @@ set(gca,'FontSize',15)
 grid on
 ylim([20 80])
 % legend('Initial Sizing','Refined Sizing','location','best')
-
-
-
-
-% figure(2)
-% hold on 
-% plot(WS,PWminWS)
-% ylabel('Power Loading (hp/lb)')
-% xlabel('Wing Loading')
-% axis([min(WS),max(WS),0,.15])
-% grid on
 
 
 %% Plot Updated Constrain Diagram 
