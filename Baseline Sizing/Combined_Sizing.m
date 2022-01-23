@@ -109,9 +109,11 @@ ylim([20 80])
 
 
 %% Plot Updated Constrain Diagram 
-figure(2)
-plot(WS,1.1*PW_cruise2(AR(15),:),'b','linewidth',2)
+openfig("Figures\initial_contrain.fig")
 hold on
+
+plot(WS,1.1*PW_cruise2(AR(15),:),'b','linewidth',2)
+
 plot(WS,1.1*PW_to(AR(15),:),'r','linewidth',2)
 plot(WS_land, PW_land ,'Color','#77AC30','linewidth',2)
 
@@ -128,6 +130,7 @@ hatchedline(WS, 1.1.*PW_to(AR(15),:),'r', pi/90, .5, 0.5, 0.5);
     end 
 xlabel('Wing Loading lb/ft^2')
 ylabel('Power Loading (hp/lb)')
+title('Updated Constrain')
 grid on
 xlim([2 13])
 ylim([0.08 0.22])
@@ -139,3 +142,4 @@ plot(AR,PW_cruise2(:,AR(15)).*MTOW_i,'b','linewidth',2);
 
 xlabel('Aspect Ratio')
 ylabel('Power Loading (hp/lb)')
+title('Need new MTOW')

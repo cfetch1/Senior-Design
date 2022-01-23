@@ -182,6 +182,8 @@ end
 [~,~,PWmin,ii] = PowerSizing(WS, CD0, CDto, CLto, CLmax, AR, V,...
                              ROC, h, dg, eta, 1);
 
+saveas(gcf,'Figures/initial_contrain.fig')
+
 %% Display Sizing Result
 disp('Sizing Result: ')
 disp(['P/W: ', num2str(PWmin), ' [bhp/lbm]'])

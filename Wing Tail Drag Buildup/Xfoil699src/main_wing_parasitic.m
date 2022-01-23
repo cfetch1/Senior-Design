@@ -19,11 +19,11 @@ M = V./sqrt(1.4*R*T);
 % Mean Chord [ft] 
 MAC = [2.00713 1.73938 1.47163 1.20388];
 
-% Area [ft2]
-S = [6.021 5.218 4.415 3.612];
+% Ref Area [ft2]
+S = 2.*[6.021 5.218 4.415 3.612];
 
 % Area without fuselage
-S_e = sum(S) - 1.5*2.141;
+S_e = 2.*sum(S) - (1.5*2.141);
 
 % Re by section and speed
 for i = 1:length(V)
@@ -49,11 +49,12 @@ for i = 1:size(Re,2)
     end
 
     % Total C_d parasitic
-    Cd_p = 2*(top./bottom)*(S_e/sum(S));
+    Cd_p(i) = 2*(top./bottom)*(S_e/sum(S.*2));
     disp([...'Total Cd_p = ',
          num2str(Cd_p)])
-    disp(' ') 
+    disp(' ')
 end
+
 
 
 
