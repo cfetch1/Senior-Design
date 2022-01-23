@@ -1,6 +1,6 @@
 close all
 clear all
-clc
+%clc
 
 % cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
 
@@ -42,8 +42,8 @@ Scab = 1.7671;
 Spx0 = 40.2806;
 alphaB0 = -2.96;
 diaB = 1.5;
-w_LG = [.4333,.4333,.4333];
-d_LG = [1.125,1.125,1.125];
+w_LG = [1/6,1/6,1/8];
+d_LG = [2/3,2/3,1/2];
 Scam = 1.136;
 Srad = 45.8/144;
 nT = 5;
@@ -121,6 +121,23 @@ j = j+1;
 
 
 end
+
+
+j = 7;
+x = [CD0_W(j)+CDi_W(j),CD0_HT(j)+CDi_HT(j)+CD0_VT(j),CD0_B(j)+CDi_B(j),CD_LG(j),CD_duct(j)+CD_cool(j),CDcam(j),CDrad(j),CD_int(j)];
+pie(x*100);
+legend('Wing','Tail','Fuselage','Landing Gear','Inlets','Camera','Radar','Interference','location','best')
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -221,4 +238,4 @@ legend('Current Drag Estimate','Initial Drag Estimate','RV7','Cessna 172','locat
 
 cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
 %close all
-clc
+% clc
