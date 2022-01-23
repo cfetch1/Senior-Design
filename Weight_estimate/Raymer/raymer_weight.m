@@ -30,7 +30,7 @@ function [W_wing] = raymer_wing(S,Wfuel,AR,sweep,q,lambda,t_c,N_z,MTOW)
 %   W_dg = flight design gross weight, lb
 %   ignore the second term if Wfw = 0
 
-W_wing = 0.36*(S^0.758)*(Wfuel^0.0035)*((AR/cosd(sweep)^2)^0.6)*(q^0.006)*...
+W_wing = 0.036*(S^0.758)*(Wfuel^0.0035)*((AR/cosd(sweep)^2)^0.6)*(q^0.006)*...
     (lambda^0.04)*((100*t_c/cosd(sweep))^(-0.3))*((N_z*MTOW)^0.49);
 end
 function [W_ht] = raymer_ht(N_z,MTOW,q,S_h,t_c,sweep,AR,sweep_ht,taper_ht)
