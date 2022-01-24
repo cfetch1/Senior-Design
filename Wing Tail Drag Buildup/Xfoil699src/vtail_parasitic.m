@@ -21,6 +21,9 @@ MAC = [1.75 1.73];
 % Area [ft2]
 S = [4.375 1.66];
 
+% Ref Area [ft2]
+S_ref = sum(2.*[6.021 5.218 4.415 3.612]);
+
 % Area without fuselage
 S_e = sum(S);
 
@@ -46,7 +49,7 @@ for i = 1:size(Re,2)
     end
 
     % Total C_d parasitic
-    Cd_p(i) = 2*(top./bottom)*(S_e/sum(S));
+    Cd_p(i) = 2*(top./bottom)*(S_e/sum(S)).*(sum(S)./S_ref);
     disp(['Total Cd_p = ', num2str(Cd_p)])
     disp(' ')
 end
