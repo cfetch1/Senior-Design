@@ -1,6 +1,6 @@
 function [PW] = PW_cruise(AR, WS, V, CDmin, h, pow)
 % pow = max throttle at condition 
-eta = .85*(V/120)^1.5;
+eta = TR640(V,120);
 rho = density(h);
 sig = rho/.0024;
 q = .5*rho*(V*1.69)^2;

@@ -9,7 +9,7 @@ alpha = 1;
 % else
 %     alpha= delta0(h);
 % end
-eta = .85*(V/120)^1.5;
+eta = TR640(V,120);
 BHP = ((.5*rho*(V*1.69)^3*S*CD+W*ROC/60))/(550*eta*alpha*pow*(sig-(1-sig)/7.55));
 end
 
