@@ -56,7 +56,7 @@ FOS = 1;
 S = 38.63;
 eta = [.85,.35];
 CLmax = 1.5;
-PW_cruise2 = PW_cruise(AR, WS, V, CD_min, h,1);
+PW_cruise2 = PW_cruise(AR, WS, V, CD_min, h,.75);
 PW_to = PW_takeoff(AR, WS, CL_to, CD_to, S, Sg, 0, MTOW);
 WS_ = WS_landing(0,Sg,CLmax);
 for ii = 1:length(AR)
@@ -134,9 +134,9 @@ ax.XTick = 0:10:1000;
 ax.XAxis.MinorTick='on';
 ax.XAxis.MinorTickValues = 0:2:1000;
 ax.YAxis.Exponent = 0;
-ax.YTick = 0:.25:30000;
+ax.YTick = 0:.1:30000;
 ax.YAxis.MinorTick='on';
-ax.YAxis.MinorTickValues = 0:.05:30000;
+ax.YAxis.MinorTickValues = 0:.025:30000;
 
 % figure
 % hold on 
