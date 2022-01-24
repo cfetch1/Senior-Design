@@ -7,6 +7,7 @@ alpha = alpha0(V,h);
 for i = 1:length(AR)
     e = 1.78*(1-0.045*AR(i)^0.68)-0.64;
     k = 1/(pi*AR(i)*e);
+
     for j = 1:length(WS)
         PW(i,j) = ((q*CDmin*(1/WS(j))+k*(1/q)*WS(j))*V*1.69)/(550*eta*alpha*pow);
     end

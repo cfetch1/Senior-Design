@@ -8,8 +8,7 @@ cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
 
 % 
 % %% OLD
-AR = 15;
-WS = 11.7;
+
 % CDmin = .035;
 % h = 14500;
 % ROC = 200;
@@ -57,11 +56,8 @@ FOS = 1;
 S = 38.63;
 eta = [.85,.35];
 CLmax = 1.5;
-PW_cruise2 = PW_cruise(AR, WS, V, CD_min, h,.75);
-%PW_cruise2(1,jj) = f_Preq(V,MTOW*.99,14000,S,0,.85);
+PW_cruise2 = PW_cruise(AR, WS, V, CD_min, h,1);
 PW_to = PW_takeoff(AR, WS, CL_to, CD_to, S, Sg, 0, MTOW);
-%PW_to(1,jj) = f_Preq(V_liftoff,MTOW,0,S,0,1);
-
 WS_ = WS_landing(0,Sg,CLmax);
 for ii = 1:length(AR)
     for jj = 1:length(WS)
@@ -79,27 +75,27 @@ end
 
 
 cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
-
-figure
-% subplot(211)
-hold on 
-% plot(AR,PWminAR1,'r','linewidth',2)
-plot(AR,PWminAR2,'b','linewidth',2)
-ylabel('Power Loading (hp/lb)')
-xlabel('Aspect Ratio')
-axis([min(AR),max(AR),0,1])
-grid on
-ax=gca;
-ax.XAxis.Exponent = 0;
-ax.XTick = 0:5:1000;
-ax.XAxis.MinorTick='on';
-ax.XAxis.MinorTickValues = 0:1:1000;
-ax.YAxis.Exponent = 0;
-ax.YTick = 0:.025:30000;
-ax.YAxis.MinorTick='on';
-ax.YAxis.MinorTickValues = 0:.005:30000;
-legend('Original Drag Estimate','Updated Drag Estimate','location','best')
-
+% 
+% figure
+% % subplot(211)
+% hold on 
+% % plot(AR,PWminAR1,'r','linewidth',2)
+% plot(AR,PWminAR2,'b','linewidth',2)
+% ylabel('Power Loading (hp/lb)')
+% xlabel('Aspect Ratio')
+% axis([min(AR),max(AR),0,1])
+% grid on
+% ax=gca;
+% ax.XAxis.Exponent = 0;
+% ax.XTick = 0:5:1000;
+% ax.XAxis.MinorTick='on';
+% ax.XAxis.MinorTickValues = 0:1:1000;
+% ax.YAxis.Exponent = 0;
+% ax.YTick = 0:.025:30000;
+% ax.YAxis.MinorTick='on';
+% ax.YAxis.MinorTickValues = 0:.005:30000;
+% legend('Original Drag Estimate','Updated Drag Estimate','location','best')
+% 
 
 
 
@@ -120,8 +116,9 @@ legend('Original Drag Estimate','Updated Drag Estimate','location','best')
 figure
 hold on 
 ii=15;
-plot(WS,1.1*PW_cruise2(ii,:),'b','linewidth',2)
+plot(WS,1.1*.98*PW_cruise2(ii,:),'b','linewidth',2)
 plot(WS,1.1*PW_to(ii,:),'r','linewidth',2)
+% scatter(11.7,60/350,'g*','linewidth',2)
 dy = linspace(0,2*max([PW_cruise2(ii,:),PW_to(ii,:)]),100);
 dx = zeros(100,1);
 dx(:,1) = WS_;
