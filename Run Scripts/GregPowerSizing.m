@@ -4,7 +4,7 @@ clc
 
 % Greg Arnold 20220110
 % units = ft, ft^2, kts, lbs, ROC = ft/min
-cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
+addpath('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
 
 % 
 % %% OLD
@@ -39,9 +39,9 @@ cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
 
 %% NEW
 
-AR = 1:50;
-WS = 1:50;
-h = 7000;
+AR = 15;
+WS = 1:1:50;
+h = 14500;
 MTOW = 350;
 S = 38.63;
 % ROC = 200;
@@ -54,10 +54,10 @@ FOS = 1;
 % CL_to = 0.92;
 % CD_to = .048;
 S = 38.63;
-eta = [.85,.35];
+% eta = [.85,.35];
 CLmax = 1.5;
 PW_cruise2 = PW_cruise(AR, WS, V, CD_min, h,.75);
-PW_to = PW_takeoff(AR, WS, CL_to, CD_to, S, Sg, 0, MTOW);
+PW_to = PW_takeoff(AR, WS, CL_to, CD_to,  Sg,  0,90);
 WS_ = WS_landing(0,Sg,CLmax);
 for ii = 1:length(AR)
     for jj = 1:length(WS)
@@ -115,7 +115,7 @@ cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
 
 figure
 hold on 
-ii=15;
+ii=1;
 plot(WS,1.1*.98*PW_cruise2(ii,:),'b','linewidth',2)
 plot(WS,1.1*PW_to(ii,:),'r','linewidth',2)
 % scatter(11.7,60/350,'g*','linewidth',2)
