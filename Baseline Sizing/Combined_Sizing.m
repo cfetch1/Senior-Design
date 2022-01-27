@@ -14,16 +14,17 @@ ROC = 200;
 V = 120;
 Sg = 1800;
 CL_to = 0.7;
-CD_to = .028;
+CD_to_i = .035+.018;
+
 CD0 = 0.035;
-S = 38.67;
+S = 38.63;
 eta = [.85,.35];
 
 MTOW_i = 439;
 
 
 PW_cruise1 = PW_cruise(AR, WS, V, CD_min_i, h)/(.75*eta(1));
-PW_to = PW_takeoff(AR, WS, .7, CD0, S, Sg, 0, MTOW_i)/eta(2);
+PW_to = PW_takeoff(AR, WS, .7, CD_to_i, S, Sg, 0, MTOW_i)/eta(2);
 
 
 % Create AR sweep data sets
@@ -53,8 +54,8 @@ FOS = 1;
 CL_max = 1.5;
 
 
-% Subject to change
-MTOW_new = 430;
+% Updated MTOW 350 lbs
+MTOW_new = 350;
 
 [CL_to,CD_to] = DragSLF(V_liftoff,MTOW_new,0,S,0,FOS);
 [~,CD_min] = DragSLF(V_liftoff,0,0,S,0,FOS);
@@ -85,12 +86,13 @@ for ii = 1:length(WS)
         PWminWS(ii) = min(PWmin(:,ii));
 end
 
+
 PW_land = linspace(0, max(PW_cruise2(AR(15),:)), size(PW_to,1))';
 
 
 %-------------------------------------------------------------------------
 %% Plot Initial Sizing Results 
-figure(1)
+figure(3)
 hold on
 % Plot Initial AR vs Power 
 plot(AR,PWminAR1.*MTOW_i,'--c','linewidth',2)
@@ -107,11 +109,17 @@ grid on
 ylim([20 80])
 % legend('Initial Sizing','Refined Sizing','location','best')
 
+%% Plot Updated AR vs Power
+plot(AR,PW_cruise2(:,AR(15)).*MTOW_i,'b','linewidth',2);
+
+xlabel('Aspect Ratio')
+ylabel('Power Loading (hp/lb)')
+title('Need new MTOW')
 
 %% Plot Updated Constrain Diagram 
-openfig("Figures\initial_contrain.fig")
+% openfig("Figures\initial_contrain.fig")
+figure(2)
 hold on
-
 plot(WS,1.1*PW_cruise2(AR(15),:),'b','linewidth',2)
 
 plot(WS,1.1*PW_to(AR(15),:),'r','linewidth',2)
@@ -132,14 +140,6 @@ xlabel('Wing Loading lb/ft^2')
 ylabel('Power Loading (hp/lb)')
 title('Updated Constrain')
 grid on
-xlim([2 13])
-ylim([0.08 0.22])
-set(gca,'FontSize',15)
-
-%% Plot Updated AR vs Power
-figure(1)
-plot(AR,PW_cruise2(:,AR(15)).*MTOW_i,'b','linewidth',2);
-
-xlabel('Aspect Ratio')
-ylabel('Power Loading (hp/lb)')
-title('Need new MTOW')
+set(gca,'FontSize',16)
+xlim([7 13])
+ylim([0.05 0.1])

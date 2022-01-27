@@ -33,7 +33,8 @@ AR = 15;
 CLmax = 2;
 
 % Take-off Drag Coeffiecnt
-CDto = .028;
+% CDto = .028;
+CDto = .035+.018;
 
 % Take-off Lift Coefficient
 CLto = .7;
@@ -181,6 +182,7 @@ end
 % Generate Plot using PowerSizing Function
 [~,~,PWmin,ii] = PowerSizing(WS, CD0, CDto, CLto, CLmax, AR, V,...
                              ROC, h, dg, eta, 1);
+
 
 saveas(gcf,'Figures/initial_contrain.fig')
 

@@ -86,7 +86,7 @@ if plots == 1
 %     legend('Required Takeoff Distance','Required Cruise Airspeed','Required Landing Distance','location','best')
     axis([WS(1),WS(end),0,.25])
     xlim([10 16])
-    ylim([0.02 0.1])
+    ylim([0.04 0.1])
     set(gca,'FontSize',15)
 end
 
