@@ -64,7 +64,7 @@ function [MTOW,We,Wf,EWF,Wrs]=RangeSizing(Wpl,Wtoguess,Range,Endurance,E,SFC,V,R
         
         Wrs(4) = exp(-(tcl*Vcl*SFCclimb/(325.866*eta_climb*Eclimb)));
         
-        dxcl = sqrt(Vcl^2 - (.59248380*ROC)^2)*tcl;
+        dxcl = sqrt(Vcl^2 - (.01*ROC)^2)*tcl;
         
         Xcr = Range-dxcl;
 
