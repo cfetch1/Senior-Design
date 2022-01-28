@@ -1,4 +1,4 @@
-function [MTOW,We,Wf,EWF]=RangeSizing(Wpl,Wtoguess,Range,Endurance,E,SFC,V,ROC,h,eta,FOS)
+function [MTOW,We,Wf,EWF,Wrs]=RangeSizing(Wpl,Wtoguess,Range,Endurance,E,SFC,V,ROC,h,eta,FOS,reserve)
     
  %% INPUTS
  % Wpl
@@ -34,26 +34,26 @@ function [MTOW,We,Wf,EWF]=RangeSizing(Wpl,Wtoguess,Range,Endurance,E,SFC,V,ROC,h
  SFCcruise = SFC(2);
  SFCloiter = SFC(3);
  
- Vclimb = V(1);
- vcruise = V(2);
+ Vcl = V(1);
+ vcr = V(2);
  
  eta_climb = eta(1);
  eta_cruise = eta(2);
 
     Wto=Wtoguess; %unnecessary step but might make code more versatile in future
     error = 1000;
-    while (abs(error) > 1) 
+    while (abs(error) > .1) 
         Wrs=zeros(1,8); %weight ratio vector; one for each phase
         W=zeros(1,8); %weight at each phase 1-8, does not include takeoff
         %DATA FROM ROSKAM 
         
 
-            Wrs(1)=0.995;%start,warmup
-            Wrs(2)=0.997;%taxi
-            Wrs(3)=0.998;%takeoff
-            Wrs(4)=0.992;%climb
-            Wrs(7)=0.993;%descent
-            Wrs(8)=0.993;%landing,taxi,shutdown
+            Wrs(1)=0.990;%start,warmup
+            Wrs(2)=0.990;%taxi
+            Wrs(3)=0.990;%takeoff
+            Wrs(4)=0.980;%climb
+            Wrs(7)=0.990;%descent
+            Wrs(8)=0.995;%landing,taxi,shutdown 
        
         %breguet=@(w4w5)(Vcruise/SFCcruise)*(Ecruise)*log(w4w5);
         %Wrs(5)=1/fzero(@(Wr)(breguet(Wr)-Range),1.4); %estimate fuel burn during cruise from breguet eqn
@@ -64,7 +64,7 @@ function [MTOW,We,Wf,EWF]=RangeSizing(Wpl,Wtoguess,Range,Endurance,E,SFC,V,ROC,h
         
         Wrs(4) = exp(-(tcl*Vcl*SFCclimb/(325.866*eta_climb*Eclimb)));
         
-        dxcl = sqrt(Vcl^2 - (.59248380*ROC)^2)*tcl;
+        dxcl = sqrt(Vcl^2 - (.01*ROC)^2)*tcl;
         
         Xcr = Range-dxcl;
 
@@ -95,8 +95,9 @@ function [MTOW,We,Wf,EWF]=RangeSizing(Wpl,Wtoguess,Range,Endurance,E,SFC,V,ROC,h
         
     end
     
-    MTOW = (We+Wf+Wpl)*FOS;
+    MTOW = (We+Wf+Wpl);
     EWF = We/MTOW;
+    MTOW = MTOW*FOS;
     
     
     
