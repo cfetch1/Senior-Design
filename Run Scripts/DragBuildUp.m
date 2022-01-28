@@ -23,7 +23,7 @@ CDi_HT = file(6,:);
 CD0_HT = file(7,:);
 CD0_VT = file(8,:);
 
-cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
+%cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
 
 %% Flight Conditions
 
