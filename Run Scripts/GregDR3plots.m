@@ -2,12 +2,12 @@ close all
 clear all
 clc
 % 
-addpath('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
-
+cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
+ h=9000;
 err = 1000;
-MTOW = 400;
-S = 38.63;
-Wrs = ones(8,1);
+MTOW = 450;
+S = 40;
+% Wrs = ones(8,1);
 Wf = 50;
 P2 = 40;
 dX1 = MTOW;
@@ -17,31 +17,33 @@ dX4 = MTOW;
 dX5 = .9*MTOW;
 res = Wf*.25;
 c=1;
-ROC=160;
+ROC=500;
 while err>1
 X1 = MTOW;
 P1 = P2;
-k = .65*sqrt(MTOW/440) +.35*sqrt(S/38.63);
-[~,CD0] = DragSLF(1,0,0,S,0,k);
+% k = .65*sqrt(MTOW/440) +.35*sqrt(S/38.63);
+k=1;
+[~,CD0] = DragSLF2(1,0,0,S,0);
 
-[CL1,CD1] = DragSLF(100,dX1,0,S,ROC,k);
+[CL1,CD1] = DragSLF2(100,dX1,0,S,ROC);
 E1 = CL1/CD1;
 
-[CL2,CD2] = DragSLF(120,dX2,14000,S,0,k);
+[CL2,CD2] = DragSLF2(120,dX2,h,S,0);
 E2 = CL2/CD2;
 
-[CL3,CD3] = DragSLF(80,dX3,2000,S,0,k);
+[CL3,CD3] = DragSLF2(80,dX3,2000,S,0);
 E3 = CL3/CD3;
 
 
 
 Vs = sqrt(2*(dX5)/(.0024*S*1.5))/1.69;
-[CL4,CD4] = DragSLF(1.5*Vs,dX4,0,S,0,k);
+[CL4,CD4] = DragSLF2(1.5*Vs,dX4,0,S,0);
 E4 = CL4/CD4;
 
 
-WS=5:.5:30;
-[MTOW,We,Wf,EWF,Wrs]=RangeSizing(50,X1,550,1,[E1,E2,E3],[.34,.36,.29],[100,120,80],ROC,14000,[.62,.83],1.1,res);
+WS=5:.1:30;
+[MTOW,We,Wf,EWF,Wrs]=RangeSizing(50,X1,550,1,[E1,E2,E3],[.34,.36,.29],[100,120,80],ROC,h,[.62,.83],1.1,res);
+
 X2 = MTOW;
 
 X =categorical({'Start-Up','Taxi','Takeoff','Climb','Cruise','Loiter','Descent','Shut-Down','Reserves'});
@@ -56,8 +58,9 @@ y(end+1) = 12;
 % dX1 = MTOW;
 % dX3 = MTOW-sum(y(1:3));
 
-PW_cruise2 = 1.05*PW_cruise(15, WS, 120, CD0, 14000,.75);
-PW_to = 1.05*PW_takeoff(15, WS, CL4, CD4,  2000,  0, 1.5*Vs);
+PW_cruise2 = 1.1*PW_cruise(15, WS, 120, CD0, h,.75);
+PW_to = 1.1*PW_takeoff(15, WS, CL4, CD4,  2000,  0, 1.5*Vs);
+
 WS_ = WS_landing(0,2000,1.5);
 for ii = 1
     for jj = 1:length(WS)
@@ -137,7 +140,7 @@ ax.YAxis.MinorTickValues = 0:1:100;
 grid on
 
 disp(['Eclimb = ' num2str(E1)])
-disp(['Ecruise = ' num2str(E2)])
+ disp(['Ecruise = ' num2str(E2)])
 disp(['Eloiter = ' num2str(E3)])
 disp(['CL_to = ' num2str(CL4)])
 disp(['CD0 = ' num2str(CD0)])
