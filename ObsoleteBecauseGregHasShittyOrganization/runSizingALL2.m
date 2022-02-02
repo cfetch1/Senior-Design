@@ -10,13 +10,13 @@ S = 40;
 P = 30;
 AR_ = 15;
 %cd0 = [0.035,0.028];
-cd0 = .013;
+CD0 = .035;
 for z = 1
 for i = 1:length(AR_)
-AR = 18;
+AR = AR_(i);
 err=1000;
-CD0 = cd0(z);
-% while abs(err)>.5
+% CD0 = cd0(z);
+while abs(err)>.5
 
     close all
     clc
@@ -35,7 +35,6 @@ Wtoguess = MTOW*.9;
 SFCcruise = .4;
 Range = 550;
 Eloiter = 12;
-Eclimb = E;
 SFCloiter = .4;
 Endurance = 1;
 reserve = Wf/4;
@@ -45,22 +44,22 @@ ROC = 80;
 SFCclimb = .5;
 eta_cl = .7865;
 eta_cr = .7859;
-Eclimb = 14;
+% Eclimb = 14;
 
-[MTOW,We,Wf]=RangeSizing(Wpl,Wtoguess,10,SFCcruise,Range,Eloiter,SFCloiter,Endurance,reserve,hcr,Vcl,ROC,SFCclimb,eta_cl,eta_cr,Eclimb);
+[MTOW,We,Wf,EWF]=RangeSizing(Wpl,Wtoguess,E,SFCcruise,Range,Eloiter,SFCloiter,Endurance,reserve,hcr,Vcl,ROC,SFCclimb,eta_cl,eta_cr,Eclimb);
 e2 = MTOW;
 
 %AR = 10;
-i=1;
+% i=1;
 e = 1.78*(1-0.045*AR^0.68)-0.64;
 k = 1/(pi*AR*e);
-% E = 1/2*sqrt(1/(.025*k));
-S =  31.27;
+Emax(i) = 1/2*sqrt(1/(CD0*k));
+S =  38.63;
 
 
-WS = 5:.5:45;
+WS = 1:30;
 
-CDto = CD0;
+CDto = .048;
 CLto = .7;
 dg = 3000;
 MTOW = 312;
@@ -77,33 +76,39 @@ hto = 0;
 hclimb = 0;
 hmax = 10000;
 h = [hturn, hclimb, hto, hcr, hmax];
-if AR == 23
-    z = 1;
-else 
-    z=0;
-end
+% if AR == 23
+%     z = 1;
+% else 
+%     z=0;
+% end
 E1 = P;
-[~,~,PWmin,ii] = PowerSizing(WS,CD0,CDto,MTOW,CLmax,AR,V,ROC,h,dg,eta,1);
-end
+[~,~,PWmin(i),ii] = PowerSizing(WS,CD0,CDto,MTOW,CLmax,AR,V,ROC,h,dg,eta,1);
+% end
+dd = zeros(length(AR_),1);
+dd(:,1) = 14;
+% figure
+% hold on
+% plot(AR_,Emax,'r','linewidth',2)
+% t = plot(AR_,dd,'k--','linewidth',2);
+% text2line(t,.5,0,'L/D_m_a_x = 14',14)
+% 
+% grid on
+% axis([0,50,0,20])
+% xlabel('Aspect Ratio')
+% ylabel('L/D_m_a_x')
+% ax=gca;
+% ax.XTick = 0:10:AR_(end);
+% ax.XAxis.MinorTick='on';
+% ax.XAxis.MinorTickValues = 0:2:AR_(end);
+% ax.YTick = 0:5:20;
+% ax.YAxis.MinorTick='on';
+% ax.YAxis.MinorTickValues = 0:1:5;
+% ax.FontSize=14;
 
-figure
-hold on
-plot(x,y,'r','linewidth',2)
-grid on
-axis([x(1),x(end),0,max(y)])
-ax=gca;
-ax.XTick = 0:1:WS(end);
-ax.XAxis.MinorTick='on';
-ax.XAxis.MinorTickValues = 0:1:AR_(end);
-ax.YTick = 0:.001:1;
-ax.YAxis.MinorTick='on';
-ax.YAxis.MinorTickValues = 0:.001:1;
-ylabel('Minimum P/W [hp/lbm]')
-xlabel('Aspect Ratio')
 
 
 P = PWmin*MTOW; %shaft horsepower
-S = MTOW/WS(ii); %planform area, ft^2
+S = MTOW/WS(11); %planform area, ft^2
 b = sqrt(S*AR); %wingspan, ft
 c = S/b; %mean chord, ft
 E2 = P;
@@ -123,9 +128,9 @@ Eclimb = CL/CD;
 
 
 err = abs(100*(E1-E2)/E2)+abs(100*(e1-e2)/e2);
-
 end
-
+end
+end
 
 if z ==1
 x(i) = AR;

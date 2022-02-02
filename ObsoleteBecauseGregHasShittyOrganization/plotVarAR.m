@@ -99,17 +99,17 @@ E1 = P;
 % plot(x,y,'r','linewidth',2)
 % grid on
 % axis([x(1),x(end),0,max(y)])
-% % ax=gca;
-% % ax.XTick = 0:1:WS(end);
-% % ax.XAxis.MinorTick='on';
-% % ax.XAxis.MinorTickValues = 0:1:AR_(end);
-% % ax.YTick = 0:.001:1;
-% % ax.YAxis.MinorTick='on';
-% % ax.YAxis.MinorTickValues = 0:.001:1;
-% % ylabel('Minimum P/W [hp/lbm]')
-% % xlabel('Aspect Ratio')
-% % 
-% % 
+% ax=gca;
+% ax.XTick = 0:1:WS(end);
+% ax.XAxis.MinorTick='on';
+% ax.XAxis.MinorTickValues = 0:1:AR_(end);
+% ax.YTick = 0:.001:1;
+% ax.YAxis.MinorTick='on';
+% ax.YAxis.MinorTickValues = 0:.001:1;
+% ylabel('Minimum P/W [hp/lbm]')
+% xlabel('Aspect Ratio')
+% 
+% 
 P = PWmin*MTOW; %shaft horsepower
 S = MTOW/WS(ii); %planform area, ft^2
 b = sqrt(S*AR); %wingspan, ft
@@ -137,11 +137,11 @@ end
 y1(i) = P;
 end
 
-% 
-% if z ==1
-% x(i) = AR;
 
-% y2(i) = MTOW;
+% if z ==1
+x(i) = AR;
+% 
+ y2(i) = MTOW;
 % elseif z==2
 % y1c(i) = P;
 % y2c(i) = MTOW;
@@ -151,16 +151,16 @@ end
 data(ijk,:) = y1;
 
 
-end
+ end
 
-
-figure
-hold on 
-plot(AR_,data(1,:),'g');
-plot(AR_,data(2,:),'r');
-plot(AR_,data(3,:),'r');
-plot(AR_,data(4,:),'r');
-
+% 
+% figure
+% hold on 
+% plot(AR_,data(1,:),'g');
+% plot(AR_,data(2,:),'r');
+% plot(AR_,data(3,:),'r');
+% plot(AR_,data(4,:),'r');
+% 
 
 
 
@@ -192,30 +192,30 @@ f_CD = @(CL) CD0+k*CL^2;
 CL = 0:.01:CLmax;
 Emax = 1/2*sqrt(1/(CD0*k));
 x2 = linspace(0,f_CD(CL(end)),length(CL));
-
-for i = 1:length(CL)
-    x1(i) = f_CD(CL(i));
-    y1(i) = CL(i);
-    y2(i) = x2(i)*Emax;
-end
 % 
-figure
-hold on
-set(gca,'FontSize',size1)
-plot(x1,y1,'r','linewidth',2)
-t1 = plot(x2,y2,'k--','linewidth',1);
-text2line(t1,.3,0,['E_m_a_x = ' num2str(round(Emax,1))],size2)
-grid on
-ax=gca;
-ax.YTick = 0:.25:1.75;
-ax.YAxis.MinorTick='on';
-ax.YAxis.MinorTickValues = 0:.05:max(y1);
-ax.XTick = 0:.025:2;
-ax.XAxis.MinorTick='on';
-ax.XAxis.MinorTickValues = 0:.005:1;
-ylabel('C_L')
-xlabel('C_D')
-axis([0,max(x1),0,max(y1)])
+% for i = 1:length(CL)
+%     x1(i) = f_CD(CL(i));
+%     y1(i) = CL(i);
+%     y2(i) = x2(i)*Emax;
+% end
+% % 
+% figure
+% hold on
+% set(gca,'FontSize',size1)
+% plot(x1,y1,'r','linewidth',2)
+% t1 = plot(x2,y2,'k--','linewidth',1);
+% text2line(t1,.3,0,['E_m_a_x = ' num2str(round(Emax,1))],size2)
+% grid on
+% ax=gca;
+% ax.YTick = 0:.25:1.75;
+% ax.YAxis.MinorTick='on';
+% ax.YAxis.MinorTickValues = 0:.05:max(y1);
+% ax.XTick = 0:.025:2;
+% ax.XAxis.MinorTick='on';
+% ax.XAxis.MinorTickValues = 0:.005:1;
+% ylabel('C_L')
+% xlabel('C_D')
+% axis([0,max(x1),0,max(y1)])
 
 % % 
 % % if i==1
@@ -229,21 +229,21 @@ axis([0,max(x1),0,max(y1)])
 % % else
 % %     
 % % 
-%  figure
-% % subplot(211)
-%  hold on
-%  set(gca,'FontSize',size1)
-%  plot(x,y1,'r','linewidth',2)
-%  %plot(x,y1c,'b','linewidth',2)
-%  t1 = plot(x,py1,'k--','linewidth',1);
-% % t2 = plot(x,py2,'k--','linewidth',1);
-%  plot(15,35.05,'k*','linewidth',2)
-%  text(15,35.05*1.05,'Current Design Point','HorizontalAlignment','Left','FontSize',size2)
-%  text2line(t1,.9,0,'Minimum Power',size2)
-% %  text2line(t2,.9,0,'110% of Minimum Power',size2)
-%  %legend('Fixed Landing Gear: C_D_0 = .035','Retractable Landig Gear: C_D_0 = .028','location','best','FontSize',size2)
-%  xlabel('Aspect Ratio')
-%  ylabel('Power Required [brake horsepower]')
+ figure
+% subplot(211)
+ hold on
+ set(gca,'FontSize',size1)
+ plot(x,y1,'r','linewidth',2)
+ %plot(x,y1c,'b','linewidth',2)
+ t1 = plot(x,py1,'k--','linewidth',1);
+% t2 = plot(x,py2,'k--','linewidth',1);
+ plot(15,35.05,'k*','linewidth',2)
+ text(15,35.05*1.05,'Current Design Point','HorizontalAlignment','Left','FontSize',size2)
+ text2line(t1,.9,0,'Minimum Power',size2)
+%  text2line(t2,.9,0,'110% of Minimum Power',size2)
+ %legend('Fixed Landing Gear: C_D_0 = .035','Retractable Landig Gear: C_D_0 = .028','location','best','FontSize',size2)
+ xlabel('Aspect Ratio')
+ ylabel('Power Required [brake horsepower]')
 %  grid on
 %  axis([x(1),x(end),0,max(y1)])
 % % % subplot(312)

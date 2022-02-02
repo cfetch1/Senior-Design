@@ -1,5 +1,5 @@
 function [PW] = PW_takeoff(AR, WS, CL_to, CD_to,  Sg, h,V)
-
+V=V*1.69;
 
     g = 32.2;
 rho = density(h);

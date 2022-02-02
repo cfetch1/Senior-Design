@@ -40,7 +40,7 @@ addpath('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
 %% NEW
 
 AR = 15;
-WS = 1:1:50;
+WS = 1:.01:30;
 h = 14500;
 MTOW = 350;
 S = 38.63;

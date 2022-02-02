@@ -3,9 +3,9 @@ clear all
 clc
 
 dV = 5;
-V = 40:dV:180; % kts, TAS
+V = 10:dV:180; % kts, TAS
 %Vc = V(index);
-h_ = 0:2000:28000;
+h_ = 18000;
 %Vc = 120;
 Vc = 120;
 %h_=7000;
@@ -36,7 +36,7 @@ for ii = 1:length(V)
     
     x1(ii) = V(ii); 
     y1(ii) = p(3);
-
+    yy=p(1);
 %     if x1(ii) == V
 %         index = ii;
 %     end
@@ -53,8 +53,8 @@ for ii = 1:length(V)
     k = 1/(pi*AR*e);
     V_fps = V(ii)*1.69;
     q = .5*rho_inf*V_fps^2;
-    S = 39.8;
-    W = 437.7;
+    S = 38.9;
+    W = 428;
     CL = W/(q*S);
     D = q*S*(CD0+k*CL^2);
     P_req(ii)= D*V_fps;
@@ -63,7 +63,7 @@ end
 
 
 x2 = linspace(V(1),Vc,index); %,linspace(Vc+dV,V(end),ii-index)];
-f = polyfit(x2,y1(1:index),2);
+f = polyfit(x2,y1(1:index),4);
 y2 = polyval(f,x1);
 xc = zeros(length(y2),1);
 xc(:,1) = Vc;
@@ -92,21 +92,34 @@ dx(:,1) = xlim;
 dy = linspace(0,max(P_req),length(P_req));
 
 
-
+ddx = linspace(0,200,200);
+pp = zeros(200,1);
+pp(:,1) = round(P/550);
 
 
 figure
 hold on
-title(['h = ' num2str(h) ' ft'])
+% title(['h = ' num2str(h) ' ft'])
 t1 = plot(x1,P_req,'r','linewidth',2);
 t2 = plot(x1,P_avail,'b','linewidth',2);
-text2line(t1,.4,0,'Power Required')
-text2line(t2,.4,0,'Power Available')
-t3 = plot(dx,dy,'k--','linewidth',1);
-text2line(t3,.3,0,'Stall Speed')
+text2line(t1,.4,0,'Power Required',14)
+text2line(t2,.4,0,'Power Available',14)
+t3 = plot(dx,dy,'k','linewidth',2);
+t4 = plot(ddx,pp,'k--','linewidth',2);
+text2line(t3,.3,0,'Stall Speed',14)
+text2line(t4,.35,0,'Engine Output',14)
 xlabel('Airspeed [kts]')
 ylabel('Power [hp]')
-axis([V(1),140,0,1.5*max(P_avail)])
+axis([0,180,0,80])
+pbaspect([2,1,1])
+ax=gca;
+ax.XTick = 0:25:1000;
+ax.XAxis.MinorTick='on';
+ax.XAxis.MinorTickValues = 0:5:1000;
+ax.YTick = 0:10:100;
+ax.YAxis.MinorTick='on';
+ax.YAxis.MinorTickValues = 0:2:100;
+ax.FontSize = 14;
 grid on
 
 

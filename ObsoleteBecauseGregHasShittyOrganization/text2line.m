@@ -13,7 +13,8 @@ dx=x(i+1)-x(i-1);
 d = (dy/dx);
 X = diff(get(gca, 'xlim'));
 Y = diff(get(gca, 'ylim'));
-p = pbaspect;
+%p = pbaspect;
+p=[2 1 1];
 a = 1*atan(d*p(2)*X/p(1)/Y)*180/pi;
 % Display the text
 switch z==0

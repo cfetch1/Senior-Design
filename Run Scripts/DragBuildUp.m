@@ -1,6 +1,6 @@
 close all
 clear all
-%clc
+clc
 
 % cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
 
@@ -23,11 +23,11 @@ CDi_HT = file(6,:);
 CD0_HT = file(7,:);
 CD0_VT = file(8,:);
 
-%cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
+cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
 
 %% Flight Conditions
 
-h = 7000;
+h = 0000;
 dV = 60:10:150; %kts
 V = dV(ii);
 V_fps = V*1.69;
@@ -121,7 +121,9 @@ j = j+1;
 
 
 end
-
+figure
+hold on
+plot(file(1,:),CL)
 
 j = 7;
 x = [CD0_W(j)+CDi_W(j),CD0_HT(j)+CDi_HT(j)+CD0_VT(j),CD0_B(j)+CDi_B(j),CD_LG(j),CD_duct(j)+CD_cool(j),CDcam(j),CDrad(j),CD_int(j)];
@@ -194,6 +196,15 @@ x2 = 0.02429 + 0.07169*y2.^2;
 y3 = linspace(0,2,100);
 x3 = 0.033 + 0.035*(y3-.14).^2;
 
+f4 = polyfit([.53,.75,.94,1.12,1.26],[.03,.04,.05,.06,.07],2);
+x4 = polyval(f4,y3);
+
+f5 = polyfit([.35,1,1.32,1.5,1.558],[.07,.09,.11,.13,.15],2);
+x5 = polyval(f5,y3);
+
+x6 = .0421*y2.^2-.0294*y2+.0414;
+
+
 ff = [0.0092   -0.0054    0.0203];
 
 figure 
@@ -201,8 +212,11 @@ hold on
 %plot(CD,CL,'g','linewidth',2)
 plot(dx,dy,'g','linewidth',2)
 plot(x1,y1,'r','linewidth',2)
-plot(x2,y2,'b','linewidth',2)
-plot(x3,y3,'m','linewidth',2)
+% plot(x2,y2,'b','linewidth',2)
+% plot(x3,y3,'m','linewidth',2)
+plot(x4,y3,'b','linewidth',2)
+plot(x5,y3,'k','linewidth',2)
+plot(x6,y2,'m','linewidth',2)
 ylabel('C_L')
 xlabel('C_D')
 grid on
@@ -239,3 +253,5 @@ legend('Current Drag Estimate','Initial Drag Estimate','RV7','Cessna 172','locat
 cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
 %close all
 % clc
+
+

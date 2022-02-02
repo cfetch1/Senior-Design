@@ -1,10 +1,10 @@
-close all
-clear all
-clc
+% close all
+% clear all
+% clc
 
 
 
-MTOW = 500;
+MTOW = 400;
 CLmax = 2;
 Eclimb = 15;
 Wf = 10;
@@ -34,16 +34,16 @@ Eloiter = E;
 SFCloiter = .4;
 Endurance = 1;
 reserve = Wf/4;
-hcr = 7000;
-Vcl = 120;
-ROC = 40;
+hcr = 9000;
+Vcl = 100;
+ROC = 500;
 SFCclimb = .5;
 eta_cl = .7865;
 eta_cr = .7859;
 %Eclimb = 14;
 
 
-[MTOW,We,Wf]=RangeSizing(Wpl,Wtoguess,Ecruise,SFCcruise,Range,Eloiter,SFCloiter,Endurance,reserve,hcr,Vcl,ROC,SFCclimb,eta_cl,eta_cr,Eclimb);
+[MTOW,We,Wf,EWF,Wrs]=RangeSizing(Wpl,Wtoguess,Ecruise,SFCcruise,Range,Eloiter,SFCloiter,Endurance,reserve,hcr,Vcl,ROC,SFCclimb,eta_cl,eta_cr,Eclimb);
 e2 = MTOW;
 
 % %AR = 10;
@@ -54,11 +54,11 @@ e2 = MTOW;
 % S =  31.27;
 
 
-WS = 5:50;
+WS = 5:.5:30;
 
-CDto = .028;
+CDto = .042;
 CLto = .7;
-dg = 3000;
+dg = 2000;
 % MTOW = 312;
 
 Vcr = 120;
@@ -80,9 +80,10 @@ h = [hturn, hclimb, hto, hcr, hmax];
 %     z=0;
 % end
 E1 = P;
-[~,~,PWmin,ii] = PowerSizing(WS,CD0,CDto,CLto,CLmax,AR,V,ROC,h,dg,eta,0);
-% 
-% 
+[~,~,PWmin,ii] = PowerSizing(WS,CD0,CDto,CLto,CLmax,AR,V,ROC,h,dg,eta,1);
+PWmin=PWmin*1.1;
+
+ii=13;
 % end
 % figure
 % hold on
@@ -144,7 +145,7 @@ CLmax = WS(ii)/((40*1.69)^2*.0024/2);
 gamma = asin(40*1.69/120);
 q = .5*.0024*(120/1.69)^2;
 CL = (MTOW*cos(gamma))/(q*S);
-CD = .025+k*CL^2;
+CD =CD0+k*CL^2;
 Eclimb = CL/CD;
 
 
@@ -175,24 +176,53 @@ xlabel('AR')
 ylabel('Power')
 grid on
 axis([0,max(x),0,max(y2)])
-subplot(313)
+% subplot(313)
+% hold on
+% plot(x,y3)
+% xlabel('AR')
+% ylabel('Span')
+% grid on
+% axis([0,max(x),0,max(y3)])
+% 
+res=reserve;
+X =categorical({'Start-Up','Taxi','Takeoff','Climb','Cruise','Loiter','Descent','Shut-Down','Reserves'});
+X = reordercats(X,{'Start-Up','Taxi','Takeoff','Climb','Cruise','Loiter','Descent','Shut-Down','Reserves'});
+for ii=1:length(Wrs)
+    y(ii) = (1-(Wrs(ii)))/(prod(Wrs(1:ii)));
+end
+yy = (Wf-res)/sum(y);
+y = y*yy;
+y(end+1) = 12;
+figure
 hold on
-plot(x,y3)
-xlabel('AR')
-ylabel('Span')
+bar(X,y)
+ylabel('Fuel Consumption [lbs]')
+xlabel('Mission Phase')
+ax = gca;
+ax.FontSize = 14;
+ax.YTick = 0:5:100;
+ax.YAxis.MinorTick='on';
+ax.YAxis.MinorTickValues = 0:1:100;
 grid on
-axis([0,max(x),0,max(y3)])
+
+figure
+hold on
+ax=gca;
+ax.FontSize = 14;
+yyaxis left
+plot(x,y1,'b','linewidth',2)
+axis([0,50,0,max(y1)])
+ylabel('MTOW [lbs]')
+yyaxis right
+plot(x,y2,'r','linewidth',2)
+axis([0,50,0,max(y2)])
+ylabel('Power [Hp]')
+xlabel('AR')
+grid on
 
 
-
-
-AR
-MTOW
-S
-b
-c
-
-
-
-
-
+disp(['MTOW = ' num2str(MTOW) ' [lbs]'])
+disp(['Fuel = ' num2str(Wf) ' [lbs]'])
+disp(['P_req = ' num2str(P) ' [BHP]'])
+disp(['Wing Loading = ' num2str(11)])
+disp(['Planform Area = ' num2str(S) ' [ft^2]'])
