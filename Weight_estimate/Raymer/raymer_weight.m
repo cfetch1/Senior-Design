@@ -1,4 +1,4 @@
-function [W_aircraft] = raymer_weight(S,Wfuel,AR,sweep,lambda,t_c,MTOW,S_h,S_v,S_f,lt,L_D,L_sm,L_sn,q,sweep_ht,taper_ht,sweep_vt,taper_vt,N_z)
+function [W_aircraft,Wcomp] = raymer_weight(S,Wfuel,AR,sweep,lambda,t_c,MTOW,S_h,S_v,S_f,lt,L_D,L_sm,L_sn,q,sweep_ht,taper_ht,sweep_vt,taper_vt,N_z)
 % Daniel Raymer method for estimating aircraft wei
 %   See functions below for details
 
@@ -11,6 +11,8 @@ W_l=MTOW-Wfuel;
 [W_fuse] = raymer_fuse(S_f,N_z,MTOW,lt,L_D,q);
 [W_main,W_nose] = raymer_lg(N_l,W_l,L_sm,L_sn);
 W_aircraft = W_wing + W_ht + W_vt + W_fuse + W_main + W_nose;
+Wcomp(:,1)=["Wing";"HT";"VT";"Fuselage";"MLG";"NLG";"Airframe Total"];
+Wcomp(:,2)=[W_wing;W_ht;W_vt;W_fuse;W_main;W_nose;W_aircraft(end)];
 
 
 end

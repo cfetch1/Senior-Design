@@ -1,4 +1,4 @@
-function [Howe_weight] = HOWE_WEIGHT_fun(MTOW,Ltot,fuse_width,fuse_height,v_d,AR,S,sweep,lambda,N_bar,t_c)
+function [Howe_weight,Wcomp_howe] = HOWE_WEIGHT_fun(MTOW,Ltot,fuse_width,fuse_height,v_d,AR,S,sweep,lambda,N_bar,t_c)
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -120,6 +120,8 @@ M_sys = C4*MTOW;
 % MTOW = M_fixed + M_variable;
 
 Howe_weight=(M_liftsurf+M_sys+M_fus)*2.205;
+Wcomp_howe(:,1)=["Lifting SUrface";"System";"Fuselage";"Airframe Total"];
+Wcomp_howe(:,2)=[M_liftsurf;M_sys;M_fus;Howe_weight(end)];
 
 end
 
