@@ -2,62 +2,62 @@ close all
 clear all
 clc
 
-Emax = 12:1:20;
-size= 10;
-SFCcruise = .3:.025:.5;
-Wtoguess = 300;
-reserve = 0;
-for i = 1:length(Emax)
-    for j = 1:length(SFCcruise)
-        err=1000;
-        while err>1
-Wpl=50;
-% Wpl_ = 40:5:100;
-% for i = 1:length(Wpl_)
-% Wpl = Wpl_(i);
-
-% Ecruise = 18;
-% SFCcruise = .4;
-Range = 550;
-% Eloiter = 18;
-% SFCloiter = .4;
-Endurance = 1;
-
-hcr = 9000;
-Vcl = 120;
-ROC = 160;
-% SFCclimb = .5;
-eta_cl = .62;
-eta_cr = .83;
-% Eclimb = 17;
-
-[MTOW,We,Wf]=RangeSizing(Wpl,Wtoguess,Emax(i),SFCcruise(j),Range,Emax(i),.98*SFCcruise(j),Endurance,reserve,hcr,Vcl,ROC,SFCcruise(j)*1.25,eta_cl,eta_cr,Emax(i)*.9306);
-reserve = Wf*.25;
-err=100*abs(MTOW-Wtoguess)/MTOW;
-
-Wtoguess=MTOW;
-% x(i) = Wpl;
-% y(i) = MTOW;
-% end
+% Emax = 12:1:20;
+% size= 10;
+% SFCcruise = .3:.025:.5;
+% Wtoguess = 300;
+% reserve = 0;
+% for i = 1:length(Emax)
+%     for j = 1:length(SFCcruise)
+%         err=1000;
+%         while err>1
+% Wpl=50;
+% % Wpl_ = 40:5:100;
+% % for i = 1:length(Wpl_)
+% % Wpl = Wpl_(i);
 % 
-% figure
-% hold on
-% plot(x,y)
-% xlabel('Payload Weight [lbs]')
-% ylabel('MTOW [lbs]')
-% grid on
-        end
-x1(i) = Emax(i);
-x2(j) = SFCcruise(j);
-y(i,j) = MTOW;
-    end
-
-end
-xx1 = 14.6;
-xx2 = 0.4;
-yy = 439;
-
-
+% % Ecruise = 18;
+% % SFCcruise = .4;
+% Range = 550;
+% % Eloiter = 18;
+% % SFCloiter = .4;
+% Endurance = 1;
+% 
+% hcr = 9000;
+% Vcl = 120;
+% ROC = 160;
+% % SFCclimb = .5;
+% eta_cl = .62;
+% eta_cr = .83;
+% % Eclimb = 17;
+% 
+% [MTOW,We,Wf]=RangeSizing(Wpl,Wtoguess,Emax(i),SFCcruise(j),Range,Emax(i),.98*SFCcruise(j),Endurance,reserve,hcr,Vcl,ROC,SFCcruise(j)*1.25,eta_cl,eta_cr,Emax(i)*.9306);
+% reserve = Wf*.25;
+% err=100*abs(MTOW-Wtoguess)/MTOW;
+% 
+% Wtoguess=MTOW;
+% % x(i) = Wpl;
+% % y(i) = MTOW;
+% % end
+% % 
+% % figure
+% % hold on
+% % plot(x,y)
+% % xlabel('Payload Weight [lbs]')
+% % ylabel('MTOW [lbs]')
+% % grid on
+%         end
+% x1(i) = Emax(i);
+% x2(j) = SFCcruise(j);
+% y(i,j) = MTOW;
+%     end
+% 
+% end
+% xx1 = 14.6;
+% xx2 = 0.4;
+% yy = 439;
+% 
+% 
 
 
 offset = 1;
