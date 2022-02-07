@@ -1,6 +1,11 @@
 clc
 clear
 close all
+addpath("Gundlach\")
+addpath("Nikolai_weight\")
+addpath("Raymer\")
+addpath("Roskam_weight\")
+addpath("Howe\")
 
 %Weigth esimate code
 %The idea is that this will take all the inputs from other engine stuff and
