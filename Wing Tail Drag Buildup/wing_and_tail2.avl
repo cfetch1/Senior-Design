@@ -29,7 +29,7 @@ TRANSLATE
 #--------------------------root------------------------------------
 #    Xle         Yle         Zle         chord       angle
 SECTION
-0.0          0.0         0.0         2.141      0.000
+0.0          0.0         0.0         1.605      0.000
 
 NACA
 2412
@@ -37,7 +37,7 @@ NACA
 #--------------tip---------------
 #    Xle         Yle         Zle         chord       angle
 SECTION
-0.268         12        0.0         1.07      0.000
+0.0         12        0.0         1.605      0.000
 
 NACA
 2412
@@ -78,7 +78,7 @@ NACA
 
 #Cname   Cgain  Xhinge  HingeVec       SgnDup
 CONTROL
-elevator  1.0   1.0    0.0 1.0 0.0    1.0
+elevator  1.0   0.8    0.0 1.0 0.0    1.0
 
 
 #--------------tip---------------
@@ -91,4 +91,4 @@ NACA
 
 #Cname   Cgain  Xhinge  HingeVec       SgnDup
 CONTROL
-elevator  1.0   1.0    0.0 1.0 0.0    1.0
+elevator  1.0   0.8    0.0 1.0 0.0    1.0
