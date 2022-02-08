@@ -1,5 +1,5 @@
 function text2line(h,ksi,z,T)
-size = 12;
+size = 10;
 % Inserts text T in/near line with handle h
 %  ksi - relative distance from the beginning of curve,
 %  z - shift along normal to curve
@@ -14,8 +14,10 @@ dx=x(i+1)-x(i-1);
 d = (dy/dx);
 X = diff(get(gca, 'xlim'));
 Y = diff(get(gca, 'ylim'));
+% pbaspect([1 1 1])
 p = pbaspect;
-a = 1*atan(d*p(2)*X/p(1)/Y)*180/pi;
+%a = 1*atan(d*p(2)*X/p(1)/Y)*180/pi;
+a = 0;
 % Display the text
 switch z==0
     case 1
