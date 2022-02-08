@@ -3,6 +3,8 @@ clear
 clc
 addpath('.\Functions')
  
+%% Carpet Plots
+
 range = linspace(800,1400,13);
 Vcruise = linspace(200,260,13);
 
@@ -16,12 +18,15 @@ for ii = 1:length(range)
     end  
 end
 
-Carpet(range,Vcruise,W1,char('range'),char('airspeed'),char('nmi'),char('kts'),char('MTOW [lbs]'),0,200,50);
+Carpet(range,Vcruise,W1,char('range'),char('airspeed'),char('nmi'),char('kts'),char('MTOW [lbs]'),0,200,500);
 Carpet(range,Vcruise,W2,char('range'),char('airspeed'),char('nmi'),char('kts'),char('Empty Weight [lbs]'),0,100,25);
 Carpet(range,Vcruise,W3,char('range'),char('airspeed'),char('nmi'),char('kts'),char('Fuel Weight [lbs]'),0,100,25);
 Carpet(range,Vcruise,Preq,char('range'),char('airspeed'),char('nmi'),char('kts'),char('Power Required [BHP]'),0,200,50);
 
-%%
+%% Derivatives
+
+range = linspace(400,2000,21);
+Vcruise = linspace(100,300,21);
 
 for ii = 1:length(range)
     for jj = 1:length(Vcruise)
@@ -33,135 +38,136 @@ for ii = 1:length(range)
     end  
 end
 
-fW1(1,:) = polyfit(range,W1(1,:),2);
-fW1(2,:) = polyfit(range,W1(5,:),2);
-fW1(3,:) = polyfit(range,W1(9,:),2);
-fW1(4,:) = polyfit(range,W1(13,:),2);
+dx = range(2)-range(1);
+dV = Vcruise(2)-Vcruise(1);
+zz = 1;
 
-fW2(1,:) = polyfit(Vcruise,W1(1,:),2);
-fW2(2,:) = polyfit(Vcruise,W1(5,:),2);
-fW2(3,:) = polyfit(Vcruise,W1(9,:),2);
-fW2(4,:) = polyfit(Vcruise,W1(13,:),2);
+for ii = round(linspace(1,length(range),4))
 
-fP1(1,:) = polyfit(range,W1(1,:),2);
-fP1(2,:) = polyfit(range,W1(5,:),2);
-fP1(3,:) = polyfit(range,W1(9,:),2);
-fP1(4,:) = polyfit(range,W1(13,:),2);
-
-fP2(1,:) = polyfit(Vcruise,Preq(1,:),2);
-fP2(2,:) = polyfit(Vcruise,Preq(5,:),2);
-fP2(3,:) = polyfit(Vcruise,Preq(9,:),2);
-fP2(4,:) = polyfit(Vcruise,Preq(13,:),2);
-
-for ii = 1:4
+    for jj = 1:length(range)-2
+        
+        dW_dx(zz,jj) = (W1(ii,jj)+W1(ii,jj+2))/(2*dx);
+        dW_dV(zz,jj) = (W1(ii,jj)+W1(ii,jj+2))/(2*dV);
+        dP_dx(zz,jj) = (Preq(ii,jj)+Preq(ii,jj+2))/(2*dx);
+        dP_dV(zz,jj) = (Preq(ii,jj)+Preq(ii,jj+2))/(2*dV);
+     
+    end
     
-    dW_dx(ii,:) = polyval([2*fW1(ii,1),fW1(ii,2)],range);
-    dW_dV(ii,:) = polyval([2*fW2(ii,1),fW2(ii,2)],Vcruise);
-    dP_dx(ii,:) = polyval([2*fP1(ii,1),fP1(ii,2)],range);
-    dP_dV(ii,:) = polyval([2*fP2(ii,1),fP2(ii,2)],Vcruise);
+    for jj = 1:length(range)-3
     
-    d2W_dx2(ii,:) = polyval(2*fW1(ii,1),range);
-    d2W_dV2(ii,:) = polyval(2*fW2(ii,1),Vcruise);
-    d2P_dx2(ii,:) = polyval(2*fP1(ii,1),range);
-    d2P_dV2(ii,:) = polyval(2*fP2(ii,1),Vcruise);
+        d2W_dx2(zz,jj) = (dW_dx(zz,jj+1)-dW_dx(zz,jj))/dx;
+        d2W_dV2(zz,jj) = (dW_dV(zz,jj+1)-dW_dV(zz,jj))/dV;
+        d2P_dx2(zz,jj) = (dP_dx(zz,jj+1)-dP_dx(zz,jj))/dx;
+        d2P_dV2(zz,jj) = (dP_dV(zz,jj+1)-dP_dV(zz,jj))/dV;
+  
+    end
+    
+    zz = zz + 1;
     
 end
 
+Dx1 = linspace(range(1),range(end),length(range)-2);
+Dx2 = linspace(range(1),range(end),length(range)-3);
+DV1 = linspace(range(1),range(end),length(range)-2);
+DV2 = linspace(range(1),range(end),length(range)-3);
+
+ii = round(linspace(1,length(range),4));
+
 figure
 hold on
-plot(range,dW_dx(1,:),'r','linewidth',2)
-plot(range,dW_dx(2,:),'b','linewidth',2)
-plot(range,dW_dx(3,:),'g','linewidth',2)
-plot(range,dW_dx(4,:),'y','linewidth',2)
+plot(Dx1,dW_dx(1,:),'r--','linewidth',2)
+plot(Dx1,dW_dx(2,:),'b--','linewidth',2)
+plot(Dx1,dW_dx(3,:),'g--','linewidth',2)
+plot(Dx1,dW_dx(4,:),'y--','linewidth',2)
 grid on
 axis tight
 ylabel('dW/dx')
 xlabel('Range')
-legend(['V_c = ' num2str(Vcruise(1))],['V_c = ' num2str(Vcruise(5))],['V_c = ' num2str(Vcruise(9))],['V_c = ' num2str(Vcruise(13))],'location','best')
+legend(['V_c = ' num2str(Vcruise(ii(1)))],['V_c = ' num2str(Vcruise(ii(2)))],['V_c = ' num2str(Vcruise(ii(3)))],['V_c = ' num2str(Vcruise(ii(4)))],'location','northwest')
 
 figure
 hold on
-plot(range,dP_dx(1,:),'r','linewidth',2)
-plot(range,dP_dx(2,:),'b','linewidth',2)
-plot(range,dP_dx(3,:),'g','linewidth',2)
-plot(range,dP_dx(4,:),'y','linewidth',2)
+plot(Dx1,dP_dx(1,:),'r--','linewidth',2)
+plot(Dx1,dP_dx(2,:),'b--','linewidth',2)
+plot(Dx1,dP_dx(3,:),'g--','linewidth',2)
+plot(Dx1,dP_dx(4,:),'y--','linewidth',2)
 grid on
 axis tight
 ylabel('dP/dx')
 xlabel('Range')
-legend(['V_c = ' num2str(Vcruise(1))],['V_c = ' num2str(Vcruise(5))],['V_c = ' num2str(Vcruise(9))],['V_c = ' num2str(Vcruise(13))],'location','best')
+legend(['V_c = ' num2str(Vcruise(ii(1)))],['V_c = ' num2str(Vcruise(ii(2)))],['V_c = ' num2str(Vcruise(ii(3)))],['V_c = ' num2str(Vcruise(ii(4)))],'location','northwest')
 
 figure
 hold on
-plot(Vcruise,dW_dV(1,:),'r','linewidth',2)
-plot(Vcruise,dW_dV(2,:),'b','linewidth',2)
-plot(Vcruise,dW_dV(3,:),'g','linewidth',2)
-plot(Vcruise,dW_dV(4,:),'y','linewidth',2)
+plot(DV1,dW_dV(1,:),'r--','linewidth',2)
+plot(DV1,dW_dV(2,:),'b--','linewidth',2)
+plot(DV1,dW_dV(3,:),'g--','linewidth',2)
+plot(DV1,dW_dV(4,:),'y--','linewidth',2)
 grid on
 axis tight
 ylabel('dW/dV')
 xlabel('V_c_r_u_i_s_e')
-legend(['X = ' num2str(range(1))],['X= ' num2str(range(5))],['X = ' num2str(range(9))],['X = ' num2str(range(13))],'location','best')
+legend(['X = ' num2str(range(ii(1)))],['X = ' num2str(range(ii(2)))],['X = ' num2str(range(ii(3)))],['X = ' num2str(range(ii(4)))],'location','northwest')
 
 figure
 hold on
-plot(Vcruise,dP_dV(1,:),'r','linewidth',2)
-plot(Vcruise,dP_dV(2,:),'b','linewidth',2)
-plot(Vcruise,dP_dV(3,:),'g','linewidth',2)
-plot(Vcruise,dP_dV(4,:),'y','linewidth',2)
+plot(DV1,dP_dV(1,:),'r--','linewidth',2)
+plot(DV1,dP_dV(2,:),'b--','linewidth',2)
+plot(DV1,dP_dV(3,:),'g--','linewidth',2)
+plot(DV1,dP_dV(4,:),'y--','linewidth',2)
 grid on
 axis tight
 ylabel('dP/dV')
 xlabel('V_c_r_u_i_s_e')
-legend(['X = ' num2str(range(1))],['X= ' num2str(range(5))],['X = ' num2str(range(9))],['X = ' num2str(range(13))],'location','best')
+legend(['X = ' num2str(range(ii(1)))],['X = ' num2str(range(ii(2)))],['X = ' num2str(range(ii(3)))],['X = ' num2str(range(ii(4)))],'location','northwest')
 
 figure
 hold on
-plot(range,d2W_dx2(1,:),'r','linewidth',2)
-plot(range,d2W_dx2(2,:),'b','linewidth',2)
-plot(range,d2W_dx2(3,:),'g','linewidth',2)
-plot(range,d2W_dx2(4,:),'y','linewidth',2)
+plot(Dx2,d2W_dx2(1,:),'r--','linewidth',2)
+plot(Dx2,d2W_dx2(2,:),'b--','linewidth',2)
+plot(Dx2,d2W_dx2(3,:),'g--','linewidth',2)
+plot(Dx2,d2W_dx2(4,:),'y--','linewidth',2)
 grid on
 axis tight
 ylabel('d^2W/dx^2')
 xlabel('Range')
-legend(['V_c = ' num2str(Vcruise(1))],['V_c = ' num2str(Vcruise(5))],['V_c = ' num2str(Vcruise(9))],['V_c = ' num2str(Vcruise(13))],'location','best')
+legend(['V_c = ' num2str(Vcruise(ii(1)))],['V_c = ' num2str(Vcruise(ii(2)))],['V_c = ' num2str(Vcruise(ii(3)))],['V_c = ' num2str(Vcruise(ii(4)))],'location','northwest')
 
 figure
 hold on
-plot(range,d2P_dx2(1,:),'r','linewidth',2)
-plot(range,d2P_dx2(2,:),'b','linewidth',2)
-plot(range,d2P_dx2(3,:),'g','linewidth',2)
-plot(range,d2P_dx2(4,:),'y','linewidth',2)
+plot(Dx2,d2P_dx2(1,:),'r--','linewidth',2)
+plot(Dx2,d2P_dx2(2,:),'b--','linewidth',2)
+plot(Dx2,d2P_dx2(3,:),'g--','linewidth',2)
+plot(Dx2,d2P_dx2(4,:),'y--','linewidth',2)
 grid on
 axis tight
 ylabel('d^2P/dx^2')
 xlabel('Range')
-legend(['V_c = ' num2str(Vcruise(1))],['V_c = ' num2str(Vcruise(5))],['V_c = ' num2str(Vcruise(9))],['V_c = ' num2str(Vcruise(13))],'location','best')
+legend(['V_c = ' num2str(Vcruise(ii(1)))],['V_c = ' num2str(Vcruise(ii(2)))],['V_c = ' num2str(Vcruise(ii(3)))],['V_c = ' num2str(Vcruise(ii(4)))],'location','northwest')
 
 figure
 hold on
-plot(Vcruise,d2W_dV2(1,:),'r','linewidth',2)
-plot(Vcruise,d2W_dV2(2,:),'b','linewidth',2)
-plot(Vcruise,d2W_dV2(3,:),'g','linewidth',2)
-plot(Vcruise,d2W_dV2(4,:),'y','linewidth',2)
+plot(DV2,d2W_dV2(1,:),'r--','linewidth',2)
+plot(DV2,d2W_dV2(2,:),'b--','linewidth',2)
+plot(DV2,d2W_dV2(3,:),'g--','linewidth',2)
+plot(DV2,d2W_dV2(4,:),'y--','linewidth',2)
 grid on
 axis tight
 ylabel('d^2W/dV^2')
 xlabel('V_c_r_u_i_s_e')
-legend(['X = ' num2str(range(1))],['X= ' num2str(range(5))],['X = ' num2str(range(9))],['X = ' num2str(range(13))],'location','best')
+legend(['X = ' num2str(range(ii(1)))],['X = ' num2str(range(ii(2)))],['X = ' num2str(range(ii(3)))],['X = ' num2str(range(ii(4)))],'location','northwest')
 
 figure
 hold on
-plot(Vcruise,d2P_dV2(1,:),'r','linewidth',2)
-plot(Vcruise,d2P_dV2(2,:),'b','linewidth',2)
-plot(Vcruise,d2P_dV2(3,:),'g','linewidth',2)
-plot(Vcruise,d2P_dV2(4,:),'y','linewidth',2)
+plot(DV2,d2P_dV2(1,:),'r--','linewidth',2)
+plot(DV2,d2P_dV2(2,:),'b--','linewidth',2)
+plot(DV2,d2P_dV2(3,:),'g--','linewidth',2)
+plot(DV2,d2P_dV2(4,:),'y--','linewidth',2)
 grid on
 axis tight
 ylabel('d^2P/dV^2')
 xlabel('V_c_r_u_i_s_e')
-legend(['X = ' num2str(range(1))],['X= ' num2str(range(5))],['X = ' num2str(range(9))],['X = ' num2str(range(13))],'location','best')
+legend(['X = ' num2str(range(ii(1)))],['X = ' num2str(range(ii(2)))],['X = ' num2str(range(ii(3)))],['X = ' num2str(range(ii(4)))],'location','northwest')
 
 
 
