@@ -68,8 +68,8 @@ end
 
 Dx1 = linspace(range(1),range(end),length(range)-2);
 Dx2 = linspace(range(1),range(end),length(range)-3);
-DV1 = linspace(range(1),range(end),length(range)-2);
-DV2 = linspace(range(1),range(end),length(range)-3);
+DV1 = linspace(Vcruise(1),Vcruise(end),length(Vcruise)-2);
+DV2 = linspace(Vcruise(1),Vcruise(end),length(Vcruise)-3);
 
 ii = round(linspace(1,length(range),4));
 
