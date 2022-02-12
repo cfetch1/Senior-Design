@@ -37,7 +37,7 @@ while h(ii)<h2
     P_eng = P0*throttle*(sigma-(1-sigma)/7.55);
     eta_prop = TR640(V(ii),Vc);
     P_avail = P_eng*eta_prop*550;
-    df = PSFC*P_eng*dt/3600;
+    df = PSFC*550*P_eng*dt/3600;
         
     % for gamma << 1
     CL = W(ii)/(.5*rho*V_fps^2*S);

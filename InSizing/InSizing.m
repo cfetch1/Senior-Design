@@ -15,12 +15,12 @@ dX5 = .9*MTOW;
 res = Wf*.25;
 
 %% Constants
-h=18000;
-k=.0975;
+h = 18000;
+k =.0975;
 [~,CD0] = DragSLF(1,0,0,S,0);
 rho_cl = (density(0)+density(h))/2;
 f = [0.0212   -0.0022    0.0282];
-Sg = 1500;
+Sg = 2000;
 
 while err>1
     
@@ -68,17 +68,17 @@ E1 = 13.9;
 
 % [CL2,CD2] = DragSLF(Vcruise,dX2,h,S,0);
 % E2 = CL2/CD2;
-E2 =9.12;
-E3=E2;
+E2 = 9.12;
+E3 = E2;
 % 
 % [CL3,CD3] = DragSLF(Vcruise,dX3,2000,S,0);
 
 Vs = sqrt(2*(dX5)/(.0024*S*1.3))/1.69;
-% [CL4,CD4] = DragSLF(1.5*Vs,dX4,0,S,0);
+[CL4,CD4] = DragSLF(1.5*Vs,dX4,0,S,0);
 % E4=CL4/CD4;
-CL4 = .653;
-CD4 = .0358;
-E4 = 18.2;
+% CL4 = 1.8;
+% CD4 = f(1)*CL4^2+f(2)*CL4+f(3);
+% E4 = CL4/CD4;
 
 WS = 5:.1:30;
 
@@ -89,7 +89,7 @@ PSFC(3) = fPSFC(h,Vcruise);
 % eta(2) = TR640(Vcruise,Vcruise);
 eta = [.555,.8335];
 
-[MTOW,We,Wf,~,Wrs]=RangeSizing(66.4,X1,range,0,[E1,E2,E3],[PSFC(1),PSFC(2),PSFC(3)],[Vclimb,Vcruise,Vcruise],ROC,h,[eta(1),eta(2)],1,res);
+[MTOW,We,Wf,~,Wrs]=RangeSizing_cus(66.4,X1,range,0,[E1,E2,E3],[PSFC(1),PSFC(2),PSFC(3)],[Vclimb,Vcruise,Vcruise],ROC,h,[eta(1),eta(2)],1,res,P2,S);
 X2 = MTOW;
 
 for ii=1:length(Wrs)
@@ -100,7 +100,8 @@ y = y*yy;
 
 PW_cruise2 = PW_cruise(15, WS, Vcruise, CD0, h,.75);
 PW_to = PW_takeoff(15, WS, CL4, CD4,  Sg,  0, 1.5*Vs,Vcruise);
-WS_ = WS_landing(0,Sg,1.3);
+WS_ = WS_landing(0,Sg,1.8)*(X2/dX5);
+
 for ii = 1
     for jj = 1:length(WS)
         PWmin(ii,jj) = max([dX3*PW_cruise2(ii,jj),dX1*PW_to(ii,jj)]);
@@ -134,6 +135,7 @@ end
 
 P=P2;
 [L_fuselage,c_root,c_tip,L_h,S_h,b_h,c_root_h,c_tip_h,L_v,S_v,b_v,c_root_v,c_tip_v] = WingDimensions(S,b,c);
+% [MTOW, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise,b_v,b_h,L_fuselage);
 
 end
 

@@ -1,4 +1,4 @@
-function [MTOW,We,Wf,EWF,Wrs]=RangeSizing(Wpl,Wtoguess,Range,Endurance,E,SFC,V,ROC,h,eta,FOS,reserve)
+function [MTOW,We,Wf,EWF,Wrs]=RangeSizing_cus(Wpl,Wtoguess,Range,Endurance,E,SFC,V,ROC,h,eta,FOS,reserve,P0,S)
     
  %% INPUTS
  % Wpl
@@ -35,14 +35,14 @@ function [MTOW,We,Wf,EWF,Wrs]=RangeSizing(Wpl,Wtoguess,Range,Endurance,E,SFC,V,R
  SFCloiter = SFC(3);
  
  Vcl = V(1);
- vcr = V(2);
+ Vcr = V(2);
  
  eta_climb = eta(1);
  eta_cruise = eta(2);
 
     Wto=Wtoguess; %unnecessary step but might make code more versatile in future
     error = 1000;
-    while (abs(error) > .1) 
+    while (abs(error) > 1) 
         Wrs=zeros(1,8); %weight ratio vector; one for each phase
         W=zeros(1,8); %weight at each phase 1-8, does not include takeoff
         %DATA FROM ROSKAM 
@@ -68,8 +68,9 @@ function [MTOW,We,Wf,EWF,Wrs]=RangeSizing(Wpl,Wtoguess,Range,Endurance,E,SFC,V,R
         
         Xcr = Range-dxcl;
 
-        Wrs(5) = exp(-(Xcr*SFCcruise/(325.866*eta_cruise*Ecruise)));
-        
+        %Wrs(5) = exp(-(Xcr*SFCcruise/(325.866*eta_cruise*Ecruise)));
+        [~,~,~,dW,~] = fcruise(Xcr,h,Vcr,0,Wto*prod(Wrs(1:4)),P0,.75,Vcr,S,[0.0212,-0.0022,0.0282]);
+        Wrs(5) = dW(end)/dW(1);
         loiterfunc=@(w5w6)(1/SFCloiter)*Eloiter*log(w5w6);
         %Wrs(6)=1/fzero(@(Wr)(loiterfunc(Wr)-Endurance),1.4); %estimate fuel burn during cruise from Roskam loiter (I think it's just breguet but without the speed)
         Wrs(6)=1;
@@ -90,8 +91,8 @@ function [MTOW,We,Wf,EWF,Wrs]=RangeSizing(Wpl,Wtoguess,Range,Endurance,E,SFC,V,R
         B = 1.1162;
         
         We_log=(10^((log10(Wto)-A)/B));
-        %We_log = 1006.4;
-        error = We-We_log;
+
+        error = abs((We-We_log)/We_log);
         Wto = Wto - error;
         
     end

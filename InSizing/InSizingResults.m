@@ -2,26 +2,58 @@ close all
 clear 
 clc
 addpath('.\Functions')
- 
+
 %% Carpet Plots
 
-range = linspace(800,1400,13);
-Vcruise = linspace(200,260,13);
+range = linspace(500,1000,13);
+Vcruise = linspace(80,160,13);
+
 
 for ii = 1:length(range)
     for jj = 1:length(Vcruise)
         [Wto,We,Wf,P,S,b,L_fuselage,c_root,c_tip,L_h,S_h,b_h,c_root_h,c_tip_h,L_v,S_v,b_v,c_root_v,c_tip_v] = InSizing(range(ii),Vcruise(jj));
-        W1(ii,jj) = Wto;
+        W1(ii,jj) = Wto(end);
         W2(ii,jj) = We;
         W3(ii,jj) = Wf;
         Preq(ii,jj) = P;
+        [~,~,~,dW,~] = fcruise(200,18000,Vcruise(jj),0,W1(ii,jj),Preq(ii,jj),.75,Vcruise(jj),S,[0.0212,-0.0022,0.0282]);
+        df1 = dW(1)-dW(end);
+        Wr = W1(ii,jj)-df1;
+
+        dV = 60:round(Vcruise(jj));
+        for kk = 1:length(dV)
+            [CL,CD] = DragSLF(dV(kk),Wr,18000,S,0);
+            E(kk) = CL/CD;
+            if E(kk) == max(E)
+                index = kk;
+            end
+        end
+        throttle = .75*dV(index)/Vcruise(jj);
+        [~,~,~,dW,~] = fcruise(200,18000,dV(index),0,Wr,Preq(ii,jj),throttle,Vcruise(jj),S,[0.0212,-0.0022,0.0282]);
+        df2 = dW(1)-dW(end);
+        fr(ii,jj) = Wf - (df1+df2);
+
+        for kk = 1:length(dV)
+            [CL,CD] = DragSLF(dV(kk),Wr,18000,S,0);
+            E32(kk) =CL^1.5/CD;
+            if E32(kk) == max(E32)
+                index = kk;
+            end
+        end
+        throttle = .75*dV(index)/Vcruise(jj);
+        [~,~,~,dW,~] = fcruise(1,18000,dV(index),0,Wr,Preq(ii,jj),throttle,Vcruise(jj),S,[0.0212,-0.0022,0.0282]);
+        dt(ii,jj) = fr(ii,jj)/(dW(1)-dW(end));
+        clear E
     end  
 end
 
-Carpet(range,Vcruise,W1,char('range'),char('airspeed'),char('nmi'),char('kts'),char('MTOW [lbs]'),0,200,500);
-Carpet(range,Vcruise,W2,char('range'),char('airspeed'),char('nmi'),char('kts'),char('Empty Weight [lbs]'),0,100,25);
-Carpet(range,Vcruise,W3,char('range'),char('airspeed'),char('nmi'),char('kts'),char('Fuel Weight [lbs]'),0,100,25);
-Carpet(range,Vcruise,Preq,char('range'),char('airspeed'),char('nmi'),char('kts'),char('Power Required [BHP]'),0,200,50);
+
+
+Carpet(range,Vcruise,W1,char('range'),char('airspeed'),char('nmi'),char('kts'),char('MTOW [lbs]'),0,100,20);
+Carpet(range,Vcruise,W2,char('range'),char('airspeed'),char('nmi'),char('kts'),char('Empty Weight [lbs]'),0,50,10);
+Carpet(range,Vcruise,W3,char('range'),char('airspeed'),char('nmi'),char('kts'),char('Fuel Weight [lbs]'),0,50,10);
+Carpet(range,Vcruise,Preq,char('range'),char('airspeed'),char('nmi'),char('kts'),char('Power Required [BHP]'),0,50,10);
+Carpet(range,Vcruise,dt,char('range'),char('airspeed'),char('nmi'),char('kts'),char('Loiter Time [min]'),0,60,15);
 
 %% Derivatives
 
