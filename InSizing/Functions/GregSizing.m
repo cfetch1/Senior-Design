@@ -2,6 +2,18 @@ function [MTOW,We,Wf] = GregSizing(f,x0,Mission,Vc,Xc,hc,hl,t,ROC,Wpl,Wres)
 
 %% INPUTS
 
+% f         drag curve f(CL)
+% x0        initialization for MTOW, P, S
+% Mission   ON/OFF for mission stages
+% Vc        cruise speed
+% Xc        cruise distance
+% hc        cruise altitude
+% hl        loiter altitude
+% t         loiter time
+% ROC       rate of climb
+% Wpl       payload weight
+% Wres      fuel reserve (%)
+
 % UNITS
 % distance (in air)     nautical miles
 % ground run            feet
@@ -35,9 +47,9 @@ rho = @(h) density(h);
 MTOW = x0(1);
 P0 = x0(2);
 S = x0(3);
-Wrs = ones(1,length(Mission));
+Wrs = ones(1,length(Mission)); % Fuel Fractions
 err = 1000;
-Vp = max(Vc)*1.69; %fps
+Vp = max(Vc)*1.69; % propellor design speed, fps
 
 
 while abs(err) > 1 % Begin Range Sizing Loop
@@ -57,6 +69,8 @@ while abs(err) > 1 % Begin Range Sizing Loop
     W(4) = MTOW*prod(Wrs(1:3));
     
     %% 4. Climb 1
+    
+    % solve for V_Max(L/D)
     syms V
     a = 2*W(4)/(rho(hc(1)/2)*S);
     CL = @(V) a/(V^2);
@@ -67,10 +81,12 @@ while abs(err) > 1 % Begin Range Sizing Loop
     V_kts = V_fps/1.69;
     P_req = .5*rho(hc(1)/2)*V_fps^3*S*CD(V_fps);
     
+    % solve for engine power
     sigma = sigma0(hc(1)/2);
     eta = TR640(V_fps,Vp);
     throttle = (ROC(1)*W(4)/60+P_req)/(P0*550*(sigma-(1-sigma)/7.55)*eta);
     
+    % solve for fuel consumption, distance
     dt = hc(1)/ROC(1);
     df = P0*550*throttle*fTSFC(hc(1)/2,V_kts)*(dt/60)/V_fps;
     gamma = asin(ROC(1)/(60*V_fps));
@@ -86,10 +102,12 @@ while abs(err) > 1 % Begin Range Sizing Loop
     CD = f(1)*CL^2+f(2)*CL+f(3);
     P_req = .5*rho(hc(1))*V_fps^3*S*CD;
     
+    % solve for engine power 
     sigma = sigma0(hc(1));
     eta = TR640(V_fps,Vp);
     throttle = P_req/(P0*550*(sigma-(1-sigma)/7.55)*eta);
     
+    % solve for fuel consumption
     dt = (Xc(1)-dx)/Vc(1);
     df = P0*550*throttle*fTSFC(hc(1),V_kts)*dt/V_fps;
     
@@ -224,16 +242,17 @@ while abs(err) > 1 % Begin Range Sizing Loop
     W(12) = MTOW*prod(Wrs(1:11));
     
     
-    
+    % total fuel required
     Wf = MTOW*(1-prod(Wrs))*(1+Wres);
     
     We=MTOW-Wf-Wpl;
     
+    % calculate empty weight from log regression (Roskam)
     A = -.144;
     B = 1.1162;
-    
     We_log=(10^((log10(MTOW)-A)/B));
-    %We_log = 1006.4;
+    
+    % update MTOW based on error
     err = We-We_log;
     MTOW = MTOW - err;
     
