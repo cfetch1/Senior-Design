@@ -1,4 +1,4 @@
-function [MTOW,We,Wf] = GregSizing(f,x0,Mission,Vc,Xc,hc,hl,t,ROC,Wpl,Wres)
+function [MTOW,We,Wf,Wrs] = GregSizing(f,x0,Mission,Vc,Xc,hc,hl,t,ROC,Wpl,Wres)
 
 %% INPUTS
 
@@ -88,7 +88,7 @@ while abs(err) > 1 % Begin Range Sizing Loop
     
     % solve for fuel consumption, distance
     dt = hc(1)/ROC(1);
-    df = P0*550*throttle*fTSFC(hc(1)/2,V_kts)*(dt/60)/V_fps;
+    df = P0*550*throttle*(sigma-(1-sigma)/7.55)*fTSFC(hc(1)/2,V_kts)*(dt/60)/(V_fps);
     gamma = asin(ROC(1)/(60*V_fps));
     dx = V_fps*cos(gamma)*3600/(5280*1.15);
     
@@ -108,8 +108,8 @@ while abs(err) > 1 % Begin Range Sizing Loop
     throttle = P_req/(P0*550*(sigma-(1-sigma)/7.55)*eta);
     
     % solve for fuel consumption
-    dt = (Xc(1)-dx)/Vc(1);
-    df = P0*550*throttle*fTSFC(hc(1),V_kts)*dt/V_fps;
+    dt = (Xc(1)-2*dx)/Vc(1);
+    df = P0*550*throttle*(sigma-(1-sigma)/7.55)*fTSFC(hc(1),Vc(1))*dt/(V_fps);
     
     W(6) = W(5)-df;
     Wrs(5) = W(6)/W(5);
@@ -123,6 +123,8 @@ while abs(err) > 1 % Begin Range Sizing Loop
     W(7) = MTOW*prod(Wrs(1:6));
     
     if Mission(7) == 1
+        
+        % solve for V_MaxEndurance
         syms V
         a = 2*W(4)/(rho(hl(1))*S);
         CL = @(V) a/(V^2);
@@ -133,11 +135,13 @@ while abs(err) > 1 % Begin Range Sizing Loop
         V_kts = V_fps/1.69;
         P_req = .5*rho(hl(1))*V_fps^3*S*CD(V_fps);
         
+        % solve for engine power
         sigma = sigma0(hl(1));
         eta = TR640(V_fps,Vp);
         throttle = P_req/(P0*550*(sigma-(1-sigma)/7.55)*eta);
         
-        df = P0*throttle*550*fTSFC(hl(1),V_kts)*(t(1)/60)/V_fps;
+        % solve for fuel consumption
+        df = P0*throttle*550*(sigma-(1-sigma)/7.55)*fTSFC(hl(1),V_kts)*(t(1)/60)/V_fps;
         W(8) = W(7)-df;
         Wrs(7) = W(8)/W(7);
     else
@@ -200,7 +204,7 @@ while abs(err) > 1 % Begin Range Sizing Loop
         eta = TR640(V_fps,Vp);
         throttle = P_req/(P0*550*(sigma-(1-sigma)/7.55)*eta);
         
-        dt = (Xc(2)-dx)/(V_fps*3600/(5280*1.15));
+        dt = (Xc(2)-2*dx)/(V_fps*3600/(5280*1.15));
         df = P0*550*throttle*fTSFC(hc(2),V_kts)*dt/V_fps;
         W(10) = W(9)-df;
         Wrs(9) = W(10)/W(9);
@@ -248,9 +252,12 @@ while abs(err) > 1 % Begin Range Sizing Loop
     We=MTOW-Wf-Wpl;
     
     % calculate empty weight from log regression (Roskam)
-    A = -.144;
-    B = 1.1162;
-    We_log=(10^((log10(MTOW)-A)/B));
+    A1 = -.144;
+    B1 = 1.1162;
+    
+    A2 = .8222;
+    B2 = .8050;
+    We_log=.5*( (10^((log10(MTOW)-A1)/B1)) + (10^((log10(MTOW)-A2)/B2)) );
     
     % update MTOW based on error
     err = We-We_log;
