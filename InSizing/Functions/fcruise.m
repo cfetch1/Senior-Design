@@ -19,7 +19,7 @@ ii = 1;
 
 while x(ii)<x2
     
-    PSFC = fPSFC(h(ii),V(ii));
+    TSFC = fTSFC(h(ii),V(ii));
     
     rho = density(h(ii));
     
@@ -27,7 +27,7 @@ while x(ii)<x2
     P_eng = P0*throttle*(sigma-(1-sigma)/7.55);
     eta_prop = TR640(V(ii)+Vw,Vc);
     P_avail = P_eng*eta_prop*550;
-    df = PSFC*P0*throttle*dt/3600;
+    df = TSFC*P0*550*throttle*(sigma-(1-sigma)/7.55)*(dt/3600)/(V(ii)*1.69);
     
     V_fps = (V(ii)+Vw)*1.69;        
     CL = W(ii)/(.5*rho*V_fps^2*S);
