@@ -46,7 +46,12 @@ for i = 1:size(Re,2)
         RSUT = xfoilCl('NACA2412', CL_trim(i), Re(j,i), M(i),'panels n 400');
         disp(['Section = ', num2str(j),' Cd_p_i = ',... 
               num2str(RSUT.CD)])        
-        
+        try
+            AOA(j) = RSUT.alpha;
+        catch
+            AOA(j) = AOA(j-1);
+            continue
+        end
         % Sum Equations
         top = top + RSUT.CD.*S(j);
         bottom = bottom + S(j);
@@ -57,6 +62,11 @@ for i = 1:size(Re,2)
         Cd_p(i) = 2*(top./bottom)*(S_e/sum(S));
         disp([...'Total Cd_p = ',
              num2str(Cd_p(i))])
+
+        alpha(i) = mean(AOA(j));
+        disp(['Mean AOA = ',...
+             num2str(alpha(i))])
+        
         disp(' ')
     catch
         disp(' ')
