@@ -33,7 +33,7 @@ h = 18000;
 
 %% Geometric Inputs
 
-S = 38.63;
+S = 38.5;
 SA = 4.743;
 SC = 12.2804;
 Scab = 1.7671;
@@ -62,9 +62,9 @@ eta = .675;
 CDC = polyval(fc,MC);
 CDS_LG = [.484,.484,.484]/2;
 CDScam = .47;
-FOScam = 1;
+FOScam = 1.2;
 CDSrad = .47;
-FOSrad = .5;
+FOSrad = 1;
 
 % Fuselage Lift - Drag
 [CL_B(ii),~,CD0_B(ii),CDi_B(ii)] = FuselageLiftDrag(alpha,alphaB0,S,k,diaB,eta,CDC,Spx0,Cf,F,SA,SC,K,dCDS_cab,Scab);
@@ -73,10 +73,10 @@ FOSrad = .5;
 [CD_LG(ii)] = LandingGearDrag(CDS_LG,d_LG,w_LG,S);
 
 % (Gimbal) Camera Drag
-[CDcam(ii)] = ShapeDrag(CDScam,Scam,S,.5);
+[CDcam(ii)] = ShapeDrag(CDScam,Scam,S,FOScam);
 
 % (Gimbal) Radar Drag
-[CDrad(ii)] = ShapeDrag(CDSrad,Srad/2,S,.5);
+[CDrad(ii)] = ShapeDrag(CDSrad,Srad/2,S,FOSrad);
 
 % Wing-Fuselage Interference Drag
 [CD_WB(ii)] = .05*(CD0_B(ii)+CDi_B(ii));
@@ -100,7 +100,8 @@ CD_BC(ii) = WashoutDrag(dphi,0,Scam,S,1.5);
 
 
 %CD_cool = [0.001825 0.001564 0.001369 0.001217 0.001095 0.000996 0.000913 0.000842 0.000782 0.000730];
-CD_cool = .0011;
+CD_cool = linspace(0.001825,0.000730, length(dV));
+CD_cool = CD_cool(ii);
 
 
 CD0(j) = CD0_W(ii) + CD0_HT(ii) + CD0_VT(ii) + CD0_B(ii) + CD_LG(ii) + CD_duct(ii) + CD_cool(1)+CDcam(ii)+CDrad(ii);
@@ -123,11 +124,11 @@ figure
 hold on
 % plot(file(1,:),CL)
 
-j = 7;
+j = 9;
 x = [CD0_W(j)+CDi_W(j),CD0_HT(j)+CDi_HT(j)+CD0_VT(j),CD0_B(j)+CDi_B(j),CD_LG(j),CD_duct(j)+CD_cool(1),CDcam(j),CDrad(j),CD_int(j)];
 pie(x*100);
 legend('Wing','Tail','Fuselage','Landing Gear','Inlets','Camera','Radar','Interference','location','best')
-
+pbaspect([1 1 1])
 
 
 
