@@ -1,121 +1,122 @@
-close all
-clear all
-clc
+close all;
+clear;
+clc;
 
+addpath('..\Functions')
 % cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
 fc = polyfit([0,.2,.4,.6,.8,1],[1.2,1.21,1.29,1.5,1.76,1.78],3);
 
 file = readmatrix('../Wing Tail Drag Buildup/Drag.xlsx', 'Range', 'B20:V29');
 dV = file(1,:);
 j = 1;
+
+% Iteratre throught velocity vector
 for ii = 1:length(dV)
 
-%% Wing Data from AVL
-V = dV(ii);
-V_fps = file(2,ii);
+    %% Wing Data from AVL
+    V = dV(ii);
+    V_fps = file(2,ii);
 
 
-alpha = file(3,ii);
-CL_W = file(4,:);
-CDi_W = file(5,:);
-CD0_W = file(6,:);
-CL_HT = file(7,:);
-CDi_HT = file(8,:);
-CD0_HT = file(9,:);
-CD0_VT = file(10,:);
+    alpha = file(3,ii);
+    CL_W = file(4,:);
+    CDi_W = file(5,:);
+    CD0_W = file(6,:);
+    CL_HT = file(7,:);
+    CDi_HT = file(8,:);
+    CD0_HT = file(9,:);
+    CD0_VT = file(10,:);
 
-cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
+    %% Flight Conditions
 
-%% Flight Conditions
+    h = 18000;
+    [T,P,rho] = ISA_english(h);
 
-h = 18000;
-[T,P,rho] = ISA_english(h);
+    %% Geometric Inputs
 
-%% Geometric Inputs
+    S = 38.5;
+    SA = 4.743;
+    SC = 12.2804;
+    Scab = 1.7671;
+    Spx0 = 40.2806;
+    alphaB0 = -2.96;
+    diaB = 1.5;
+    w_LG = [1/6,1/6,1/8];
+    d_LG = [2/3,2/3,1/2];
+    Scam = 1.136;
+    Srad = 45.8/144;
+    nT = 5;
+    tc_T = 3.25/(.5*(29.9+11.97));
+    cT = 29.92/12;
+    A = .3061;
+    V2 = .9;
+    M = V*1.69*.3048/sqrt(1.4*296*278);
+    MC = M*sind(alpha);
 
-S = 38.5;
-SA = 4.743;
-SC = 12.2804;
-Scab = 1.7671;
-Spx0 = 40.2806;
-alphaB0 = -2.96;
-diaB = 1.5;
-w_LG = [1/6,1/6,1/8];
-d_LG = [2/3,2/3,1/2];
-Scam = 1.136;
-Srad = 45.8/144;
-nT = 5;
-tc_T = 3.25/(.5*(29.9+11.97));
-cT = 29.92/12;
-A = .3061;
-V2 = .9;
-M = V*1.69*.3048/sqrt(1.4*296*278);
-MC = M*sind(alpha);
+    %% Assumptions/Hand Calcs
+    Cf = (8.5-4.5*sqrt(ii/7))*10^-3;
+    dCDS_cab = .009;
+    k = .91;
+    K = 9;
+    F = 1.08;
+    eta = .675;
+    CDC = polyval(fc,MC);
+    CDS_LG = [.484,.484,.484]/2;
+    CDScam = .47;
+    FOScam = 1.2;
+    CDSrad = .47;
+    FOSrad = 1;
 
-%% Assumptions/Hand Calcs
-Cf = (8.5-4.5*sqrt(ii/7))*10^-3;
-dCDS_cab = .009;
-k = .91;
-K = 9;
-F = 1.08;
-eta = .675;
-CDC = polyval(fc,MC);
-CDS_LG = [.484,.484,.484]/2;
-CDScam = .47;
-FOScam = 1.2;
-CDSrad = .47;
-FOSrad = 1;
+    % Fuselage Lift - Drag
+    [CL_B(ii),~,CD0_B(ii),CDi_B(ii)] = FuselageLiftDrag(alpha,alphaB0,S,k,diaB,eta,CDC,Spx0,Cf,F,SA,SC,K,dCDS_cab,Scab);
 
-% Fuselage Lift - Drag
-[CL_B(ii),~,CD0_B(ii),CDi_B(ii)] = FuselageLiftDrag(alpha,alphaB0,S,k,diaB,eta,CDC,Spx0,Cf,F,SA,SC,K,dCDS_cab,Scab);
+    % Landing Gear Drag
+    [CD_LG(ii)] = LandingGearDrag(CDS_LG,d_LG,w_LG,S);
 
-% Landing Gear Drag
-[CD_LG(ii)] = LandingGearDrag(CDS_LG,d_LG,w_LG,S);
+    % (Gimbal) Camera Drag
+    [CDcam(ii)] = ShapeDrag(CDScam,Scam,S,FOScam);
 
-% (Gimbal) Camera Drag
-[CDcam(ii)] = ShapeDrag(CDScam,Scam,S,FOScam);
+    % (Gimbal) Radar Drag
+    [CDrad(ii)] = ShapeDrag(CDSrad,Srad/2,S,FOSrad);
 
-% (Gimbal) Radar Drag
-[CDrad(ii)] = ShapeDrag(CDSrad,Srad/2,S,FOSrad);
+    % Wing-Fuselage Interference Drag
+    [CD_WB(ii)] = .05*(CD0_B(ii)+CDi_B(ii));
 
-% Wing-Fuselage Interference Drag
-[CD_WB(ii)] = .05*(CD0_B(ii)+CDi_B(ii));
- 
-% Tail-Fuselage Interference Drag
-[CD_WT(ii)] = TailFuselageInterference(2,tc_T,cT,S);
+    % Tail-Fuselage Interference Drag
+    [CD_WT(ii)] = TailFuselageInterference(2,tc_T,cT,S);
 
-% Air Intake Drag
-CD_duct(ii) = DuctDrag(h,A,V,V*V2,S);
+    % Air Intake Drag
+    CD_duct(ii) = DuctDrag(h,A,V,V*V2,S);
 
-% Radar Interference
-CD_BR1(ii) = .05*CDrad(ii);
-dphi = atand(6.93/25.05)-atand(6.93/(25.05+52.7/2));
-CD_BR(ii) = WashoutDrag(dphi,0,Srad/2,S,1.2);
+    % Radar Interference
+    CD_BR1(ii) = .05*CDrad(ii);
+    dphi = atand(6.93/25.05)-atand(6.93/(25.05+52.7/2));
+    CD_BR(ii) = WashoutDrag(dphi,0,Srad/2,S,1.2);
 
 
-% Camera Interference
-CD_BC1(ii) = .05*CDcam(ii);
-dphi = atand(6.44/(5.13-3.53))-atand(6.44/5.13);
-CD_BC(ii) = WashoutDrag(dphi,0,Scam,S,1.5);
+    % Camera Interference
+    CD_BC1(ii) = .05*CDcam(ii);
+    dphi = atand(6.44/(5.13-3.53))-atand(6.44/5.13);
+    CD_BC(ii) = WashoutDrag(dphi,0,Scam,S,1.5);
 
 
-%CD_cool = [0.001825 0.001564 0.001369 0.001217 0.001095 0.000996 0.000913 0.000842 0.000782 0.000730];
-CD_cool = linspace(0.001825,0.000730, length(dV));
-CD_cool = CD_cool(ii);
+    %CD_cool = [0.001825 0.001564 0.001369 0.001217 0.001095 0.000996 0.000913 0.000842 0.000782 0.000730];
+    CD_cool = linspace(0.001825,0.000730, length(dV));
+    CD_cool = CD_cool(ii);
 
 
-CD0(j) = CD0_W(ii) + CD0_HT(ii) + CD0_VT(ii) + CD0_B(ii) + CD_LG(ii) + CD_duct(ii) + CD_cool(1)+CDcam(ii)+CDrad(ii);
-CDi(j) =  CDi_W(ii) + CDi_HT(ii) + CDi_B(ii);
-CD_int(j) = CD_WB(ii) + CD_WT(ii) + CD_BR(ii) + CD_BC(ii);
- %CD(j) = 1.05*CD0(j)+1.2*CDi(j)+1.1*CD_int(j);
-%CD(j) = CD0(j)+CDi(j)+CD_int(j)+err;
-CD(j) = CD0(j)+CDi(j)+CD_int(j);
+    CD0(j) = CD0_W(ii) + CD0_HT(ii) + CD0_VT(ii) + CD0_B(ii) + CD_LG(ii) + CD_duct(ii) + CD_cool(1)+CDcam(ii)+CDrad(ii);
+    CDi(j) =  CDi_W(ii) + CDi_HT(ii) + CDi_B(ii);
+    CD_int(j) = CD_WB(ii) + CD_WT(ii) + CD_BR(ii) + CD_BC(ii);
+    %CD(j) = 1.05*CD0(j)+1.2*CDi(j)+1.1*CD_int(j);
+    %CD(j) = CD0(j)+CDi(j)+CD_int(j)+err;
+    CD(j) = CD0(j)+CDi(j)+CD_int(j);
 
-CL(j) = CL_W(ii) + CL_HT(ii) + CL_B(ii);
-L(j) = .5*S*rho*V_fps^2*CL(j);
-D(j) = .5*S*rho*V_fps^2*CD(j);
-E(j) = CL(j)/CD(j);
-j = j+1;
+    CL(j) = CL_W(ii) + CL_HT(ii) + CL_B(ii);
+    L(j) = .5*S*rho*V_fps^2*CL(j);
+    D(j) = .5*S*rho*V_fps^2*CD(j);
+    E(j) = CL(j)/CD(j);
+    j = j+1;
 
 
 
@@ -137,18 +138,11 @@ pbaspect([1 1 1])
 
 
 
-
-
-
-
-
-% 
-% 
 % f1 = polyfit(CD0_W+CDi_W,CL_W,2);
 % f2 = polyfit(CD0_HT+CDi_HT+CD0_VT,CL_HT,2);
 % f3 = polyfit(CD0_B+CDi_B,CL_B,2);
 % dx = linspace(.002,.042,100);
-% figure 
+% figure
 % hold on
 % plot(CD0_W+CDi_W,CL_W,'b','linewidth',2)
 % plot(CD0_HT+CDi_HT+CD0_VT,CL_HT,'r','linewidth',2)
@@ -166,7 +160,7 @@ pbaspect([1 1 1])
 % % f2 = polyfit(alpha,CL_HT,2);
 % % f3 = polyfit(alpha,CL_B,2);
 % dx = linspace(0,10,100);
-% figure 
+% figure
 % hold on
 % plot(alpha,CL_W,'b','linewidth',2)
 % plot(alpha,CL_HT,'r','linewidth',2)
@@ -206,7 +200,7 @@ x6 = .0421*y2.^2-.0294*y2+.0414;
 
 ff = [0.0092   -0.0054    0.0203];
 
-figure 
+figure
 hold on
 %plot(CD,CL,'g','linewidth',2)
 plot(dx,dy,'g','linewidth',2)
@@ -230,16 +224,13 @@ ax.YTick = 0:.25:30000;
 ax.YAxis.MinorTick='on';
 ax.YAxis.MinorTickValues = 0:.05:30000;
 legend('Current Drag Estimate','Initial Drag Estimate','RV7','Cessna 172','location','best')
-% 
-% figure 
+%
+% figure
 % hold on
 % plot(x2,y2,'b','linewidth',2)
 % plot(polyval(ff,y2),y2,'r','linewidth',2)
 % grid on
 % axis([0,max(CD),0,max(CL)])
-
-
-
 
 
 
@@ -249,7 +240,7 @@ legend('Current Drag Estimate','Initial Drag Estimate','RV7','Cessna 172','locat
 % grid on
 % axis([min(file(1,1:ii)),max(file(1,1:ii)),0,max(CL)])
 
-cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
+% cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
 %close all
 % clc
 
