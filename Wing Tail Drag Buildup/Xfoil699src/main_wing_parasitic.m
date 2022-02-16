@@ -1,12 +1,13 @@
 clc;clear;close all;
 
 % Trim Condition setup
-CL_trim = [1.0080	0.7401  0.5670	0.4480	0.3629	0.3	0.2520	0.2147...
-        0.1851	0.1613	0.1417	0.1256	0.1120	0.1005	0.0907	0.0823...
-    	0.0750	0.0686	0.0630	0.0581	0.0537];
+CL_trim = [1.48	1.2023	0.9205	0.7273	0.5891	0.4869	0.4091	0.3486...
+    0.3006	0.2618	0.2301	0.2039	0.1818	0.1632	0.1473	0.1336	0.1217...
+    0.1114	0.1023	0.0943	0.0872
+];
 
 % Speed in [ft/s]
-V = [101.3	118.1	135.0	151.9	168.8	185.7	202.5	219.4	236.3...
+V = [102	118.1	135.0	151.9	168.8	185.7	202.5	219.4	236.3...
     253.2	270.0	286.9	303.8	320.7	337.6	354.4	371.3	388.2...
     405.1	422.0	438.8];
 
@@ -23,14 +24,15 @@ M = V./sqrt(1.4*R*T);
 MAC = [5.747 4.981 4.2144 3.4482];
 
 % Ref Area [ft2]
-S = 2.*[6.021 5.218 4.415 3.612];
+S = [6.021 5.218 4.415 3.612];
 
+S_ref = sum(2.*S);
 
 % Fuse Diameter [ft]
 F_d = 1.5;
 
 % Area without fuselage [ft^2]
-S_e = 2.*sum(S) - (1.5*2.141);
+S_e = S_ref - (F_d*5.747);
 
 % Re by section and speed
 for i = 1:length(V)
@@ -52,21 +54,22 @@ for i = 1:size(Re,2)
         try
             AOA(j) = RSUT.alpha;
         catch
-            AOA(j) = AOA(j-1);
+%             AOA(j) = AOA(j-1);
             continue
         end
         % Sum Equations
         top = top + RSUT.CD.*S(j);
         bottom = bottom + S(j);
     end
-
+    
+    alpha(i) = mean(AOA);
     % Total C_d parasitic
     try
-        Cd_p(i) = 2*(top./bottom)*(S_e/sum(S));
+        Cd_p(i) = 2*(top./bottom)*(S_e/S_ref);
         disp([...'Total Cd_p = ',
              num2str(Cd_p(i))])
 
-        alpha(i) = mean(AOA(j));
+        
         disp(['Mean AOA = ',...
              num2str(alpha(i))])
         

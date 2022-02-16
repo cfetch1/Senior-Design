@@ -63,7 +63,7 @@ for ii = 1:length(dV)
     CDC = polyval(fc,MC);
     CDS_LG = [.484,.484,.484]/2;
     CDScam = .47;
-    FOScam = 1.2;
+    FOScam = 1;
     CDSrad = .47;
     FOSrad = 1;
 
@@ -74,7 +74,7 @@ for ii = 1:length(dV)
     [CD_LG(ii)] = LandingGearDrag(CDS_LG,d_LG,w_LG,S);
 
     % (Gimbal) Camera Drag
-    [CDcam(ii)] = ShapeDrag(CDScam,Scam,S,FOScam);
+    [CDcam(ii)] = ShapeDrag(0,Scam,S,FOScam);
 
     % (Gimbal) Radar Drag
     [CDrad(ii)] = ShapeDrag(CDSrad,Srad/2,S,FOSrad);
@@ -125,19 +125,15 @@ figure
 hold on
 % plot(file(1,:),CL)
 
-j = 9;
+% Cruise Condition
+j = 7;
 x = [CD0_W(j)+CDi_W(j),CD0_HT(j)+CDi_HT(j)+CD0_VT(j),CD0_B(j)+CDi_B(j),CD_LG(j),CD_duct(j)+CD_cool(1),CDcam(j),CDrad(j),CD_int(j)];
 pie(x*100);
 legend('Wing','Tail','Fuselage','Landing Gear','Inlets','Camera','Radar','Interference','location','best')
 pbaspect([1 1 1])
 
 
-
-
-
-
-
-
+%{
 % f1 = polyfit(CD0_W+CDi_W,CL_W,2);
 % f2 = polyfit(CD0_HT+CDi_HT+CD0_VT,CL_HT,2);
 % f3 = polyfit(CD0_B+CDi_B,CL_B,2);
@@ -170,7 +166,7 @@ pbaspect([1 1 1])
 % xlabel('AoA')
 % axis([0,10,0,1])
 % legend('Wing','Tail','Fuselage')
-
+%}
 
 
 f = polyfit(CL,CD,2);
