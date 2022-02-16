@@ -3,34 +3,32 @@ clear all
 clc
 
 % cd('C:\Users\grega\Documents\GitHub\Senior-Design\Run Scripts')
-
-file = load('AVLdrag.csv');
-
 fc = polyfit([0,.2,.4,.6,.8,1],[1.2,1.21,1.29,1.5,1.76,1.78],3);
 
-err = std([.0202,.0192,.0295,.0346,.0329,.0291,.0319,.047,.026,.0312,.0218,.0223,.0247,.0297,.0270,.0355,.0255,.0254,.0287,.0488,.0680,.0174,.0189,.0320,.0373,.0258,.0389,.0237,.0445,.0559,.0247,.0233]);
+file = readmatrix('../Wing Tail Drag Buildup/Drag.xlsx', 'Range', 'B20:V29');
+dV = file(1,:);
 j = 1;
-for ii = 1:10
+for ii = 1:length(dV)
 
 %% Wing Data from AVL
+V = dV(ii);
+V_fps = file(2,ii);
 
-alpha = file(1,ii);
-CL_W = file(2,:);
-CDi_W = file(3,:);
-CD0_W = file(4,:);
-CL_HT = file(5,:);
-CDi_HT = file(6,:);
-CD0_HT = file(7,:);
-CD0_VT = file(8,:);
+
+alpha = file(3,ii);
+CL_W = file(4,:);
+CDi_W = file(5,:);
+CD0_W = file(6,:);
+CL_HT = file(7,:);
+CDi_HT = file(8,:);
+CD0_HT = file(9,:);
+CD0_VT = file(10,:);
 
 cd('C:\Users\grega\Documents\GitHub\Senior-Design\Functions')
 
 %% Flight Conditions
 
-h = 0000;
-dV = 60:10:150; %kts
-V = dV(ii);
-V_fps = V*1.69;
+h = 18000;
 [T,P,rho] = ISA_english(h);
 
 %% Geometric Inputs
@@ -101,11 +99,11 @@ dphi = atand(6.44/(5.13-3.53))-atand(6.44/5.13);
 CD_BC(ii) = WashoutDrag(dphi,0,Scam,S,1.5);
 
 
-CD_cool = [0.001825 0.001564 0.001369 0.001217 0.001095 0.000996 0.000913 0.000842 0.000782 0.000730];
+%CD_cool = [0.001825 0.001564 0.001369 0.001217 0.001095 0.000996 0.000913 0.000842 0.000782 0.000730];
+CD_cool = .0011;
 
 
-
-CD0(j) = CD0_W(ii) + CD0_HT(ii) + CD0_VT(ii) + CD0_B(ii) + CD_LG(ii) + CD_duct(ii) + CD_cool(ii)+CDcam(ii)+CDrad(ii);
+CD0(j) = CD0_W(ii) + CD0_HT(ii) + CD0_VT(ii) + CD0_B(ii) + CD_LG(ii) + CD_duct(ii) + CD_cool(1)+CDcam(ii)+CDrad(ii);
 CDi(j) =  CDi_W(ii) + CDi_HT(ii) + CDi_B(ii);
 CD_int(j) = CD_WB(ii) + CD_WT(ii) + CD_BR(ii) + CD_BC(ii);
  %CD(j) = 1.05*CD0(j)+1.2*CDi(j)+1.1*CD_int(j);
@@ -123,10 +121,10 @@ j = j+1;
 end
 figure
 hold on
-plot(file(1,:),CL)
+% plot(file(1,:),CL)
 
 j = 7;
-x = [CD0_W(j)+CDi_W(j),CD0_HT(j)+CDi_HT(j)+CD0_VT(j),CD0_B(j)+CDi_B(j),CD_LG(j),CD_duct(j)+CD_cool(j),CDcam(j),CDrad(j),CD_int(j)];
+x = [CD0_W(j)+CDi_W(j),CD0_HT(j)+CDi_HT(j)+CD0_VT(j),CD0_B(j)+CDi_B(j),CD_LG(j),CD_duct(j)+CD_cool(1),CDcam(j),CDrad(j),CD_int(j)];
 pie(x*100);
 legend('Wing','Tail','Fuselage','Landing Gear','Inlets','Camera','Radar','Interference','location','best')
 
@@ -220,7 +218,7 @@ plot(x6,y2,'m','linewidth',2)
 ylabel('C_L')
 xlabel('C_D')
 grid on
-axis([0,max(CD),0,max(CL)])
+axis([0,.1,0,2])
 ax=gca;
 ax.XAxis.Exponent = 0;
 ax.XTick = 0:.025:1000;
