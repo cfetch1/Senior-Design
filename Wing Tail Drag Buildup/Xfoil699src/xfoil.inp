@@ -1,4 +1,4 @@
-naca 2412
+naca 0012
 panels
 n
 400
@@ -6,15 +6,15 @@ n
 
 
 oper
-re 5.69335e+06
-mach 0.41988
+re 4.06384e+06
+mach 0.40285
 visc
 pacc
 
 
-c 0.0537
-dump xfoil_c00.054_dump.dat
-cpwr xfoil_c00.054_cpwr.dat
+alfa 0
+dump xfoil_a00.000_dump.dat
+cpwr xfoil_a00.000_cpwr.dat
 pwrt
 xfoil_pwrt.dat
 plis

@@ -1,10 +1,12 @@
 clc;clear;close all;
 
 % Trim Condition setup
-alpha = zeros(10);
+alpha = zeros(21);
 
-V = [101.28	118.16	135.04	151.92	168.8...
-     185.68	202.56	219.44	236.32	251];
+% Speed in [ft/s]
+V = [101.3	118.1	135.0	151.9	168.8	185.7	202.5	219.4	236.3...
+    253.2	270.0	286.9	303.8	320.7	337.6	354.4	371.3	388.2...
+    405.1	422.0	438.8];
 
 % mach calculation
 T = 493.7153; % R
@@ -40,9 +42,12 @@ for i = 1:size(Re,2)
     
     for j = 1:size(Re,1) 
         % Run Xfoil
-        RSUT = xfoil('NACA0012', alpha(i), Re(j,i), M(i),'panels n 400');
-        disp(['Section = ', num2str(j),' Cd_p_i = ', num2str(RSUT.CD)])        
-        
+        try
+            RSUT = xfoil('NACA0012', alpha(i), Re(j,i), M(i),'panels n 400');
+            disp(['Section = ', num2str(j),' Cd_p_i = ', num2str(RSUT.CD)])        
+        catch
+            continue
+        end
         % Sum Equations
         top = top + RSUT.CD.*S(j);
         bottom = bottom + S(j);
@@ -54,4 +59,3 @@ for i = 1:size(Re,2)
     disp(' ')
 end
 
-Cd_p = Cd_p;

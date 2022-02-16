@@ -1,11 +1,15 @@
 clc;clear;close all;
 
 % Trim Condition setup
-alpha = [9.8327	6.65967	4.62528	3.22 2.25047...
-        1.52047	0.9655	0.53461	0.193 -0.08325];
+CL_trim = [0.0623	0.0369	0.0263	0.0163	0.0093	0.0043	0.0004	-0.0026...
+        -0.0049	-0.0068	-0.0083	-0.0095	-0.0106	-0.0115	-0.0122	-0.0129...
+    	-0.0134	-0.0139	-0.0143	-0.0147	-0.0150]./0.1026;
 
-V = [101.28	118.16	135.04	151.92	168.8...
-     185.68	202.56	219.44	236.32	253.2];
+% Speed in [ft/s]
+V = [101.3	118.1	135.0	151.9	168.8	185.7	202.5	219.4	236.3...
+    253.2	270.0	286.9	303.8	320.7	337.6	354.4	371.3	388.2...
+    405.1	422.0	438.8];
+
 
 % mach calculation
 T = 493.7153; % R
@@ -17,16 +21,16 @@ M = V./sqrt(1.4*R*T);
 % Section Geometry for Re Calc
 
 % Mean Chord [ft] 
-MAC = [1.036 .928];
+MAC = mean([1.036 .928]);
 
 % Area [ft2]
-S = [1.04 .930];
+S = 5.8736;
 
 % Ref Area [ft2]
 S_ref = sum(2.*[6.021 5.218 4.415 3.612]);
 
 % Area without fuselage
-S_e = sum(S);
+S_e = sum(2.*S);
 
 % Re by section and speed
 for i = 1:length(V)
@@ -41,18 +45,33 @@ for i = 1:size(Re,2)
     
     for j = 1:size(Re,1) 
         % Run Xfoil
-        RSUT = xfoil('NACA0012', alpha(i), Re(j,i), M(i),'panels n 400');
+        RSUT = xfoilCl('NACA0012', CL_trim(i), Re(j,i), M(i),'panels n 400');
         disp(['Section = ', num2str(j),' Cd_p_i = ', num2str(RSUT.CD)])        
         
+        try
+            AOA(j) = RSUT.alpha;
+
+        catch
+            continue
+        end
+
         % Sum Equations
         top = top + RSUT.CD.*S(j);
         bottom = bottom + S(j);
     end
 
     % Total C_d parasitic
-    Cd_p(i) = 2*(top./bottom)*(S_e/sum(S)).*(sum(S)./S_ref);
-    disp(['Total Cd_p = ', num2str(Cd_p)])
-    disp(' ')
-end
+    try
+        Cd_p(i) = 2*(top./bottom)*(sum(S)./S_ref);
+        disp(['Total Cd_p = ', num2str(Cd_p(i))])
 
-Cd_p = Cd_p;
+        alpha(i) = mean(AOA(j));
+        disp(['Mean AOA = ',...
+             num2str(alpha(i))])
+        
+        disp(' ')
+    catch
+        disp(' ')
+        continue
+    end
+end
