@@ -1,10 +1,6 @@
 function [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise,b_v,b_h,L_fuselage)
    
-addpath('.\Weight_estimate')
-addpath('.\Raymer')
-addpath('.\Gundlach')
-addpath('.\Howe')
-addpath('.\Roskam')
+
 %Weigth esimate code
     %The idea is that this will take all the inputs from other engine stuff and
     %with the estimate MTOW, will determine the actual MTOW by iterating until
@@ -29,7 +25,7 @@ addpath('.\Roskam')
     D=(48/12);    %Propeller diameter %[ft]
     N_blades=2;     %Number of blades
     %P=578;  %Max shaft horsepower
-    Wengine=.636*(P^.9525); %Engine weight [lb]
+    Wengine=.484*(P^.7956); %Engine weight [lb]
     %Wf=232;   %Fuel weight %[lb]
     %S=117;    %Wing area %[ft^2]
     AR=16;  %Aspect 
