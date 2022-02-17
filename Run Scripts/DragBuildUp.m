@@ -73,7 +73,7 @@ for ii = 1:length(dV)
     % Landing Gear Drag
     [CD_LG(ii)] = LandingGearDrag(CDS_LG,d_LG,w_LG,S);
 
-    % (Gimbal) Camera Drag
+    % (Gimbal) Camera Drag -> Merged with fuselage -> 0
     [CDcam(ii)] = ShapeDrag(0,Scam,S,FOScam);
 
     % (Gimbal) Radar Drag
@@ -205,7 +205,7 @@ plot(x1,y1,'r','linewidth',2)
 % plot(x3,y3,'m','linewidth',2)
 plot(x4,y3,'b','linewidth',2)
 plot(x5,y3,'k','linewidth',2)
-plot(x6,y2,'m','linewidth',2)
+% plot(x6,y2,'m','linewidth',2)
 ylabel('C_L')
 xlabel('C_D')
 grid on
