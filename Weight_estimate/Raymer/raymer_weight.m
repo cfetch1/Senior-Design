@@ -5,6 +5,7 @@ function [W_aircraft,Wcomp] = raymer_weight(S,Wfuel,AR,sweep,lambda,t_c,MTOW,S_h
 N_l=3;
 W_l=MTOW-Wfuel;
 
+
 [W_wing] = raymer_wing(S,Wfuel,AR,sweep,q,lambda,t_c,N_z,MTOW);
 [W_ht] = raymer_ht(N_z,MTOW,q,S_h,t_c,sweep,AR,sweep_ht,taper_ht);
 [W_vt] = raymer_vt(N_z,MTOW,q,S_v,t_c,sweep_vt,AR,taper_vt);
@@ -86,8 +87,8 @@ function [W_main,W_nose] = raymer_lg(N_l,W_l,L_sm,L_sn)
 %   L_m = extended length of main gear, in
 %   L_n = extended nose gear length, in
 %   reduce total landing gear weight by 1.4% of TOGW if nonretractable
-W_main = 0.095*(N_l*W_l)^0.768*(L_sm/12)^0.409;
-W_nose = 0.125*(N_l*W_l)^0.566*(L_sn/12)^0.845;
+W_main = 0.095*(N_l*W_l)^0.768*(L_sm)^0.409;
+W_nose = 0.125*(N_l*W_l)^0.566*(L_sn)^0.845;
 end
 
 

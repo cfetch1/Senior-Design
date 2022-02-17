@@ -1,11 +1,6 @@
 clc
 clear
 close all
-addpath("Gundlach\")
-addpath("Nikolai_weight\")
-addpath("Raymer\")
-addpath("Roskam_weight\")
-addpath("Howe\")
 
 %Weigth esimate code
 %The idea is that this will take all the inputs from other engine stuff and
@@ -34,46 +29,46 @@ MTOW_in2=MTOW_in1*5;
 MTOW_in=[MTOW_in1,MTOW_in2];
 %Variables
 
-Scs=4*.9886; %[ft^2]  %Control surface planform area  
-b=24.08*.9886;    %wingspan %[ft]
-VeqMax=162.06; %Max veloicty in [KEAS]
+Scs=6; %[ft^2]  %Control surface planform area  
+b=41.8;    %wingspan %[ft]
+VeqMax=200*1.35; %Max veloicty in [KEAS]
 p_pay=320; %Max payload power [Watts]
-Ltot=12.04*.9886; %lengyth of the fuselage [ft^2]
-Wpay=33; %payload weight [lb]
-Wengine=50+10+5; %Engine weight [lb]
+Ltot=20.9; %lengyth of the fuselage [ft^2]
+Wpay=66; %payload weight [lb]
 Nprop=1;    %Number of props
-D=(30/12)*.9886;    %Propeller diameter %[ft]
+D=(48/12);    %Propeller diameter %[ft]
 N_blades=2;     %Number of blades
-P_max=100;  %Max shaft horsepower
-Wfuel=105;   %Fuel weight %[lb]
-S=38.67*.9886;    %Wing area %[ft^2]
-AR=16*.9886;  %Aspect Ratio
-pmax=.9886*pi*(1.5/2)^2;  %Corss sectional circumference%[ft^2]
+P_max=578;  %Max shaft horsepower
+Wengine=217; %Engine weight [lb]
+Wfuel=232;   %Fuel weight %[lb]
+S=117;    %Wing area %[ft^2]
+AR=16;  %Aspect Ratio
+pmax=pi*(1.5/2)^2;  %Corss sectional circumference%[ft^2]
 Npax=.01;    %Number of pax, this will be estimated
-S_h=5.95*.9886;   %Horizontal Tail area %[ft^2]
-A_h=4.1*.9886;    %Horizontal tair AR
+S_h=12;   %Horizontal Tail area %[ft^2]
+A_h=4.1;    %Horizontal tair AR
 t_rh=3/12;  %t_rh = horizontal tail maximum root thickness in ft
-S_v=5.95*.9886;   %vertical tail area in ft^2 %[ft^2]
-bv=2.125*.9886;   %Span of vertical tail
-fuse_width=1.5*.9886; %fuselage width %[ft}
-fuse_diam=1.5*.9886; %fuselage diameter%[ft
+S_v=17.9;   %vertical tail area in ft^2 %[ft^2]
+bv=6.21;   %Span of vertical tail
+fuse_width=(19)/12; %fuselage width %[ft}
+fuse_diam=19/12; %fuselage diameter%[ft
 %Span of horizontal tail
-bh=5*.9886; %[ft%dustance from wing one fourth mac to tail onforth mac
-lt=6.25*.9886;   %dustance from wing one fourth mac to tail onforth mac
+bh=7; %[ft%dustance from wing one fourth mac to tail onforth mac
+lt=6.25;   %dustance from wing one fourth mac to tail onforth mac
 sweep=0;    %wing quarter chord sweep
 lambda=.5;  %wing taper ratio
-fuse_height=2.75*.9886;%Fueselage height%Ft
+fuse_height=2.75;%Fueselage height%Ft
 V_d=VeqMax*1.25;    %max dive speed
-N_bar=100;
-A_v=2.15*.9886; %vertical tail aspect ratio
+N_bar=180;
+A_v=2.15; %vertical tail aspect ratio
 t_rv=2/12;  %vertical tail maximum root thickness in ft
 sw_a=1;    %vertical tail quarter cord sweep angle
-L_sm=18*.9886; %shock strut length for main gear[in]
-L_sn=15*.9886; %shock strut length for nose gear[in]
+L_sm=18; %shock strut length for main gear[in]
+L_sn=15; %shock strut length for nose gear[in]
 v_d=VeqMax*1.25;    %mAX DIVE SPEED
 t_c=.20;    %Wing thickness
-L_D=7.3; %This is an estimate(14), bigger high L/d
-S_f=46.44*.9886;  %Sf fuselage area ft^2
+L_D=9.1; %This is an estimate(14), bigger high L/d
+S_f=106;  %Sf fuselage area ft^2
 q=72.586;   %dynamic press
 N_z=6;    %Safety factor
 %TTail stuff
@@ -1096,6 +1091,7 @@ elseif str=="4"
             [W_prop_sys(i)] = weight_propulsion_sys(Wengine);
             [w_prop(i)] = weight_prop(Nprop,D,N_blades,P_max);
             [W_fuel_sys(i)] = weight_fuel_system(Wfuel);
+            
             [W_struct_roskam(i),Wcomp_rosk] = roskam_weights(MTOW_in(i), S, AR, Ltot, pmax, Npax, S_h, A_h, t_rh, S_v, A_v, t_rv, sw_a, Wfuel, L_sm, L_sn);    
             [W_airframe(i),Wcomp_nic] = Weight_Nikolai(MTOW_in(i), Wfuel,L_sm,S_v,bv,t_rv,VeqMax,fuse_width, fuse_diam, Ltot,S_h,lt,t_rh,bh,AR, sweep, S, lambda, t_c);
             [Howe_weight(i),Wcomp_howe] = HOWE_WEIGHT_fun(MTOW_in(i),Ltot,fuse_width,fuse_height,v_d,AR,S,sweep,lambda,N_bar,t_c);
