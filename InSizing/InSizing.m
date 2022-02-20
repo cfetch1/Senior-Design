@@ -5,7 +5,7 @@ function [MTOW,We,Wf,P,S,b,L_fuselage,c_root,c_tip,L_h,S_h,b_h,c_root_h,c_tip_h,
 
 %% Initial Values (arbitrary)
 err = 1000;
-MTOW = 450*(range/550)*(Vcruise/120);
+MTOW = 200;
 S = 40*(range/550)*(Vcruise/120);
 Wf = 50*(range/550)*(Vcruise/120);
 res = Wf*.25;
@@ -13,10 +13,11 @@ WS = 5:.1:30;
 
 %% Constants
 h = 18000;
-k =.0975;
+k =.1794;
 [~,CD0] = DragSLF(1,0,0,S,0);
 rho_cl = (density(0)+density(h))/2;
-f = [0.0212   -0.0022    0.0282];
+%f = [0.0212   -0.0022    0.0286]; 
+f = [0.0351   -0.0029    0.0210];
 Sg = 1000;
 
 % Vclimb = (sqrt((2*dX1/(rho_cl*S)))*(k/(CD0))^.25)/1.69;
@@ -50,20 +51,21 @@ Sg = 1000;
 Vclimb = 85;
 ROC = 900;
 
-% [CL1,CD1] = DragSLF(Vclimb,dX1,0,S,ROC);
-% E1 = CL1/CD1;
-E1 = 13.9;
+[CL1,CD1] = DragSLF(Vclimb,MTOW,0,S,ROC);
+E1 = CL1/CD1;
+% E1 = 13.9;
 
-% [CL2,CD2] = DragSLF(Vcruise,dX2,h,S,0);
-% E2 = CL2/CD2;
-E2 = 9.12;
+[CL2,CD2] = DragSLF(Vcruise,.98*MTOW,h,S,0);
+E2 = CL2/CD2;
+% E2 = 9.12;
 E3 = E2;
 %
 % [CL3,CD3] = DragSLF(Vcruise,dX3,2000,S,0);
 
-Vs = sqrt(2*MTOW*.9/(.0024*S*1.3))/1.69;
-[CL4,CD4] = DragSLF(Vs,MTOW*.8,0,S,0);
-E4=CL4/CD4;
+Vs = sqrt(2*MTOW*.9/(.0024*S*1.8))/1.69;
+% [CL4,CD4] = DragSLF(Vs,MTOW*.8,0,S,0);
+CL4= 1.8;
+% E4=CL4/CD4;
 % E4 = CL4/CD4;
 
 
@@ -71,9 +73,9 @@ E4=CL4/CD4;
 PSFC(1) = fTSFC(h/2,Vclimb);
 PSFC(2) = fTSFC(h,Vcruise);
 PSFC(3) = fTSFC(h,Vcruise);
-% eta(1) = TR640(Vclimb,Vcruise);
-% eta(2) = TR640(Vcruise,Vcruise);
-eta = [.555,.8335];
+ eta(1) = TR640(Vclimb,Vcruise);
+eta(2) = TR640(Vcruise,Vcruise);
+% eta = [.555,.8335];
 
 [MTOW,We,Wf,~,Wrs]=RangeSizing(66.4,MTOW,range,0,[E1,E2,E3],[PSFC(1),PSFC(2),PSFC(3)],[Vclimb,Vcruise,Vcruise],ROC,h,[eta(1),eta(2)],1,res);
 
@@ -102,29 +104,37 @@ while err>1
     P1 = P2;
     S1 = S;
     
-    
+[CL1,CD1] = DragSLF(Vclimb,dX1,0,S,ROC);
+E1 = CL1/CD1;
+% E1 = 13.9;
+
+[CL2,CD2] = DragSLF(Vcruise,dX2,h,S,0);
+E2 = CL2/CD2;
+% E2 = 9.12;
+E3 = E2;
     %% calculate ROC
     
     Vs = sqrt(2*dX5/(.0024*S1*1.8))/1.69;
     [CL4,CD4] = DragSLF(Vs,dX4,0,S,0);
+    CL4 = 1.5;
     
     %[MTOW,We,Wf,~,Wrs]=RangeSizing_cus(66.4,X1,range,0,[E1,E2,E3],[PSFC(1),PSFC(2),PSFC(3)],[Vclimb,Vcruise,Vcruise],ROC,h,[eta(1),eta(2)],1,res,P1,S);
     [MTOW,We,Wf,~,Wrs]=RangeSizing(66.4,X1,range,0,[E1,E2,E3],[PSFC(1),PSFC(2),PSFC(3)],[Vclimb,Vcruise,Vcruise],ROC,h,[eta(1),eta(2)],1,res);
     X2 = MTOW;
-    
+    AR = 15;
     for ii=1:length(Wrs)
         y(ii) = (1-(Wrs(ii)))/(prod(Wrs(1:ii)));
     end
     yy = (Wf-res)/sum(y);
     y = y*yy;
-    
-    PW_cruise2 = PW_cruise(15, WS, Vcruise*1.69, CD0, h,.75);
-    PW_to = PW_takeoff(15,WS,Sg,0,CL4,f,Vcruise*1.69);
+    [~,CD0] = DragSLF(1,0,0,S,0);
+    PW_cruise2 = PW_cruise(AR, WS, Vcruise, CD0, h,.75);
+    PW_to = PW_takeoff(AR,WS,Sg,0,CL4,[0.0351,   -0.0029,    0.0210],Vcruise*1.69);
     WS_ = WS_landing(0,Sg,1.8)*(X2/dX5);
     
     for ii = 1
         for jj = 1:length(WS)
-            PWmin(ii,jj) = max([dX3*PW_cruise2(ii,jj),dX1*PW_to(ii,jj)]);
+            PWmin(ii,jj) = max([dX2*PW_cruise2(ii,jj),dX1*PW_to(ii,jj)]);
             if PWmin(ii,jj) == min([PWmin(ii,1:jj)])
                 if WS(jj) <= WS_
                     index = jj;
@@ -159,11 +169,10 @@ while err>1
         dy = linspace(0,2*max([PW_cruise2(ii,:),PW_to(ii,:)]),100);
         dx = zeros(100,1);
         dx(:,1) = WS_;
-        axis([0,max(WS),0,max([PW_cruise2(ii,:),PW_to(ii,:)])])
-        plot(dx,dy,'k')
+        axis([0,max(WS),min([PW_cruise2(ii,:),PW_to(ii,:)]),max([PW_cruise2(ii,:),PW_to(ii,:)])])
+        plot(dx,dy,'k--','linewidth',2)
         xlabel('Wing Loading lb/ft^2')
         ylabel('Power Loading (hp/lb)')
-        legend(['V_c_r_u_i_s_e = ' num2str(Vcruise)],'Takeoff Requirement','Landing Requirement','location','best')
         grid on
         ax=gca;
         ax.XAxis.Exponent = 0;
@@ -174,6 +183,14 @@ while err>1
         ax.YTick = 0:.1:30000;
         ax.YAxis.MinorTick='on';
         ax.YAxis.MinorTickValues = 0:.025:30000;
+        ax.FontSize=14;
+    legend(['V_c_r_u_i_s_e = ' num2str(Vcruise) ' kts'],'Takeoff Requirement','Landing Requirement','location','best')
+
+%          scatter(397/36,30/397,'mo','filled')
+%                  legend(['V_c_r_u_i_s_e = ' num2str(Vcruise) ' kts'],'Takeoff Requirement','Landing Requirement','Tekever AR5','location','best')
+% 
+% %         text(397/36*.98,40/397*1.1,'Tekever AR5 (actual)','FontSize',14,'HorizontalAlignment','right')
+%        clc
         end
         
     end

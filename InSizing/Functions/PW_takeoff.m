@@ -5,14 +5,14 @@ g = 32.2;
 rho = density(h);
 % V = sqrt(MTOW/(.5*rho*S));
 
-mu =.08;
+mu =.04;
 % ROC = 75/(.5*Sg/(60*V));
 %alpha = alpha0(V/1.69,h);
-eta = .25;
+eta = .35;
 for i = 1:length(AR)
      for j = 1:length(WS)
         %Vto = sqrt(2*WS(j)/(rho*CL_to));
-        Vto = 90;
+        Vto = 75;
         q = .25*rho*(Vto)^2;
         CD_to = f(1)*CL_to^2+f(2)*CL_to+f(3);
         %eta = TR640(Vto,Vp);

@@ -25,17 +25,24 @@ while x(ii)<x2
     
     sigma = sigma0(h(ii));
     P_eng = P0*throttle*(sigma-(1-sigma)/7.55);
-    eta_prop = TR640(V(ii)+Vw,Vc);
-    P_avail = P_eng*eta_prop*550;
-    df = TSFC*P0*550*throttle*(sigma-(1-sigma)/7.55)*(dt/3600)/(V(ii)*1.69);
-    
-    V_fps = (V(ii)+Vw)*1.69;        
-    CL = W(ii)/(.5*rho*V_fps^2*S);
+    eta = TR640(V(ii)+Vw,Vc);
+    P_avail = P_eng*eta*550;
+    %df = TSFC*P0*550*throttle*(sigma-(1-sigma)/7.55)*(dt/3600)/(V(ii)*1.69);
+    V_fps = (V(ii)+Vw)*1.69;  
+    df = (TSFC*P_avail)/V_fps*(dt/3600);
+  
+      
+       CL = W(ii)/(.5*rho*V_fps^2*S);
     CD = f(1)*(CL)^2 + f(2)*CL + f(3);
     D = .5*rho*V_fps^2*S*CD;
     P_req = D*V_fps;
     
     dV = (P_avail-P_req)*dt/(W(ii)*3600);
+    if dV>0
+        throttle = throttle-.01;
+    else
+        throttle = throttle+.01;
+    end
 
     x(ii+1) = x(ii)+(V(ii)-Vw+.5*dV/1.69)*dt/3600;
     h(ii+1) = h(ii);
