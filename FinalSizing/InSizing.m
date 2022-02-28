@@ -130,7 +130,7 @@ E3 = E2;
     [~,CD0] = DragSLF(1,0,0,S,0);
     PW_cruise2 = PW_cruise(AR, WS, Vcruise, CD0, h,.75);
     PW_to = PW_takeoff(AR,WS,Sg,0,CL4,[0.0351,   -0.0029,    0.0210],Vcruise*1.69);
-    WS_ = WS_landing(0,Sg,1.8)*(X2/dX5);
+    WS_ = WS_landing(0,1200,1.5)*(X2/dX5);
     
     for ii = 1
         for jj = 1:length(WS)

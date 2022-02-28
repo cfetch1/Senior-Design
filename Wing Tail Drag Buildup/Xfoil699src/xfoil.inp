@@ -6,15 +6,15 @@ n
 
 
 oper
-re 2.53022e+06
-mach 0.129179
+re 5.69335e+06
+mach 0.41988
 visc
 pacc
 
 
-c 0.9205
-dump xfoil_c00.920_dump.dat
-cpwr xfoil_c00.920_cpwr.dat
+c 0.0872
+dump xfoil_c00.087_dump.dat
+cpwr xfoil_c00.087_cpwr.dat
 pwrt
 xfoil_pwrt.dat
 plis
