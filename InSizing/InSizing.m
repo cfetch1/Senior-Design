@@ -18,7 +18,7 @@ k =.1794;
 rho_cl = (density(0)+density(h))/2;
 %f = [0.0212   -0.0022    0.0286]; 
 f = [0.0351   -0.0029    0.0210];
-Sg = 1200;
+Sg = 1000;
 
 % Vclimb = (sqrt((2*dX1/(rho_cl*S)))*(k/(CD0))^.25)/1.69;
 % V_fps = Vclimb*1.69;
@@ -64,7 +64,7 @@ E3 = E2;
 
 Vs = sqrt(2*MTOW*.9/(.0024*S*1.8))/1.69;
 % [CL4,CD4] = DragSLF(Vs,MTOW*.8,0,S,0);
-CL4= 1.5;
+CL4= 1.3;
 % E4=CL4/CD4;
 % E4 = CL4/CD4;
 
@@ -116,7 +116,7 @@ E3 = E2;
     
     Vs = sqrt(2*dX5/(.0024*S1*1.8))/1.69;
     [CL4,CD4] = DragSLF(Vs,dX4,0,S,0);
-    CL4 = 1.5;
+    CL4 = 1.3;
     
     %[MTOW,We,Wf,~,Wrs]=RangeSizing_cus(66.4,X1,range,0,[E1,E2,E3],[PSFC(1),PSFC(2),PSFC(3)],[Vclimb,Vcruise,Vcruise],ROC,h,[eta(1),eta(2)],1,res,P1,S);
     [MTOW,We,Wf,~,Wrs]=RangeSizing(66.4,X1,range,0,[E1,E2,E3],[PSFC(1),PSFC(2),PSFC(3)],[Vclimb,Vcruise,Vcruise],ROC,h,[eta(1),eta(2)],1,res);
@@ -131,7 +131,7 @@ E3 = E2;
     PW_cruise2 = PW_cruise(AR, WS, Vcruise, CD0, h,.75);
     PW_to = PW_takeoff(AR,WS,Sg,0,CL4,[0.0351,   -0.0029,    0.0210],Vcruise*1.69);
     WS_ = WS_landing(0,Sg,CL4)*(X2/dX5);
-    
+    index = 0;
     for ii = 1
         for jj = 1:length(WS)
             PWmin(ii,jj) = max([dX2*PW_cruise2(ii,jj),dX1*PW_to(ii,jj)]);
@@ -141,6 +141,9 @@ E3 = E2;
                 end
             end
         end
+    end
+    if index < 1
+        index = 1;
     end
     
     P2 = PWmin(index); %shaft horsepower
