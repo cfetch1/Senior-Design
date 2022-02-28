@@ -18,7 +18,7 @@ k =.1794;
 rho_cl = (density(0)+density(h))/2;
 %f = [0.0212   -0.0022    0.0286]; 
 f = [0.0351   -0.0029    0.0210];
-Sg = 1000;
+Sg = 1200;
 
 % Vclimb = (sqrt((2*dX1/(rho_cl*S)))*(k/(CD0))^.25)/1.69;
 % V_fps = Vclimb*1.69;
@@ -64,7 +64,7 @@ E3 = E2;
 
 Vs = sqrt(2*MTOW*.9/(.0024*S*1.8))/1.69;
 % [CL4,CD4] = DragSLF(Vs,MTOW*.8,0,S,0);
-CL4= 1.8;
+CL4= 1.5;
 % E4=CL4/CD4;
 % E4 = CL4/CD4;
 
@@ -130,7 +130,7 @@ E3 = E2;
     [~,CD0] = DragSLF(1,0,0,S,0);
     PW_cruise2 = PW_cruise(AR, WS, Vcruise, CD0, h,.75);
     PW_to = PW_takeoff(AR,WS,Sg,0,CL4,[0.0351,   -0.0029,    0.0210],Vcruise*1.69);
-    WS_ = WS_landing(0,Sg,1.8)*(X2/dX5);
+    WS_ = WS_landing(0,Sg,CL4)*(X2/dX5);
     
     for ii = 1
         for jj = 1:length(WS)
