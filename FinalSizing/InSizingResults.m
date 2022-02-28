@@ -69,6 +69,7 @@ for ii = 1:length(range)
 %         if fr(ii,jj)<0
 %             dt(ii,jj) = 0;
 %         end
+
         clear E E32 xt
       end  
  end
@@ -76,11 +77,58 @@ for ii = 1:length(range)
  dt=dt-min(min(dt));
 
 
-Carpet(range,Vcruise,W1,char('range'),char('cruise speed'),char('nmi'),char('kts'),char('MTOW [lbs]'),-5,100,20);
+ %% Print Baseline Configuration 
+
+disp('--------------Design Point----------------')
+disp(['Range                : ', num2str(range), '     [nm]'])
+disp(['Dash Speed           : ', num2str(Vcruise), '     [kts]'])
+disp(['Wing Loading         : ', num2str(Wto/S), ' [lbs/ft^2]'])
+disp(['P/W                  : ', num2str(Preq/Wto), ' [hp/lbs]'])
+disp(' ')
+
+disp(['Aspect Ratio         : ', num2str(15)])
+disp(['Wing Taper Ratio     : ', num2str(0.5)])
+disp(['V Tail Taper Ratio   : ', num2str(.762)])
+disp(['H Tail Taper Ratio   : ', num2str(.8)])
+disp(['V Tail Aspect Ratio  : ', num2str(2.15)])
+disp(['H Tail Aspect Ratio  : ', num2str(4.1)])
+disp(['V Tail Coefficient   : ', num2str(.4)])
+disp(['H Tail Coefficient   : ', num2str(.04)])
+disp(' ')
+
+disp('-------------Derived Dimension---------------')
+disp(['Fuselage Length      : ', num2str(L_fuselage), ' [ft]'])
+disp(['Wing Area            : ', num2str(S), ' [ft2]'])
+disp(['Wing Span            : ', num2str(b), ' [ft]'])
+disp(['Root Chord Length    : ', num2str(c_root), '  [ft]'])
+disp(['25% Root Chord Length: ', num2str(c_root/4), ' [ft]'])
+disp(['Tip Chord Length     : ', num2str(c_tip), ' [ft]'])
+disp(['25% Tip Chord Length : ', num2str(c_tip/4), ' [ft]'])
+disp(' ')
+
+disp('------------Traditional Tail Dimensions----------')
+disp(['Vertical Tail Area   : ', num2str(S_v), '  [ft2]'])
+disp(['V Tail Root Chord    : ', num2str(c_root_v), '  [ft]'])
+disp(['25% V Tail Root Chord: ', num2str(c_root_v/4), ' [ft]'])
+disp(['Horizontal Tail Area : ', num2str(S_h), '  [ft2]'])
+disp(['H Tail Tip Chord     : ', num2str(c_tip_h), ' [ft]'])
+disp(['H Tail 25% Tip Chord : ', num2str(c_tip_h/4), ' [ft]'])
+disp(' ')
+
+% disp('---------------V-Tail Dimensions------------------')
+% disp(['V-Tail Span         : ', num2str(b_v), ' [ft2]'])
+% disp(['V-Tail Angle        : TBD', ' [deg]'])
+% disp(['V-Tail Vertical Area: ', num2str(SV_v), ' [ft2]'])
+% disp(['Updated Vertical tail coefficeint: ', num2str(Vv_update), ' [/]'])
+
+
+
+%% PLots
+% Carpet(range,Vcruise,W1,char('range'),char('cruise speed'),char('nmi'),char('kts'),char('MTOW [lbs]'),-5,100,20);
 % Carpet(range,Vcruise,W2,char('range'),char('cruise speed'),char('nmi'),char('kts'),char('Empty Weight [lbs]'),0,50,10);
 % Carpet(range,Vcruise,W3,char('range'),char('cruise speed'),char('nmi'),char('kts'),char('Fuel Weight [lbs]'),0,50,10);
-Carpet(range,Vcruise,Preq,char('range'),char('dash speed'),char('nmi'),char('kts'),char('Power Required [BHP]'),-10,50,10);
-Carpet(range,Vcruise,dt,char('range'),char('dash speed'),char('nmi'),char('kts'),char('Loiter Time [min]'),-5,60,15);
+% Carpet(range,Vcruise,Preq,char('range'),char('dash speed'),char('nmi'),char('kts'),char('Power Required [BHP]'),-10,50,10);
+% Carpet(range,Vcruise,dt,char('range'),char('dash speed'),char('nmi'),char('kts'),char('Loiter Time [min]'),-5,60,15);
 % delta = linspace(0,10000);
 % dL = zeros(length(delta),1);
 % dL(:,1) = 180;
