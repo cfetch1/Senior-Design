@@ -21,8 +21,11 @@ Vcruise= 160;
 
 for ii = 1:length(range)
      for jj = 1:length(Vcruise)
-        [Wto,We,Wf,P,S,b,L_fuselage,c_root,c_tip,L_h,S_h,b_h,c_root_h,c_tip_h,L_v,S_v,b_v,c_root_v,c_tip_v] = InSizing(range(ii),Vcruise(jj),0);
-        
+        [Wto,We,Wf,P,S,b,L_fuselage,c_root,c_tip,L_h,S_h,b_h,c_root_h,c_tip_h,L_v,S_v,b_v,c_root_v,c_tip_v] = InSizing(range(ii),Vcruise(jj),0)
+        c_root_tail = 12*(c_root_h+c_root_v)/2
+        c_tip_tail = 12*(c_tip_h+c_tip_v)/2
+        beta = atand(b_v/(3*b_h))
+        hv = sqrt( (.5*b_v)^2 + (.5*b_h)^2 )*12
          [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise(jj),b_v,b_h,L_fuselage);
         clc
 %              MTOW_calc(1) = Wto;
