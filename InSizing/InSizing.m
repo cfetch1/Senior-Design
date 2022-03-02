@@ -1,6 +1,7 @@
 function [MTOW,We,Wf,P,S,b,L_fuselage,c_root,c_tip,L_h,S_h,b_h,c_root_h,c_tip_h,L_v,S_v,b_v,c_root_v,c_tip_v] = InSizing(range,Vcruise,opt)
 
-
+% No flap take off
+Cl_to = 1.3;
 
 
 %% Initial Values (arbitrary)
@@ -62,8 +63,10 @@ E3 = E2;
 %
 % [CL3,CD3] = DragSLF(Vcruise,dX3,2000,S,0);
 
-Vs = sqrt(2*MTOW*.9/(.0024*S*1.8))/1.69;
+Vs = sqrt(2*MTOW*.9/(.0024*S*Cl_to))/1.69;
 % [CL4,CD4] = DragSLF(Vs,MTOW*.8,0,S,0);
+
+% WE HAVE NO IDEA PLEASE GIVE THIS VARIABLE A NAME PLEASE
 CL4= 1.3;
 % E4=CL4/CD4;
 % E4 = CL4/CD4;
@@ -114,7 +117,7 @@ E2 = CL2/CD2;
 E3 = E2;
     %% calculate ROC
     
-    Vs = sqrt(2*dX5/(.0024*S1*1.8))/1.69;
+    Vs = sqrt(2*dX5/(.0024*S1*Cl_to))/1.69;
     [CL4,CD4] = DragSLF(Vs,dX4,0,S,0);
     CL4 = 1.3;
     
