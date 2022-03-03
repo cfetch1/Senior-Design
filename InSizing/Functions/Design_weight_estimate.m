@@ -14,59 +14,61 @@ function [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise
 
 
     %Variables
-    Scs=6; %[ft^2]  %Control surface planform area  
+    Scs=3; %[ft^2]  %Control surface planform area  
     %b=41.8;    %wingspan %[ft]
     VeqMax=Vcruise*1.35; %Max veloicty in [KEAS]
     p_pay=320; %Max payload power [Watts]
     L_f=L_fuselage; %lengyth of the fuselage [ft^2]
+    L_f=10.5;
     ratio=L_f/14.9;
-    Wpay=66; %payload weight [lb]
+    Wpay=90; %payload weight [lb]
     Nprop=1;    %Number of props
-    D=(48/12);    %Propeller diameter %[ft]
-    N_blades=2;     %Number of blades
+    D=3.56;    %Propeller diameter %[ft]
+    N_blades=4;     %Number of blades
     %P=578;  %Max shaft horsepower
     Wengine=.484*(P^.7956); %Engine weight [lb]
-    Wengine=126;
+    Wengine= 110;
     %Wf=232;   %Fuel weight %[lb]
     %S=117;    %Wing area %[ft^2]
-    AR=16;  %Aspect 
+    AR=15;  %Aspect 
     fuse_width=(1.5)*ratio; %fuselage width %[ft}
     fuse_width=2;
     fuse_diam=(1.5)*ratio; %fuselage diameter%[ft
     fuse_diam=2;
     pmax=2*pi*(fuse_width/2);  %Corss sectional circumference%[ft^2]
-    Npax=.01;    %Number of pax, this will be estimated
+    Npax=.001;    %Number of pax, this will be estimated
     %S_h=12;   %Horizontal Tail area %[ft^2]
-    A_h=4.1;    %Horizontal tair AR
-    t_rh=3/12;  %t_rh = horizontal tail maximum root thickness in ft
+    A_h=3;    %Horizontal tair AR
+    t_rh=.16;  %t_rh = horizontal tail maximum root thickness in ft
     %S_v=17.9;   %vertical tail area in ft^2 %[ft^2]
     %b_v=6.21;   %Span of vertical tail
 
     %Span of horizontal tail
     %b_h=7; %[ft%dustance from wing one fourth mac to tail onforth mac
-    lt=6.25*ratio;   %dustance from wing one fourth mac to tail onforth mac
+    lt=3.5;   %dustance from wing one fourth mac to tail onforth mac
     sweep=0;    %wing quarter chord sweep
     lambda=.5;  %wing taper ratio
     fuse_height=2.75*ratio;%Fueselage height%Ft
-    fuse_height=2;
+    fuse_height=1.83;
     V_d=VeqMax*1.25;    %max dive speed
     N_bar=180;
-    A_v=2.15; %vertical tail aspect ratio
-    t_rv=2/12;  %vertical tail maximum root thickness in ft
+    A_v=.38; %vertical tail aspect ratio
+    t_rv=.16;  %vertical tail maximum root thickness in ft
     sw_a=1;    %vertical tail quarter cord sweep angle
-    L_sm=18; %shock strut length for main gear[in]
-    L_sn=15; %shock strut length for nose gear[in]
+    L_sm=14; %shock strut length for main gear[in]
+    L_sn=14; %shock strut length for nose gear[in]
     v_d=VeqMax*1.25;    %mAX DIVE SPEED
-    t_c=.20;    %Wing thickness
-    L_D=9.1; %This is an estimate(14), bigger high L/d
+    t_c=.14;    %Wing thickness
+    L_D=17.4; %This is an estimate(14), bigger high L/d
     S_f=2*pi*(fuse_diam/2)*L_f+2*pi*(fuse_diam/2)^2;  %Sf fuselage area ft^2
+    S_f=8;
     q=47.74;   %dynamic press
     N_z=6;    %Safety factor
     %TTail stuff
-    sweep_ht=0;
-    taper_ht=.8;
-    sweep_vt=10;
-    taper_vt=.7620;
+    sweep_ht=3.7;
+    taper_ht=.67;
+    sweep_vt=3.7;
+    taper_vt=.67;
 
     %% Main Code
 

@@ -89,6 +89,7 @@ function [W_main,W_nose] = raymer_lg(N_l,W_l,L_sm,L_sn)
 %   reduce total landing gear weight by 1.4% of TOGW if nonretractable
 W_main = 0.095*(N_l*W_l)^0.768*(L_sm)^0.409;
 W_nose = 0.125*(N_l*W_l)^0.566*(L_sn)^0.845;
+W_nose=W_nose+(.14*.25*W_nose);
 end
 
 
