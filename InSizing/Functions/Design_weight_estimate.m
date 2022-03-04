@@ -264,7 +264,7 @@ function [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise
     elseif str =="3"
         Wcomp=Wcomp_howe;
     elseif str == "2"
-        Wcomp=Wcomp_nic;;
+        Wcomp=Wcomp_nic;
     elseif str == "1"
         Wcomp=Wcomp_rosk;
     else
