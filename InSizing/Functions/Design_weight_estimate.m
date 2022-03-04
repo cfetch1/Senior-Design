@@ -55,13 +55,13 @@ function [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise
     A_v=.38; %vertical tail aspect ratio
     t_rv=.16;  %vertical tail maximum root thickness in ft
     sw_a=1;    %vertical tail quarter cord sweep angle
-    L_sm=14; %shock strut length for main gear[in]
-    L_sn=14; %shock strut length for nose gear[in]
+    L_sm=15; %shock strut length for main gear[in]
+    L_sn=15; %shock strut length for nose gear[in]
     v_d=VeqMax*1.25;    %mAX DIVE SPEED
     t_c=.14;    %Wing thickness
     L_D=17.4; %This is an estimate(14), bigger high L/d
     S_f=2*pi*(fuse_diam/2)*L_f+2*pi*(fuse_diam/2)^2;  %Sf fuselage area ft^2
-    S_f=8;
+    S_f=35;
     q=47.74;   %dynamic press
     N_z=6;    %Safety factor
     %TTail stuff
