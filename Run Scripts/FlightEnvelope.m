@@ -15,7 +15,7 @@ clc; clear; close all;
 addpath('C:\Users\fetch\Documents\GitHub\Senior-Design\Functions')
 
 % Altitude and velocity range
-h = 0:1000:30000;
+h = 0:1000:20000;
 V = 10:5:180;
 
 % Aircraft parameters
@@ -91,5 +91,8 @@ end
 % Plot height-velocity flight envelope
 figure();
 hold on; grid on;
-plot(v_lim(:,1),h);
-plot(v_lim(:,2),h);
+plot(v_lim(:,1),h,'linewidth',3,'color','k');
+plot(v_lim(:,2),h,'linewidth',3,'color','k');
+title('Flight Envelope');
+xlabel('Velocity (Knots)');
+ylabel('Altitude (ft)');
