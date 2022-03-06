@@ -1,4 +1,4 @@
-clc; clear; close all;
+clc; clear; %close all;
 
 % FlightEnvelope.m
 %
@@ -12,10 +12,11 @@ clc; clear; close all;
 
 
 % You will need this. Change it.
-addpath('C:\Users\fetch\Documents\GitHub\Senior-Design\Functions')
+% addpath('C:\Users\fetch\Documents\GitHub\Senior-Design\Functions')
+addpath('D:\Uncategorized Files\GitHub\Senior-Design\Functions');
 
 % Altitude and velocity range
-h = 0:1000:20000;
+h = 0:1000:18000;
 V = 10:5:180;
 
 % Aircraft parameters
@@ -47,7 +48,7 @@ for jj = 1:length(h)
         V_fps = V(ii)*1.69;
 
         % Get drag polar
-        [CL,CD] = DragSLF2(V(ii),W,h(jj),S,0,FOS);
+        [CL,CD] = DragSLF(V(ii),W,h(jj),S,0);
 
         % Get required power in hp
         P_req(ii) = .5*rho*V_fps^3*S*CD/550;
@@ -74,6 +75,7 @@ for jj = 1:length(h)
 % vs(:,jj) = round(sqrt(2*W/(rho*S*CLmax))/1.69);
 
 % Old plotting stuff for required power
+
 % hold on; grid on;
 % plot(V,P_req,'r','linewidth',2,'displayname','Power Required')
 % plot(V,P_avail,'b','linewidth',2,'displayname','Power Available')
