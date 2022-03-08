@@ -48,7 +48,7 @@ addpath('.\Roskam_weight')
     lt=6.25*ratio;   %dustance from wing one fourth mac to tail onforth mac
     sweep=0;    %wing quarter chord sweep
     lambda=.5;  %wing taper ratio
-    fuse_height=2.75*ratio;%Fueselage height%Ft
+    fuse_height=2.75*ratio; %Fueselage height%Ft
     V_d=VeqMax*1.25;    %max dive speed
     N_bar=180;
     A_v=2.15; %vertical tail aspect ratio

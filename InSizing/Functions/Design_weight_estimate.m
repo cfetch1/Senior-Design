@@ -61,7 +61,7 @@ function [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise
     t_c=.14;    %Wing thickness
     L_D=13; %This is an estimate(14), bigger high L/d
     S_f=2*pi*(fuse_diam/2)*L_f+2*pi*(fuse_diam/2)^2;  %Sf fuselage area ft^2
-    S_f=8;
+    S_f=35;
     q=47.74;   %dynamic press
     N_z=6;    %Safety factor
     %TTail stuff

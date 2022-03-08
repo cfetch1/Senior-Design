@@ -170,27 +170,40 @@ E3 = E2;
         figure
         hold on
         ii=1;
-        plot(WS,PW_cruise2(ii,:),'b','linewidth',2)
-        plot(WS,PW_to(ii,:),'r','linewidth',2)
+        plot(WS,PW_cruise2(ii,:),'b','linewidth',3)
+        plot(WS,PW_to(ii,:),'r','linewidth',3)
         dy = linspace(0,2*max([PW_cruise2(ii,:),PW_to(ii,:)]),100);
         dx = zeros(100,1);
         dx(:,1) = WS_;
         axis([0,max(WS),min([PW_cruise2(ii,:),PW_to(ii,:)]),max([PW_cruise2(ii,:),PW_to(ii,:)])])
-        plot(dx,dy,'k--','linewidth',2)
-        xlabel('Wing Loading lb/ft^2')
-        ylabel('Power Loading (hp/lb)')
+        plot(dx,dy,'k','linewidth',3)
+
+% Insert Hatchline
+        hatchedline(WS,PW_cruise2(ii,:),'b',pi/180,.5,1,1);
+        hatchedline(WS,PW_to(ii,:),'r',pi/180,.5,1,1);
+   
+        for ii = 1:3:round(length(dx)/1.4)
+            plot([dx(ii,1); dx(ii,1)+0.75],[dy(ii); dy(ii)-0.025],'k','LineWidth',3)
+        end
+        
+        scatter(23.8, 0.0927,'filled','pentagram','SizeData',800)
+
+        xlabel('Wing Loading [lb/ft^{2}]')
+        xlim([5 30])
+        ylim([0 0.31])
+        ylabel('Power Loading [hp/lb]')
         grid on
         ax=gca;
         ax.XAxis.Exponent = 0;
-        ax.XTick = 0:10:1000;
+        ax.XTick = 0:2:1000;
         ax.XAxis.MinorTick='on';
         ax.XAxis.MinorTickValues = 0:2:1000;
         ax.YAxis.Exponent = 0;
         ax.YTick = 0:.1:30000;
         ax.YAxis.MinorTick='on';
         ax.YAxis.MinorTickValues = 0:.025:30000;
-        ax.FontSize=14;
-    legend(['V_c_r_u_i_s_e = ' num2str(Vcruise) ' kts'],'Takeoff Requirement','Landing Requirement','location','best')
+        ax.FontSize=20;
+    legend(['V_{cruise} = ' num2str(Vcruise) ' kts'],'Takeoff Requirement','Landing Requirement','location','best')
 
 %          scatter(397/36,30/397,'mo','filled')
 %                  legend(['V_c_r_u_i_s_e = ' num2str(Vcruise) ' kts'],'Takeoff Requirement','Landing Requirement','Tekever AR5','location','best')
