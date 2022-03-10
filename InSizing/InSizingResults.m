@@ -11,7 +11,7 @@ addpath('..\Weight_estimate\Roskam_weight')
 
 f=[0.0351   -0.0029    0.0210];
 
-range = linspace(500,850,13);
+range = linspace(500,950,13);
 
 Vcruise = linspace(120,180,13);
 
