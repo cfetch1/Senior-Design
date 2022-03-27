@@ -2,7 +2,7 @@ close all
 clear 
 clc
 
-Vcruise = 160;
+Vcruise = 120:10:200;
 file = 'Drag.xlsx';
 
 hc = 18000;
@@ -17,15 +17,17 @@ for ii = 1:length(Vcruise)
 
 Vc = Vcruise(ii);
     
-[PW,WS] = ConstraintDiagram(Vc,hc,throttle,Sg,V_lof,CL_max,AR,f);
+
 
 Wto = 1000;
 Wf = 100;
-Wpl = 60;
+Wpl = 66.5;
 
 ERROR = 1000;
 
 while ERROR > 1
+    
+[PW,WS] = ConstraintDiagram(Vc,hc,throttle,Sg,V_lof,CL_max,AR,f);
 
 [MTOW] = RangeSizing(Wto,Wf,Wpl);
 
@@ -34,8 +36,6 @@ error = 1000;
 while error > 1
     
 [S,b,c,P,L_fuselage,c_root,c_tip,L_h,S_h,b_h,c_root_h,c_tip_h,L_v,S_v,b_v,c_root_v,c_tip_v,c_T] = WingDimensions(MTOW,AR,WS,PW);
-
-
 
 [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vc,b_v,b_h,L_fuselage);
 clc
@@ -55,10 +55,36 @@ Wto = MTOW;
 
 end
 
-P0 = P(ii);
+P0(ii) = P;
 W1(ii) = Wto;
 W2(ii) = Wto-(Wf+Wpl);
 W3(ii) = Wf;
 
 end
+
+figure
+
+subplot(221)
+plot(Vcruise,W1,'b','linewidth',2)
+xlabel('Ingress Speed [kts]')
+ylabel('W_T_O [lbs]')
+grid on
+
+subplot(222)
+plot(Vcruise,W2,'b','linewidth',2)
+xlabel('Ingress Speed [kts]')
+ylabel('W_e [lbs]')
+grid on
+
+subplot(223)
+plot(Vcruise,W3,'b','linewidth',2)
+xlabel('Ingress Speed [kts]')
+ylabel('W_f [lbs]')
+grid on
+
+subplot(224)
+plot(Vcruise,P0,'r','linewidth',2)
+xlabel('Ingress Speed [kts]')
+ylabel('Power [hp]')
+grid on
 
