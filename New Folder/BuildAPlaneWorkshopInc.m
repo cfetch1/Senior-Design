@@ -2,7 +2,7 @@ close all
 clear
 clc
 
-Vcruise = 120:10:200;
+Vcruise = 120:5:200;
 file = 'Drag.xlsx';
 
 hc = 18000;
@@ -23,15 +23,15 @@ for ii = 1:length(Vcruise)
     
     ERROR = 1000;
     
-    while ERROR > 1
+    while ERROR > .5
         
-        [PW,WS] = ConstraintDiagram(Vc,hc,throttle,Sg,V_lof,CL_max,AR,f);
+        [PW,WS] = ConstraintDiagram(Vc,hc,throttle,Sg,CL_max,AR,f);
         
 %         [MTOW] = RangeSizing(Wto,Wf,Wpl);
         
         error = 1000;
         
-        while error > 1
+        while error > .5
             
             [S,b,c,P,L_fuselage,c_root,c_tip,L_h,S_h,b_h,c_root_h,c_tip_h,L_v,S_v,b_v,c_root_v,c_tip_v,c_T] = WingDimensions(MTOW,AR,WS,PW);
             clc
@@ -49,14 +49,15 @@ for ii = 1:length(Vcruise)
         [df] = FuelConsumption(P,Vc,S,f,MTOW,length(Vcruise));
         
         ERROR = 100*abs(Wf-df)/Wf;
+        MTOW = MTOW-Wf+df;
         Wf = df;
-        Wto = MTOW;
+        
         
     end
     
     P0(ii) = P;
-    W1(ii) = Wto;
-    W2(ii) = Wto-(Wf+Wpl);
+    W1(ii) = MTOW;
+    W2(ii) = MTOW-(Wf+Wpl);
     W3(ii) = Wf;
     
 end

@@ -39,13 +39,13 @@ for ii = 1:length(dV)
 
     %% Geometric Inputs
 
-    
-    SA = 4.743;
-    SC = 12.2804;
+    kk = (S/40)^(1/3);
+    SA = 4.743*kk^2;
+    SC = 12.2804*kk^2;
     Scab = 1.7671;
-    Spx0 = 40.2806;
-    alphaB0 = -2.96;
-    diaB = 2;
+    Spx0 = 40.2806*kk^2;
+    alphaB0 = -5;
+    diaB = 2*kk;
     w_LG = [1/6,1/6,1/8];
     d_LG = [2/3,2/3,1/2];
     Scam = 1.136;
@@ -60,7 +60,7 @@ for ii = 1:length(dV)
 
     %% Assumptions/Hand Calcs
     Cf = (8.5-4.5*sqrt(ii/7))*10^-3;
-    dCDS_cab = .009;
+    dCDS_cab = 0; %.009;
     k = .91;
     K = 9;
     F = 1.08;
