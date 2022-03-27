@@ -1,4 +1,4 @@
-function [Wf] = FuelConsumption(P0,Vc,S,f,W1)
+function [Wf] = FuelConsumption(P0,Vc,S,f,W1,plots)
 
 
 %% Global Inputs
@@ -25,7 +25,6 @@ for kk = 1:length(dV)
     [CL,CD] = DragSLF(dV(kk),W(end),0,S,f);
     E(kk) = CL/CD;
     if E(kk) == max(E)
-        clc
         xx = kk;
     end
 end
@@ -43,7 +42,7 @@ index = ii;
 
 %% Ingress
 
-[dx2,dh2,dV2,dW2,dt2] = fcruise(d-x(end),h_in,Vc,Vw,W(end),P0,.75,Vp,S,f,0);
+[dx2,dh2,dV2,dW2,dt2] = fcruise(d-x(end),h_in,Vc,Vw,W(end),P0,Vp,S,f,0,0);
 ii = index+length(dt2);
 dx2 = x(end)+dx2;
 dt2 = t(end)+dt2;
@@ -61,13 +60,12 @@ for kk = 1:length(dV)
     [CL,CD] = DragSLF(dV(kk),W(end),4000,S,f);
     E(kk) = CL^1.5/CD;
     if E(kk) == max(E)
-        clc
         xx = kk;
     end
 end
 Vs = dV(xx);
 clear E
-[~,dh3,dV3,dW3,dt3] = fcruise(1000,4000,Vs,Vw,W(end),P0,.5,Vp,S,f,dt_L);
+[~,dh3,dV3,dW3,dt3] = fcruise(1000,4000,Vs,Vw,W(end),P0,Vp,S,f,dt_L,2);
 ii = index+length(dt3);
 dx3 = zeros(length(dt3),1);
 dx3(:,1) = x(end);
@@ -85,13 +83,12 @@ for kk = 1:length(dV)
     [CL,CD] = DragSLF(dV(kk),W(end),4000,S,f);
     E(kk) = CL/CD;
     if E(kk) == max(E)
-        clc
         xx = kk;
     end
 end
 Vr = dV(xx);
 clear E
-[dx4,dh4,dV4,dW4,dt4] = fcruise(d,4000,Vr,Vw,W(end),P0,.65,Vp,S,f,0);
+[dx4,dh4,dV4,dW4,dt4] = fcruise(d,4000,Vr,Vw,W(end),P0,Vp,S,f,0,1);
 ii = index+length(dt4);
 dx4 = x(end)+dx4;
 dt4 = t(end)+dt4;
@@ -112,6 +109,64 @@ dt4 = dt4/60;
 W(end) = W(end)*.99;
 
 Wf = (1.25)*(W1-W(end));
+
+if plots == 1
+    
+    figure
+    
+    subplot(221)
+    hold on
+    grid on
+    plot(t,x,'k--','linewidth',1)
+    plot(dt1,dx1,'r','linewidth',2)
+    plot(dt2,dx2,'b','linewidth',2)
+    plot(dt3,dx3,'g','linewidth',2)
+    plot(dt4,dx4,'y','linewidth',2)
+    axis([0,max(t),0,max(x)])
+    xlabel('Time (hrs)')
+    ylabel('Distance (nmi)')
+    FormatAxis(t,1,.25,x,100,25)
+    
+    subplot(222)
+    hold on
+    grid on
+    plot(t,h,'k--','linewidth',1)
+    plot(dt1,dh1,'r','linewidth',2)
+    plot(dt2,dh2,'b','linewidth',2)
+    plot(dt3,dh3,'g','linewidth',2)
+    plot(dt4,dh4,'y','linewidth',2)
+    axis([0,max(t),0,max(h)])
+    xlabel('Time (hrs)')
+    ylabel('Altitude (ft)')
+    FormatAxis(t,1,.25,h,5000,1250)
+    
+    subplot(223)
+    hold on
+    grid on
+    plot(t,V,'k--','linewidth',1)
+    plot(dt1,dV1,'r','linewidth',2)
+    plot(dt2,dV2,'b','linewidth',2)
+    plot(dt3,dV3,'g','linewidth',2)
+    plot(dt4,dV4,'y','linewidth',2)
+    axis([0,max(t),min(V),max(V)])
+    xlabel('Time (hrs)')
+    ylabel('Airspeed (kts)')
+    FormatAxis(t,1,.25,V,20,5)
+    
+    subplot(224)
+    hold on
+    grid on
+    plot(t,W,'k--','linewidth',1)
+    plot(dt1,dW1,'r','linewidth',2)
+    plot(dt2,dW2,'b','linewidth',2)
+    plot(dt3,dW3,'g','linewidth',2)
+    plot(dt4,dW4,'y','linewidth',2)
+    axis([0,max(t),min(W),max(W)])
+    xlabel('Time (hrs)')
+    ylabel('Weight (lbs)')
+    FormatAxis(t,1,.25,W,50,10)
+    
+end
 
 end
 

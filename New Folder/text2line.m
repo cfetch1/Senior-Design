@@ -16,8 +16,8 @@ X = diff(get(gca, 'xlim'));
 Y = diff(get(gca, 'ylim'));
 % pbaspect([1 1 1])
 p = pbaspect;
-a = 1*atan(d*p(2)*X/p(1)/Y)*180/pi;
-%a = 0;
+%a = 1*atan(d*p(2)*X/p(1)/Y)*180/pi;
+a = 0;
 % Display the text
 switch z==0
     case 1
