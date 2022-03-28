@@ -39,7 +39,7 @@ for ii = 1:length(dV)
 
     %% Geometric Inputs
 
-    kk = (S/40)^(1/3);
+    kk = 1;
     SA = 4.743*kk^2;
     SC = 12.2804*kk^2;
     Scab = 1.7671;

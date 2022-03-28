@@ -24,10 +24,10 @@ V_h = .4;
 V_v = .04;
 
 % L_h/L_fuselage
-L_h_ratio = .52;
+L_h_ratio = .42;
 
 % L_v/L_fuselage
-L_v_ratio = .52;
+L_v_ratio = .42;
 
 % b/L_fuselage
 b_L_ratio = 2;
@@ -43,10 +43,10 @@ L_fuselage = b/b_L_ratio;
 %L_fuselage= 12;
 
 % Horizontal Tail Distance
-L_h = L_fuselage*L_h_ratio;
+L_h = 42/12; %L_fuselage*L_h_ratio;
 
 % Vertical Tail Distance
-L_v = L_fuselage*L_v_ratio;
+L_v = 42/12; %L_fuselage*L_v_ratio;
 
 Sw = S*144;
 cw  = sqrt(Sw/AR);
@@ -70,8 +70,8 @@ ct_root = fzero( @(cr) ct(cr)-b_h/ARh, r/2);
 ct_tip = ct_root*lambda;
 
 c_root_h = ct_root;
-c_tip_h = ct_root;
-c_root_v = ct_tip;
+c_tip_h = ct_tip;
+c_root_v = ct_root;
 c_tip_v = ct_tip;
 
 S_h = b_h*ct(ct_root);

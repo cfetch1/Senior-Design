@@ -2,7 +2,7 @@ close all
 clear
 clc
 
-Vcruise = 120:5:200;
+Vcruise = 160;
 file = 'Drag.xlsx';
 
 hc = 18000;
@@ -26,8 +26,7 @@ for ii = 1:length(Vcruise)
     while ERROR > .5
         
         [PW,WS] = ConstraintDiagram(Vc,hc,throttle,Sg,CL_max,AR,f);
-        
-%         [MTOW] = RangeSizing(Wto,Wf,Wpl);
+
         
         error = 1000;
         
