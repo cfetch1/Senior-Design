@@ -14,7 +14,7 @@ function [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise
 
 
     %Variables
-    Scs=3; %[ft^2]  %Control surface planform area  
+    Scs=6; %[ft^2]  %Control surface planform area  
     %b=41.8;    %wingspan %[ft]
     VeqMax=Vcruise*1.35; %Max veloicty in [KEAS]
     p_pay=320; %Max payload power [Watts]
@@ -36,7 +36,7 @@ function [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise
     fuse_diam=(1.5)*ratio; %fuselage diameter%[ft
     fuse_diam=2;
     pmax=2*pi*(fuse_width/2);  %Corss sectional circumference%[ft^2]
-    Npax=.001;    %Number of pax, this will be estimated
+    Npax=.0001;    %Number of pax, this will be estimated
     %S_h=12;   %Horizontal Tail area %[ft^2]
     A_h=3;    %Horizontal tair AR
     t_rh=.16;  %t_rh = horizontal tail maximum root thickness in ft
@@ -59,7 +59,7 @@ function [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise
     L_sn=15; %shock strut length for nose gear[in]
     v_d=VeqMax*1.25;    %mAX DIVE SPEED
     t_c=.14;    %Wing thickness
-    L_D=17.4; %This is an estimate(14), bigger high L/d
+    L_D=13; %This is an estimate(14), bigger high L/d
     S_f=2*pi*(fuse_diam/2)*L_f+2*pi*(fuse_diam/2)^2;  %Sf fuselage area ft^2
     S_f=35;
     q=47.74;   %dynamic press
@@ -264,7 +264,7 @@ function [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise
     elseif str =="3"
         Wcomp=Wcomp_howe;
     elseif str == "2"
-        Wcomp=Wcomp_nic;;
+        Wcomp=Wcomp_nic;
     elseif str == "1"
         Wcomp=Wcomp_rosk;
     else
