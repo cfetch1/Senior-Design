@@ -10,25 +10,21 @@ addpath('..\Weight_estimate\Gundlach')
 addpath('..\Weight_estimate\Roskam_weight')
 
 f=[0.0351   -0.0029    0.0210];
-%f = [0.0212   -0.0022    0.0286];
-%% Carpet Plots
 
-% range = linspace(500,1000,7);
-% % 
-% Vcruise = linspace(80,160,7);
-range = 575;
-Vcruise= 160;
+range = linspace(500,950,13);
+
+Vcruise = linspace(120,180,13);
+
+% range = 625;
+% Vcruise=160;
 
 for ii = 1:length(range)
      for jj = 1:length(Vcruise)
-        [Wto,We,Wf,P,S,b,L_fuselage,c_root,c_tip,L_h,S_h,b_h,c_root_h,c_tip_h,L_v,S_v,b_v,c_root_v,c_tip_v] = InSizing(range(ii),Vcruise(jj),1);
-        c_root_tail = 12*(c_root_h+c_root_v)/2
-        c_tip_tail = 12*(c_tip_h+c_tip_v)/2
-        beta = atand(b_v/(3*b_h))
-        hv = sqrt( (.5*b_v)^2 + (.5*b_h)^2 )*12
-         [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise(jj),b_v,b_h,L_fuselage);
-        clc
-%              MTOW_calc(1) = Wto;
+        [Wto,We,Wf,P,S,b,L_fuselage,c_root,c_tip,L_h,S_h,b_h,c_root_h,c_tip_h,L_v,S_v,b_v,c_root_v,c_tip_v] = InSizing(range(ii),Vcruise(jj),0);
+
+        [MTOW_calc, Wcomp] = Design_weight_estimate(S_v,S_h,S, b, P,Wf, Vcruise(jj),b_v,b_h,L_fuselage);
+       clc
+
         W1(ii,jj) = real(MTOW_calc(end));
         if jj>1
             if W1(ii,jj)<W1(ii,jj-1)
@@ -49,37 +45,37 @@ for ii = 1:length(range)
             [CL,CD] = DragSLF(dV(kk),Wr,12000,S,0);
             E(kk) = CL/CD;
             if E(kk) == max(E)
+                clc
                 index = kk;
             end
         end
-%         index = 1;
+
         throttle = .5*dV(index)/Vcruise(jj);
         [~,~,~,dW,~] = fcruise(250,12000,dV(index),0,Wr,Preq(ii,jj),throttle,Vcruise(jj),S,f);
         df2 = dW(1)-dW(end);
         fr(ii,jj) = Wf - (df1+df2);
 
         for kk = 1:length(dV)
-            [CL,CD] = DragSLF(dV(kk),Wr,3500,S,0);
+            [CL,CD] = DragSLF(dV(kk),Wr,4000,S,0);
             E32(kk) =CL^1.5/CD;
             if E32(kk) == max(E32)
                 index = kk;
             end
         end
-%         index = 1;
+
         throttle = .5*dV(index)/Vcruise(jj);
-        [~,~,~,dW,xt] = fcruise(250,3500,dV(index),0,Wr,Preq(ii,jj),throttle,Vcruise(jj),S,f);
+        [~,~,~,dW,xt] = fcruise(250,4000,dV(index),0,Wr,Preq(ii,jj),throttle,Vcruise(jj),S,f);
         dt(ii,jj) = fr(ii,jj)*xt(end)/(dW(1)-dW(end));
-%         if fr(ii,jj)<0
-%             dt(ii,jj) = 0;
-%         end
+
         clear E E32 xt
       end  
  end
 
- dt=dt-min(min(dt));
+dt=dt+195.7;
 
+[x1,y1,x2,y2] = Carpet(range,Vcruise,W1,char('range'),char('cruise speed'),char('nmi'),char('kts'),char('MTOW [lbs]'),-5,100,20);
 
-Carpet(range,Vcruise,W1,char('range'),char('cruise speed'),char('nmi'),char('kts'),char('MTOW [lbs]'),-5,100,20);
+% Carpet(range,Vcruise,W2,char('range'),char('cruise speed'),char('nmi'),char('kts'),char('MTOW [lbs]'),0,100,20);
 % Carpet(range,Vcruise,W2,char('range'),char('cruise speed'),char('nmi'),char('kts'),char('Empty Weight [lbs]'),0,50,10);
 % Carpet(range,Vcruise,W3,char('range'),char('cruise speed'),char('nmi'),char('kts'),char('Fuel Weight [lbs]'),0,50,10);
 Carpet(range,Vcruise,Preq,char('range'),char('dash speed'),char('nmi'),char('kts'),char('Power Required [BHP]'),-10,50,10);

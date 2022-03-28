@@ -11,15 +11,17 @@ mu =.04;
 eta = .35;
 for i = 1:length(AR)
      for j = 1:length(WS)
-        %Vto = sqrt(2*WS(j)/(rho*CL_to));
-        Vto = 75;
-        q = .25*rho*(Vto)^2;
-        CD_to = f(1)*CL_to^2+f(2)*CL_to+f(3);
-        %eta = TR640(Vto,Vp);
-        TW1 = (Vto^2)/(2*g*Sg) + q*CD_to/WS(j) + mu*(1-q*CL_to/WS(j));
-%       TW2 = ROC/(60*V) + (q/(WS(j)))*CD_to + (k/q)*(WS(j));
-%       TW = max([TW1,TW2]);
-        PW(i,j) = (TW1*Vto)/(550*eta);
+%         %Vto = sqrt(2*WS(j)/(rho*CL_to));
+%         Vto = 75;
+%         q = .5*rho*(Vto/sqrt(2))^2;
+%         CD_to = f(1)*CL_to^2+f(2)*CL_to+f(3);
+%         %eta = TR640(Vto,Vp);
+%         TW1 = (Vto^2)/(2*g*Sg) + q*CD_to/WS(j) + mu*(1-q*CL_to/WS(j));
+% %       TW2 = ROC/(60*V) + (q/(WS(j)))*CD_to + (k/q)*(WS(j));
+% %       TW = max([TW1,TW2]);
+%         PW(i,j) = (TW1*Vto)/(550*eta);
+
+PW(i,j) = (Sg/(WS(j)*CL_to/1.21)/550); % Roskam I pg 95
     end
 end
 end
