@@ -13,6 +13,37 @@ V(1) = V1;
 W(1) = W1;
 t(1) = 0;
 
+if opt == 1
+        
+        dV = 60:120;
+        
+        for kk = 1:length(dV)
+            [CL,CD] = DragSLF(dV(kk),W(end),h(end),S,f);
+            E(kk) = CL/CD;
+            if E(kk) == max(E)
+                index = kk;
+            end
+        end
+        V(1) = dV(index);
+        clear E index
+        
+    elseif opt == 2
+        
+                dV = 60:120;
+        
+        for kk = 1:length(dV)
+            [CL,CD] = DragSLF(dV(kk),W(end),h(end),S,f);
+            E32(kk) = CL^1.5/CD;
+            if E32(kk) == max(E32)
+                index = kk;
+            end
+        end
+        V(1) = dV(index);
+        clear E32 index
+end
+
+
+
 dt = 10; % seconds
 ii = 1;
     
