@@ -127,8 +127,26 @@ for ii = 1:length(dV)
 
 end
 
+dCL = 0:.01:1.3;
 f = polyfit(CL,CD,2);
+dCD = polyval(f,dCL);
 
+figure
+hold on
+plot(dCD,dCL,'r','linewidth',2)
+ylabel('C_L')
+xlabel('C_D')
+grid on
+axis([0,max(dCD),0,1.3])
+ax=gca;
+ax.XAxis.Exponent = 0;
+ax.XTick = 0:.025:1000;
+ax.XAxis.MinorTick='on';
+ax.XAxis.MinorTickValues = 0:.005:1000;
+ax.YAxis.Exponent = 0;
+ax.YTick = 0:.25:30000;
+ax.YAxis.MinorTick='on';
+ax.YAxis.MinorTickValues = 0:.05:30000;
 
 end
 
