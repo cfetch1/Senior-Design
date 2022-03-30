@@ -91,7 +91,7 @@ for ii = 1:length(dV)
     [CD_WT(ii)] = TailFuselageInterference(2,tc_T,cT,S);
 
     % Air Intake Drag
-    CD_duct(ii) = DuctDrag(h,A,V,V*V2,S);
+    CD_duct(ii) = 0; %DuctDrag(h,A,V,V*V2,S);
 
     % Radar Interference
     CD_BR1(ii) = .05*CDrad(ii);
