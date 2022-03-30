@@ -24,15 +24,15 @@ addpath('..\Weight_estimate\Roskam_weight')
     VeqMax=Vcruise*1.35; %Max veloicty in [KEAS]
     p_pay=320; %Max payload power [Watts]
     L_f=L_fuselage; %lengyth of the fuselage [ft^2]
-    L_f=10.5;
+    L_f=13;
     ratio=L_f/14.9;
     Wpay=90; %payload weight [lb]
     Nprop=1;    %Number of props
-    D=3.56;    %Propeller diameter %[ft]
+    D=10000/12*(100/(111*5800^2*160))^.25;    %Propeller diameter %[ft]
     N_blades=4;     %Number of blades
     %P=578;  %Max shaft horsepower
     Wengine=.484*(P^.7956); %Engine weight [lb]
-    Wengine= 110;
+    Wengine= 124;
     %Wf=232;   %Fuel weight %[lb]
     %S=117;    %Wing area %[ft^2]
     AR=15;  %Aspect 
@@ -43,8 +43,8 @@ addpath('..\Weight_estimate\Roskam_weight')
     pmax=2*pi*(fuse_width/2);  %Corss sectional circumference%[ft^2]
     Npax=.001;    %Number of pax, this will be estimated
     %S_h=12;   %Horizontal Tail area %[ft^2]
-    A_h=3;    %Horizontal tair AR
-    t_rh=.16;  %t_rh = horizontal tail maximum root thickness in ft
+    A_h=2.4;    %Horizontal tair AR
+    t_rh=.12*25/12;  %t_rh = horizontal tail maximum root thickness in ft
     %S_v=17.9;   %vertical tail area in ft^2 %[ft^2]
     %b_v=6.21;   %Span of vertical tail
 
@@ -57,18 +57,18 @@ addpath('..\Weight_estimate\Roskam_weight')
     fuse_height=1.83;
     V_d=VeqMax*1.25;    %max dive speed
     N_bar=180;
-    A_v=.38; %vertical tail aspect ratio
-    t_rv=.16;  %vertical tail maximum root thickness in ft
-    sw_a=1;    %vertical tail quarter cord sweep angle
-    L_sm=15; %shock strut length for main gear[in]
-    L_sn=15; %shock strut length for nose gear[in]
+    A_v=.5; %vertical tail aspect ratio
+    t_rv=.12*25/12;  %vertical tail maximum root thickness in ft
+    sw_a=3.7;    %vertical tail quarter cord sweep angle
+    L_sm=18; %shock strut length for main gear[in]
+    L_sn=18; %shock strut length for nose gear[in]
     v_d=VeqMax*1.25;    %mAX DIVE SPEED
-    t_c=.14;    %Wing thickness
-    L_D=17.4; %This is an estimate(14), bigger high L/d
+    t_c=.14*30/12;    %Wing thickness
+    L_D=20; %This is an estimate(14), bigger high L/d
     S_f=2*pi*(fuse_diam/2)*L_f+2*pi*(fuse_diam/2)^2;  %Sf fuselage area ft^2
-    S_f=35;
+    S_f=2*4697/144;
     q=47.74;   %dynamic press
-    N_z=6;    %Safety factor
+    N_z=5;    %Safety factor
     %TTail stuff
     sweep_ht=3.7;
     taper_ht=.67;

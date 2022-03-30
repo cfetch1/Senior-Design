@@ -39,8 +39,8 @@ b_L_ratio = 2;
 %% Outputs
 
 % Fuselage Length
-L_fuselage = b/b_L_ratio;
-%L_fuselage= 12;
+%L_fuselage = b/b_L_ratio;
+L_fuselage= 13;
 
 % Horizontal Tail Distance
 L_h = 42/12; %L_fuselage*L_h_ratio;

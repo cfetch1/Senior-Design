@@ -65,7 +65,7 @@ for kk = 1:length(dV)
 end
 Vs = dV(xx);
 clear E
-[~,dh3,dV3,dW3,dt3] = fcruise(1000,4000,Vs,Vw,W(end),P0,Vp,S,f,dt_L,2);
+[~,dh3,dV3,dW3,dt3] = fcruise(10000,4000,Vs,Vw,W(end),P0,Vp,S,f,dt_L,2);
 ii = index+length(dt3);
 dx3 = zeros(length(dt3),1);
 dx3(:,1) = x(end);
