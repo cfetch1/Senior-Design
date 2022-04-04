@@ -24,7 +24,7 @@ addpath('..\Weight_estimate\Roskam_weight')
     VeqMax=Vcruise*1.35; %Max veloicty in [KEAS]
     p_pay=320; %Max payload power [Watts]
     L_f=L_fuselage; %lengyth of the fuselage [ft^2]
-    L_f=13;
+    L_f=14;
     ratio=L_f/14.9;
     Wpay=90; %payload weight [lb]
     Nprop=1;    %Number of props
@@ -64,7 +64,7 @@ addpath('..\Weight_estimate\Roskam_weight')
     L_sn=18; %shock strut length for nose gear[in]
     v_d=VeqMax*1.25;    %mAX DIVE SPEED
     t_c=.14*30/12;    %Wing thickness
-    L_D=20; %This is an estimate(14), bigger high L/d
+    L_D=18; %This is an estimate(14), bigger high L/d
     S_f=2*pi*(fuse_diam/2)*L_f+2*pi*(fuse_diam/2)^2;  %Sf fuselage area ft^2
     S_f=2*4697/144;
     q=47.74;   %dynamic press

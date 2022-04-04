@@ -45,7 +45,7 @@ for ii = 1:length(Vcruise)
         [f] = DragPolar(file,MTOW,S,c,b,c_root,c_tip,S_h,c_T,L_fuselage);
         
         close all
-        [df] = FuelConsumption(P,Vc,S,f,MTOW,length(Vcruise));
+        [df] = FuelConsumption(P,Vc,S,f,MTOW,0);
         
         ERROR = 100*abs(Wf-df)/Wf;
         MTOW = MTOW-Wf+df;
@@ -60,67 +60,67 @@ for ii = 1:length(Vcruise)
     W3(ii) = Wf;
     
 end
-% 
-% if length(Vcruise)>1
-%     clc
-%     figure
-%     
-%     subplot(221)
-%     hold on
-%     plot(Vcruise,W1,'b','linewidth',2)
-%     xlabel('Ingress Speed [kts]')
-%     ylabel('W_T_O [lbs]')
-%     axis([min(Vcruise),max(Vcruise),min(W1),max(W1)])
-%     grid on
-%     
-%     subplot(222)
-%     hold on
-%     plot(Vcruise,W2,'b','linewidth',2)
-%     xlabel('Ingress Speed [kts]')
-%     ylabel('W_e [lbs]')
-%     axis([min(Vcruise),max(Vcruise),min(W2),max(W2)])
-%     grid on
-%     
-%     subplot(223)
-%     hold on
-%     plot(Vcruise,W3,'b','linewidth',2)
-%     xlabel('Ingress Speed [kts]')
-%     ylabel('W_f [lbs]')
-%     axis([min(Vcruise),max(Vcruise),min(W3),max(W3)])
-%     grid on
-%     
-%     subplot(224)
-%     hold on
-%     plot(Vcruise,P0,'r','linewidth',2)
-%     xlabel('Ingress Speed [kts]')
-%     ylabel('Power [hp]')
-%     axis([min(Vcruise),max(Vcruise),min(P0),max(P0)])
-%     grid on
-% 
-%     figure
-%     hold on
-%     a1 = plot(Vcruise,W1,'b','linewidth',2);
-%     a2 = plot(Vcruise,W2,'b--','linewidth',2);
-%     a3 = plot(Vcruise,W3,'k--','linewidth',2);
-%     text2line(a1,.5,0,'MTOW')
-%     text2line(a2,.5,0,'W_e')
-%     text2line(a3,.5,0,'W_f')
-%     xlabel('Ingress Speed [kts]')
-%     ylabel('Weight [lbs]')
-%     axis([min(Vcruise),max(Vcruise),0,max(W1)])
-%     grid on
-%     
-%     figure
-%     hold on
-%     yyaxis left
-%     plot(Vcruise,W1,'b','linewidth',2);
-%     ylabel('W_T_O [lbs]')
-%     axis([min(Vcruise),max(Vcruise),min(W1),max(W1)])
-%     grid on
-%     yyaxis right
-%     plot(Vcruise,P0,'r','linewidth',2);
-%     xlabel('Ingress Speed [kts]')
-%     ylabel('Power [hp]')
-%     axis([min(Vcruise),max(Vcruise),min(P0),max(P0)])
-%     grid on
-% end
+
+if length(Vcruise)>1
+    clc
+    figure
+    
+    subplot(221)
+    hold on
+    plot(Vcruise,W1,'b','linewidth',2)
+    xlabel('Ingress Speed [kts]')
+    ylabel('W_T_O [lbs]')
+    axis([min(Vcruise),max(Vcruise),min(W1),max(W1)])
+    grid on
+    
+    subplot(222)
+    hold on
+    plot(Vcruise,W2,'b','linewidth',2)
+    xlabel('Ingress Speed [kts]')
+    ylabel('W_e [lbs]')
+    axis([min(Vcruise),max(Vcruise),min(W2),max(W2)])
+    grid on
+    
+    subplot(223)
+    hold on
+    plot(Vcruise,W3,'b','linewidth',2)
+    xlabel('Ingress Speed [kts]')
+    ylabel('W_f [lbs]')
+    axis([min(Vcruise),max(Vcruise),min(W3),max(W3)])
+    grid on
+    
+    subplot(224)
+    hold on
+    plot(Vcruise,P0,'r','linewidth',2)
+    xlabel('Ingress Speed [kts]')
+    ylabel('Power [hp]')
+    axis([min(Vcruise),max(Vcruise),min(P0),max(P0)])
+    grid on
+
+    figure
+    hold on
+    a1 = plot(Vcruise,W1,'b','linewidth',2);
+    a2 = plot(Vcruise,W2,'b--','linewidth',2);
+    a3 = plot(Vcruise,W3,'k--','linewidth',2);
+    text2line(a1,.5,0,'MTOW')
+    text2line(a2,.5,0,'W_e')
+    text2line(a3,.5,0,'W_f')
+    xlabel('Ingress Speed [kts]')
+    ylabel('Weight [lbs]')
+    axis([min(Vcruise),max(Vcruise),0,max(W1)])
+    grid on
+    
+    figure
+    hold on
+    yyaxis left
+    plot(Vcruise,W1,'b','linewidth',2);
+    ylabel('W_T_O [lbs]')
+    axis([min(Vcruise),max(Vcruise),min(W1),max(W1)])
+    grid on
+    yyaxis right
+    plot(Vcruise,P0,'r','linewidth',2);
+    xlabel('Ingress Speed [kts]')
+    ylabel('Power [hp]')
+    axis([min(Vcruise),max(Vcruise),min(P0),max(P0)])
+    grid on
+end
