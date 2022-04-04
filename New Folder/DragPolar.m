@@ -40,10 +40,10 @@ for ii = 1:length(dV)
     %% Geometric Inputs
 
     kk = 1;
-    SA = 2011*2/144;
-    SC = 1672*2/144;
+    SA = 3076*2/144;
+    SC = 2340*2/144;
     Scab = 0;
-    Spx0 = 2380*2/144;
+    Spx0 = 3430*2/144;
     alphaB0 = -5;
     diaB = 2*kk;
     w_LG = [4/12,0.5,.5];
