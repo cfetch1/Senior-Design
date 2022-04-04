@@ -60,7 +60,7 @@ lt = L_h*12';
 lambda = 2/3;
 
 r1 = @(beta) (sqrt(Vh*Sw*cw*ARh/(4*lt)))/cosd(beta);
-r2 = @(beta) (Vv*bw*sqrt(Sw*ARh/(cw*lt*Vh)))/(2*sind(beta)+1/3);
+r2 = @(beta) (Vv*bw*sqrt(Sw*ARh/(cw*lt*Vh)))/(2*sind(beta)+1/2);
 beta = fzero( @(beta) r1(beta)-r2(beta),45);
 r = r1(beta);
 
