@@ -1,9 +1,7 @@
-% power(lines 50-54 on fcruise fn)
 clear;
 clc;
 close all;
-
-% Aircraft Params
+1% Aircraft Params
 W = 947;
 V = 160;
 S = 44.4;
@@ -26,7 +24,7 @@ for ii = 1:length(h)
     P_max(ii) = P0*(sigma-(1-sigma)/7.55);
 end
 
-%% Interpolating Empirical Engine data from Rotax 912
+%% Interpolating Empirical Engine data from the Rotax 912 UL 100 hp
 
 % Empirical Data
 RPM = [ 3000 3500 4000 4500 5000 5500 ];
@@ -49,14 +47,14 @@ PSFC_altitude = (fuel_cons(end)./P_max);                                  % This
 %% Plotting
 figure();
 plot(h,P_max,'linewidth',4); grid on;
-ylabel('Max Power [Hp]');
-xlabel('Altitude [Ft]');
+ylabel('Max Power [hp]');
+xlabel('Altitude [ft]');
 ylim([0,100]);
 
 figure();
 plot(h,PSFC_altitude,'linewidth',4); grid on;
 ylabel('PSFC (Max Throttle) [lb/hp/hr]');
-xlabel('Altitude [Ft]');
+xlabel('Altitude [ft]');
 
 figure();
 plot(linspace(0,100,100),throttle_PSFC_sealevel,'linewidth',4); grid on; hold on;
@@ -64,26 +62,57 @@ plot(linspace(0,100,100),throttle_PSFC_cruise,'linewidth',4); grid on;
 ylabel('PSFC [lb/hp/hr]');
 xlabel('Throttle Setting [%]');
 
-%% Drake Notes: as long as all consistent, check altitude vs PSFC plot cause its high make sure it works with gregs code
-%% Include PSFC model at altitude and Sea level
-
 
 %% Greg Validation
+
+% Generate throttle percentages
+throttle_greg = linspace(0,100,100);
+
+% Generate power linspace (0-100 hp)
+% Power_greg = linspace(0,100,length(throttle_greg));
+
+V_fps1 = linspace(100*1.688,220*1.688,length(throttle_greg));
+% Calculate TSFC (sea level, 160 knots)
+for i = 1:length(V_fps1)
+    TSFC(i) = fTSFC(0,V_fps1(i)./1.688);
+end
+
+% Calculate drag (sea level, 160 knots)
+% V_fps1 = V*1.688;
+% TSFC = fTSFC(0,V_fps1./1.688);
+% D = (Power_greg)./V_fps1;
+rho = density(0);
+CL = W./(.5*rho.*V_fps1.^2*S);
+CD = f(1).*(CL).^2 + f(2).*CL + f(3);
+D = .5*rho.*V_fps1.^2*S.*CD;
+Power_greg = D.*V_fps1/550;
+
+% Calculate PSFC
+% PSFC_greg = (TSFC.*D)./(Power_greg);
+PSFC_greg = TSFC./(V_fps1/550);
+
+% Jank shit to make drag power match max power
+V_fps = linspace(200*1.688,250*1.688,length(P_max));
+
 for ii = 1:length(P_max)
 
+    % Calculate density
     rho = density(h(ii));
 
     % Calculate TSFC
-    [TSFC] = fTSFC(h(ii),V);
+    TSFC = fTSFC(h(ii),V);
 
     % Calculate drag on aircraft
-    V_fps = V*1.688;
-    CL = W/(.5*rho*V_fps^2*S);
+    CL = W/(.5*rho*V_fps(ii)^2*S);
     CD = f(1)*(CL)^2 + f(2)*CL + f(3);
-    D = .5*rho*V_fps^2*S*CD;
+    D(ii) = .5*rho*V_fps(ii)^2*S*CD;
+    Power_greg2 = D.*V_fps(ii)/550; % Check Var. This is so fucking jank
     
-    PSFC_greg(ii) = (TSFC*D)/P_max(ii);
+    
+    PSFC_greg_alt(ii) = (TSFC*D(ii))/P_max(ii);
 end
+
+
 
 % figure(); 
 % plot(P_max,PSFC,'linewidth',2); grid on;
@@ -91,12 +120,12 @@ end
 % ylabel('PSFC [lb/hp/hr]')
 
 % figure(); 
-% plot(linspace(0,100,length(PSFC_greg)),PSFC_greg,'linewidth',2); grid on;
+% plot(throttle_greg,PSFC_greg,'linewidth',2); grid on;
 % xlabel('Throttle Setting (%)')
 % ylabel('PSFC [lb/hp/hr]')
-% % 
+
 % figure(); 
-% plot(h,PSFC_greg,'linewidth',2); grid on;
+% plot(h,PSFC_greg_alt,'linewidth',2); grid on;
 % xlabel('Altitude [Ft]')
 % ylabel('PSFC [lb/hp/hr]')
 
