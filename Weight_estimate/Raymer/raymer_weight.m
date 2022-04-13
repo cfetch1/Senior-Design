@@ -11,7 +11,23 @@ W_l=MTOW-Wfuel;
 [W_vt] = raymer_vt(N_z,MTOW,q,S_v,t_c,sweep_vt,AR,taper_vt);
 [W_fuse] = raymer_fuse(S_f,N_z,MTOW,lt,L_D,q);
 [W_main,W_nose] = raymer_lg(N_l,W_l,L_sm,L_sn);
+Wpl = 517;
+W_aircraft = W_wing + W_ht + W_vt + W_fuse + W_main + W_nose + Wpl;
+
+error = 1000;
+while error > .1
+    W_wing = W_aircraft*.15;
+    W_ht = W_aircraft*.035;
+    W_vt = W_aircraft*.05;
+    W_fuse = W_aircraft*.12;
+    W_main = W_aircraft*.04;
+    W_nose = W_aircraft*.02;
+    error = abs(W_aircraft -( W_wing + W_ht + W_vt + W_fuse + W_main + W_nose + Wpl));
+    W_aircraft = W_wing + W_ht + W_vt + W_fuse + W_main + W_nose + Wpl;
+end
+
 W_aircraft = W_wing + W_ht + W_vt + W_fuse + W_main + W_nose;
+
 Wcomp(:,1)=["Wing";"HT";"VT";"Fuselage";"MLG";"NLG";"Airframe Total"];
 Wcomp(:,2)=[W_wing;W_ht;W_vt;W_fuse;W_main;W_nose;W_aircraft(end)];
 
@@ -32,7 +48,7 @@ function [W_wing] = raymer_wing(S,Wfuel,AR,sweep,q,lambda,t_c,N_z,MTOW)
 
 %   W_dg = flight design gross weight, lb
 %   ignore the second term if Wfw = 0
-
+Wfuel = 1;
 W_wing = 0.036*(S^0.758)*(Wfuel^0.0035)*((AR/cosd(sweep)^2)^0.6)*(q^0.006)*...
     (lambda^0.04)*((100*t_c/cosd(sweep))^(-0.3))*((N_z*MTOW)^0.49);
 end
@@ -48,6 +64,7 @@ function [W_ht] = raymer_ht(N_z,MTOW,q,S_h,t_c,sweep,AR,sweep_ht,taper_ht)
 %   A = aspect ratio of wing
 %   sweep_ht = horizontal tail sweep
 %   taper_ht = horizontal tail taper ratio
+A = 2.4;
 W_ht = 0.016*((N_z*MTOW)^0.414)*(q^0.168)*(S_h^0.896)*((100*(t_c)/...
     cosd(sweep))^-0.12)*((AR/(cosd(sweep_ht)^2))^0.043)*(taper_ht^-0.02);
 end
@@ -76,6 +93,7 @@ function [W_fuse] = raymer_fuse(S_f,N_z,MTOW,lt,L_D,q)
 %   L_t = tail length; wing quarter-MAC to tail quarter-MAC, ft
 %   L_D = L/D of aircraft
 %   q = dynamic pressure
+S_f = 90.36;
 W_fuse = 0.052*S_f^1.086*(N_z*MTOW)^0.177*lt^-0.051*(L_D)^-0.072*q^0.241;
 end
 function [W_main,W_nose] = raymer_lg(N_l,W_l,L_sm,L_sn)
