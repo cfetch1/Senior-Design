@@ -1,4 +1,4 @@
-function [x,h,V,W,t] = fclimb(h1,h2,V1,W1,P0,throttle,Vc,S,f,PSFC)
+function [x,h,V,W,t] = fclimb(h1,h2,V1,W1,P0,throttle,Vc,S,f)
 
 %% OUTPUTS
 % x (vector):   distance [nmi]
@@ -28,8 +28,8 @@ ii = 1;
 
 while h(ii)<h2
     
-    %TSFC = fTSFC(h(ii),V(ii));
-
+    TSFC = fTSFC(h(ii),V(ii));
+    
     rho = density(h(ii));
     V_fps = V(ii)*1.69;
     
@@ -45,7 +45,7 @@ while h(ii)<h2
     D = .5*rho*V_fps^2*S*CD;
     P_req = D*V_fps;
     
-    df = PSFC*P_eng*(dt/3600);
+    df = TSFC*D*(dt/3600);
     
     gamma = asin((P_avail-P_req)/(W(ii)*V_fps));
     
