@@ -24,7 +24,7 @@ addpath('..\Weight_estimate\Roskam_weight')
     VeqMax=Vcruise*1.35; %Max veloicty in [KEAS]
     p_pay=320; %Max payload power [Watts]
     L_f=L_fuselage; %lengyth of the fuselage [ft^2]
-    L_f=13;
+    L_f=14;
     ratio=L_f/14.9;
     Wpay=90; %payload weight [lb]
     Nprop=1;    %Number of props
@@ -64,10 +64,10 @@ addpath('..\Weight_estimate\Roskam_weight')
     L_sn=18; %shock strut length for nose gear[in]
     v_d=VeqMax*1.25;    %mAX DIVE SPEED
     t_c=.14*30/12;    %Wing thickness
-    L_D=20; %This is an estimate(14), bigger high L/d
+    L_D=16; %This is an estimate(14), bigger high L/d
     S_f=2*pi*(fuse_diam/2)*L_f+2*pi*(fuse_diam/2)^2;  %Sf fuselage area ft^2
     S_f=2*4697/144;
-    q=47.74;   %dynamic press
+    q=50;   %dynamic press
     N_z=5;    %Safety factor
     %TTail stuff
     sweep_ht=3.7;
@@ -231,6 +231,11 @@ addpath('..\Weight_estimate\Roskam_weight')
                 [Howe_weight(i),Wcomp_howe] = HOWE_WEIGHT_fun(MTOW_in(i),L_f,fuse_width,fuse_height,v_d,AR,S,sweep,lambda,N_bar,t_c);
                 [W_aircraft(i),Wcomp_raymer] = raymer_weight(S,Wf,AR,sweep,lambda,t_c,MTOW_in(i),S_h,S_v,S_f,lt,L_D,L_sm,L_sn,q,sweep_ht,taper_ht,sweep_vt,taper_vt,N_z);
                  MTOW_calc(i)=W_feq(i)+W_prop_sys(i)+w_prop(i)+W_fuel_sys(i)+Wf+W_aircraft(i)+Wengine;
+                 
+
+                 
+                 
+                 
                 Diff(i)=MTOW_calc(i)-MTOW_in(i);
                 if i == 2
                     MTOW_in(i+1)=MTOW_in(i)-Diff(i)*((MTOW_in(i)-MTOW_in(i-1))/(Diff(i)-Diff(i-1)));

@@ -11,6 +11,25 @@ W_l=MTOW-Wfuel;
 [W_vt] = raymer_vt(N_z,MTOW,q,S_v,t_c,sweep_vt,AR,taper_vt);
 [W_fuse] = raymer_fuse(S_f,N_z,MTOW,lt,L_D,q);
 [W_main,W_nose] = raymer_lg(N_l,W_l,L_sm,L_sn);
+
+Wpl = 517;
+W_aircraft = W_wing + W_ht + W_vt + W_fuse + W_main + W_nose + Wpl;
+
+error = 1000;
+while error > .1
+    W_wing = W_aircraft*.15;
+    W_ht = W_aircraft*.035;
+    W_vt = W_aircraft*.05;
+    W_fuse = W_aircraft*.12;
+    W_main = W_aircraft*.04;
+    W_nose = W_aircraft*.02;
+    error = abs(W_aircraft -( W_wing + W_ht + W_vt + W_fuse + W_main + W_nose + Wpl));
+    W_aircraft = W_wing + W_ht + W_vt + W_fuse + W_main + W_nose + Wpl;
+end
+
+
+
+
 W_aircraft = W_wing + W_ht + W_vt + W_fuse + W_main + W_nose;
 Wcomp(:,1)=["Wing";"HT";"VT";"Fuselage";"MLG";"NLG";"Airframe Total"];
 Wcomp(:,2)=[W_wing;W_ht;W_vt;W_fuse;W_main;W_nose;W_aircraft(end)];

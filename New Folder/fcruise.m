@@ -1,4 +1,4 @@
-function [x,h,V,W,t,PSFC,phi] = fcruise(x2,h,V1,Vw,W1,P0,Vc,S,f,tlim,opt)
+function [x,h,V,W,t,PSFC,phi] = fcruise(x2,h,V1,Vw,W1,P0,Vc,S,f,tlim,opt,PSFC)
 
 %% OUTPUTS
 % x (vector):   distance [nmi]
@@ -58,13 +58,13 @@ ii = 1;
     CD = f(1)*(CL)^2 + f(2)*CL + f(3);
     D = .5*rho*V_fps^2*S*CD;
     P_req = D*V_fps;
-    
+    P_hp = P_req/550;
     throttle = P_req/P_max;
-
+    P_eng = P_max*throttle/550
 
 while x(ii)<x2
     
-    TSFC = fTSFC(h(ii),V(ii));
+%     TSFC = fTSFC(h(ii),V(ii));
     
 %     rho = density(h(ii));
     
@@ -81,9 +81,9 @@ while x(ii)<x2
     D = .5*rho*V_fps^2*S*CD;
     P_req = D*V_fps;
     
-    df = TSFC*D*(dt/3600);
+    df = PSFC*P_eng/550*(dt/3600);
     
-    PSFC(ii) = df*3600/(dt*P_eng/550);
+%     PSFC(ii) = df*3600/(dt*P_eng/550);
     
     dV = (P_avail-P_req)*dt/(W(ii)*3600);
     if dV>0.5*dt/3600
@@ -148,8 +148,8 @@ while x(ii)<x2
     end
     end
 end
-
-PSFC(ii) = PSFC(ii-1);
+% 
+% PSFC(ii) = PSFC(ii-1);
 t = t/60;
 
 end

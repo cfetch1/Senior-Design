@@ -30,7 +30,7 @@ for kk = 1:length(dV)
 end
 VE = dV(xx);
 clear E
-[dx1,dh1,dV1,dW1,dt1] = fclimb(0,h_in,VE,W(end),P0,.85,Vp,S,f);
+[dx1,dh1,dV1,dW1,dt1] = fclimb(0,h_in,VE,W(end),P0,.85,Vp,S,f,.39);
 ii = length(dt1);
 x(1:ii) = dx1;
 h(1:ii) = dh1;
@@ -42,7 +42,7 @@ index = ii;
 
 %% Ingress
 
-[dx2,dh2,dV2,dW2,dt2] = fcruise(d-x(end),h_in,Vc,Vw,W(end),P0,Vp,S,f,0,0);
+[dx2,dh2,dV2,dW2,dt2] = fcruise(d-x(end),h_in,Vc,Vw,W(end),P0,Vp,S,f,0,0,.39);
 ii = index+length(dt2);
 dx2 = x(end)+dx2;
 dt2 = t(end)+dt2;
@@ -65,7 +65,7 @@ for kk = 1:length(dV)
 end
 Vs = dV(xx);
 clear E
-[~,dh3,dV3,dW3,dt3] = fcruise(10000,4000,Vs,Vw,W(end),P0,Vp,S,f,dt_L,2);
+[~,dh3,dV3,dW3,dt3] = fcruise(10000,4000,Vs,Vw,W(end),P0,Vp,S,f,dt_L,2,.27);
 ii = index+length(dt3);
 dx3 = zeros(length(dt3),1);
 dx3(:,1) = x(end);
@@ -88,7 +88,7 @@ for kk = 1:length(dV)
 end
 Vr = dV(xx);
 clear E
-[dx4,dh4,dV4,dW4,dt4] = fcruise(d,4000,Vr,Vw,W(end),P0,Vp,S,f,0,1);
+[dx4,dh4,dV4,dW4,dt4] = fcruise(d,4000,Vr,Vw,W(end),P0,Vp,S,f,0,1,.29);
 ii = index+length(dt4);
 dx4 = x(end)+dx4;
 dt4 = t(end)+dt4;

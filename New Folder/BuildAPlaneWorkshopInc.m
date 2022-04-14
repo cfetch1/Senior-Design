@@ -2,6 +2,8 @@ close all
 clear
 clc
 
+lim=.5;
+
 Vcruise = 160;
 file = 'Drag.xlsx';
 
@@ -23,14 +25,14 @@ for ii = 1:length(Vcruise)
     
     ERROR = 1000;
     
-    while ERROR > .5
+    while ERROR > lim
         
         [PW,WS] = ConstraintDiagram(Vc,hc,throttle,Sg,CL_max,AR,f);
 
         
         error = 1000;
         
-        while error > .5
+        while error > lim
             
             [S,b,c,P,L_fuselage,c_root,c_tip,L_h,S_h,b_h,c_root_h,c_tip_h,L_v,S_v,b_v,c_root_v,c_tip_v,c_T] = WingDimensions(MTOW,AR,WS,PW);
             clc
@@ -60,6 +62,7 @@ for ii = 1:length(Vcruise)
     W3(ii) = Wf;
     
 end
+% ConstraintDiagram(Vc,hc,throttle,Sg,CL_max,AR,f);
 % 
 % if length(Vcruise)>1
 %     clc

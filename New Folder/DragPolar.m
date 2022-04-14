@@ -40,10 +40,10 @@ for ii = 1:length(dV)
     %% Geometric Inputs
 
     kk = 1;
-    SA = 2011*2/144;
-    SC = 1672*2/144;
+    SA = 3076*2/144;
+    SC = 2340*2/144;
     Scab = 0;
-    Spx0 = 2380*2/144;
+    Spx0 = 3430*2/144;
     alphaB0 = -5;
     diaB = 2*kk;
     w_LG = [4/12,0.5,.5];
@@ -121,9 +121,10 @@ for ii = 1:length(dV)
     L(j) = .5*S*rho*V_fps^2*CL(j);
     D(j) = .5*S*rho*V_fps^2*CD(j);
     E(j) = CL(j)/CD(j);
+    da(j) = alpha;
     j = j+1;
 
-
+    
 
 end
 
@@ -148,5 +149,9 @@ ax.YTick = 0:.25:30000;
 ax.YAxis.MinorTick='on';
 ax.YAxis.MinorTickValues = 0:.05:30000;
 
+
+f2 = polyfit(CL,da,2);
+p2 = polyval(f2,dCL);
+hold on
 end
 

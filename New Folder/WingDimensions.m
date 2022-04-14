@@ -40,7 +40,7 @@ b_L_ratio = 2;
 
 % Fuselage Length
 %L_fuselage = b/b_L_ratio;
-L_fuselage= 13;
+L_fuselage= 14;
 
 % Horizontal Tail Distance
 L_h = 42/12; %L_fuselage*L_h_ratio;
@@ -60,7 +60,7 @@ lt = L_h*12';
 lambda = 2/3;
 
 r1 = @(beta) (sqrt(Vh*Sw*cw*ARh/(4*lt)))/cosd(beta);
-r2 = @(beta) (Vv*bw*sqrt(Sw*ARh/(cw*lt*Vh)))/(2*sind(beta)+1/2);
+r2 = @(beta) (Vv*bw*sqrt(Sw*ARh/(cw*lt*Vh)))/(2*sind(beta)+1/3);
 beta = fzero( @(beta) r1(beta)-r2(beta),45);
 r = r1(beta);
 
