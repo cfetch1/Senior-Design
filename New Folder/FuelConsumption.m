@@ -42,7 +42,7 @@ index = ii;
 
 %% Ingress
 
-[dx2,dh2,dV2,dW2,dt2] = fcruise(d-x(end),h_in,Vc,Vw,W(end),P0,Vp,S,f,0,0,.39);
+[dx2,dh2,dV2,dW2,dt2] = fcruise(d-x(end),h_in,Vc,Vw,W(end),P0,Vp,S,f,0,0,.44);
 ii = index+length(dt2);
 dx2 = x(end)+dx2;
 dt2 = t(end)+dt2;

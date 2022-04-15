@@ -49,7 +49,7 @@ for ii = 1:length(Vcruise)
         close all
         [df] = FuelConsumption(P,Vc,S,f,MTOW,length(Vcruise));
         
-        ERROR = 100*abs(Wf-df)/Wf;
+        ERROR = 100*abs(Wf-df)/Wf; 
         MTOW = MTOW-Wf+df;
         Wf = df;
         

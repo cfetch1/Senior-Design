@@ -16,8 +16,8 @@ for ii = 1:length(WS_)
     end
 end
 
-WS = 21.3;
-PW = .1046;
+% WS = 21.3;
+% PW = .1046;
 
     figure
         hold on

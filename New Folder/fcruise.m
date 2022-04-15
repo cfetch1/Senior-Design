@@ -51,16 +51,19 @@ ii = 1;
     
     sigma = sigma0(h(ii));
     eta = TR640(V(ii)+Vw,Vc);
-    P_max = P0*550*(sigma-(1-sigma)/7.55)*eta;
+
+    
     V_fps = (V(ii)+Vw)*1.69;
-       
+           
+
     CL = W(ii)/(.5*rho*V_fps^2*S);
     CD = f(1)*(CL)^2 + f(2)*CL + f(3);
     D = .5*rho*V_fps^2*S*CD;
     P_req = D*V_fps;
-    P_hp = P_req/550;
+%     P_hp = P_req/550;
+    P_max = P0*550*(sigma-(1-sigma)/7.55)*eta;
     throttle = P_req/P_max;
-    P_eng = P_max*throttle/550
+%     P_eng = P_max*throttle/550;
 
 while x(ii)<x2
     
@@ -81,7 +84,10 @@ while x(ii)<x2
     D = .5*rho*V_fps^2*S*CD;
     P_req = D*V_fps;
     
-    df = PSFC*P_eng/550*(dt/3600);
+    P_max = P0*550*(sigma-(1-sigma)/7.55)*eta;
+    throttle = P_req/P_max;
+    
+    df = PSFC*(P_eng/550)*(dt/3600);
     
 %     PSFC(ii) = df*3600/(dt*P_eng/550);
     
@@ -151,6 +157,6 @@ end
 % 
 % PSFC(ii) = PSFC(ii-1);
 t = t/60;
-
+disp(['P_req = ' num2str(P0*throttle)])
 end
 

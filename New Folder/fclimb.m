@@ -79,7 +79,7 @@ while h(ii)<h2
     dV = 60:120;
     
     for kk = 1:length(dV)
-        [CL,CD] = DragSLF(dV(kk),W(end),0,S,f);
+        [CL,CD] = DragSLF(dV(kk),W(end),h(end),S,f);
         E(kk) = CL/CD;
         if E(kk) == max(E)
             index = kk;
@@ -88,7 +88,12 @@ while h(ii)<h2
     V(ii+1) = dV(index);
     clear E index
     
-    
+    if (h(end)-h(1))/(t(end)/60)>1200
+%        throttle = throttle-.001;
+    elseif (h(end)-h(1))/(t(end)/60)<600
+        throttle = throttle+.001;
+    end
+        
     
     ii = ii+1;
     
@@ -97,6 +102,7 @@ while h(ii)<h2
 end
 
 t = t/60;
+disp(['P_req = ' num2str(P0*throttle)])
 
 end
 
