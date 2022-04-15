@@ -9,7 +9,7 @@ f = [0.0351   -0.0029    0.0210];
 P0 = 100;
 
 % Altitude Sweep
-h = linspace(0,18000,1000);
+h = linspace(0,18000,10);
 
 %% Calculate max power for range of altitudes
 for ii = 1:length(h)
@@ -42,22 +42,29 @@ throttle_PSFC_sealevel = interp1(throttle,PSFC,linspace(0,100,100),'spline');
 % throttle_PSFC_cruise = interp1(throttle,PSFC_cruise,linspace(0,100,100),'spline');
 
 % Assuming max throttle how does PSFC change with altitude?
-PSFC_max = throttle_PSFC_sealevel(end);                    % (fuel_cons(end)./P_max);                                  
+PSFC_max = throttle_PSFC_sealevel(end);                    % (fuel_cons(end)./P_max);       
+PSFC_ingress = throttle_PSFC_sealevel(84);
+PSFC_egress = throttle_PSFC_sealevel(41);
+PSFC_loiter = throttle_PSFC_sealevel(34);
 
 %% Plotting
 figure();
 plot(P_max,h,'linewidth',4); grid on;
+% hatchedline(P_max,h); grid on;
 xlabel('Max Power [hp]');
 ylabel('Altitude [ft]');
 xlim([0,100]);
 
 figure();
-plot(PSFC_max,h); hold on;
+% plot(PSFC_max,h); hold on;
 xline(PSFC_max,'linewidth',4); grid on;
-xline(PSFC_max,'linewidth',4); grid on;
+xline(PSFC_ingress,'linewidth',4); 
+xline(PSFC_egress,'linewidth',4); 
+xline(PSFC_loiter,'linewidth',4); 
 xlabel('PSFC [lb/hp/hr]');
 ylabel('Altitude [ft]');
-xlim([0,.5])
+xlim([0,.5]);
+ylim([0,18000]);
 
 figure();
 plot(linspace(0,100,100),throttle_PSFC_sealevel,'linewidth',4); grid on; hold on;
@@ -80,16 +87,17 @@ xlabel('Throttle Setting [%]');
 %     TSFC(i) = fTSFC(0,V_fps1(i)./1.688);
 % end
 % 
-% % Calculate drag (sea level, 160 knots)
-% % V_fps1 = V*1.688;
-% % TSFC = fTSFC(0,V_fps1./1.688);
-% % D = (Power_greg)./V_fps1;
-% rho = density(0);
-% CL = W./(.5*rho.*V_fps1.^2*S);
-% CD = f(1).*(CL).^2 + f(2).*CL + f(3);
-% D = .5*rho.*V_fps1.^2*S.*CD;
-% Power_greg = D.*V_fps1/550;
-% 
+% Calculate drag (sea level, 160 knots)
+V = 87;
+V_fps1 = V*1.688;
+% TSFC = fTSFC(0,V_fps1./1.688);
+% D = (Power_greg)./V_fps1;
+rho = density(18000);
+CL = W./(.5*rho.*V_fps1.^2*S);
+CD = f(1).*(CL).^2 + f(2).*CL + f(3);
+D = .5*rho.*V_fps1.^2*S.*CD;
+Power_greg = D.*V_fps1/550;
+% % 
 % % Calculate PSFC
 % % PSFC_greg = (TSFC.*D)./(Power_greg);
 % PSFC_greg = TSFC./(V_fps1/550);
