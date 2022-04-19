@@ -1,4 +1,4 @@
-function [x,h,V,W,t,PSFC,phi] = fcruise(x2,h,V1,Vw,W1,P0,Vc,S,f,tlim,opt,PSFC)
+function [x,h,V,W,t,PSFC,phi,P_req] = fcruise(x2,h,V1,Vw,W1,P0,Vc,S,f,tlim,opt,PSFC)
 
 %% OUTPUTS
 % x (vector):   distance [nmi]
@@ -93,11 +93,11 @@ while x(ii)<x2
     
     dV = (P_avail-P_req)*dt/(W(ii)*3600);
     if dV>0.5*dt/3600
-        throttle = throttle-.005;
+         throttle = throttle-.005;
     elseif dV<-0.5*dt/3600
-        if throttle <= .995
+%         if throttle <= .995
             throttle = throttle+.005;
-        end
+%         end
     else
 
     x(ii+1) = x(ii)+(V(ii)-Vw+.5*dV/1.69)*dt/3600;
@@ -156,7 +156,8 @@ while x(ii)<x2
 end
 % 
 % PSFC(ii) = PSFC(ii-1);
-t = t/60;
-disp(['P_req = ' num2str(P0*throttle)])
+t=t/60;
+P_req = P0*throttle;
+disp(['P_req = ' num2str(P_req)])
 end
 

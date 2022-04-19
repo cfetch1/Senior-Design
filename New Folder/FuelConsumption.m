@@ -1,4 +1,4 @@
-function [Wf] = FuelConsumption(P0,Vc,S,f,W1,plots)
+function [Wf,P_req] = FuelConsumption(P0,Vc,S,f,W1,plots,ROC)
 
 
 %% Global Inputs
@@ -30,7 +30,7 @@ for kk = 1:length(dV)
 end
 VE = dV(xx);
 clear E
-[dx1,dh1,dV1,dW1,dt1] = fclimb(0,h_in,VE,W(end),P0,.85,Vp,S,f,.39);
+[dx1,dh1,dV1,dW1,dt1,P_req_cl] = fclimb(0,h_in,VE,W(end),P0,.85,Vp,S,f,.39,ROC);
 ii = length(dt1);
 x(1:ii) = dx1;
 h(1:ii) = dh1;
@@ -42,7 +42,7 @@ index = ii;
 
 %% Ingress
 
-[dx2,dh2,dV2,dW2,dt2] = fcruise(d-x(end),h_in,Vc,Vw,W(end),P0,Vp,S,f,0,0,.44);
+[dx2,dh2,dV2,dW2,dt2,~,~,P_req_cr] = fcruise(d-x(end),h_in,Vc,Vw,W(end),P0,Vp,S,f,0,0,.44);
 ii = index+length(dt2);
 dx2 = x(end)+dx2;
 dt2 = t(end)+dt2;
@@ -109,7 +109,8 @@ dt4 = dt4/60;
 W(end) = W(end)*.99;
 
 Wf = (1.25)*(W1-W(end));
-
+P_req = max([P_req_cl,P_req_cr]);
+% 
 if plots == 1
     
     figure
@@ -125,7 +126,7 @@ if plots == 1
     axis([0,max(t),0,max(x)])
     xlabel('Time (hrs)')
     ylabel('Distance (nmi)')
-    FormatAxis(t,1,.25,x,100,25)
+   FormatAxis(t,1,.25,x,100,25)
     
     subplot(222)
     hold on
@@ -138,7 +139,7 @@ if plots == 1
     axis([0,max(t),0,max(h)])
     xlabel('Time (hrs)')
     ylabel('Altitude (ft)')
-    FormatAxis(t,1,.25,h,5000,1250)
+   FormatAxis(t,1,.25,h,5000,1250)
     
     subplot(223)
     hold on
@@ -151,7 +152,7 @@ if plots == 1
     axis([0,max(t),min(V),max(V)])
     xlabel('Time (hrs)')
     ylabel('Airspeed (kts)')
-    FormatAxis(t,1,.25,V,20,5)
+   FormatAxis(t,1,.25,V,20,5)
     
     subplot(224)
     hold on

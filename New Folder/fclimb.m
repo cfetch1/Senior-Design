@@ -1,4 +1,4 @@
-function [x,h,V,W,t] = fclimb(h1,h2,V1,W1,P0,throttle,Vc,S,f,PSFC)
+function [x,h,V,W,t,P_req] = fclimb(h1,h2,V1,W1,P0,throttle,Vc,S,f,PSFC,ROC)
 
 %% OUTPUTS
 % x (vector):   distance [nmi]
@@ -88,9 +88,8 @@ while h(ii)<h2
     V(ii+1) = dV(index);
     clear E index
     
-    if (h(end)-h(1))/(t(end)/60)>1200
-%        throttle = throttle-.001;
-    elseif (h(end)-h(1))/(t(end)/60)<600
+
+    if (h(end)-h(1))/(t(end)/60)<ROC
         throttle = throttle+.001;
     end
         
@@ -102,7 +101,8 @@ while h(ii)<h2
 end
 
 t = t/60;
-disp(['P_req = ' num2str(P0*throttle)])
+P_req = P0*throttle;
+disp(['P_req = ' num2str(P_req)])
 
 end
 
